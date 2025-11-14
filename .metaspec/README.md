@@ -1,0 +1,241 @@
+# Developing {{ name }} with MetaSpec
+
+> **For Speckit Developers**: This guide helps you develop and maintain {{ name }} using MetaSpec's AI-assisted commands.
+
+---
+
+## 🎯 Who Should Read This
+
+This document is for **speckit developers** who want to:
+- Add new features to {{ name }}
+- Improve existing toolkit functionality
+- Define or evolve domain specifications
+- Maintain toolkit quality
+
+If you just want to **use** {{ name }}, see the root `AGENTS.md` and `README.md`.
+
+---
+
+## 🏗️ MetaSpec Architecture
+
+This speckit includes 19 AI-assisted development commands organized in three layers:
+
+### Layer 1: SDS (Spec-Driven Specification) - 8 Commands
+
+Define domain domain specifications:
+
+- `/metaspec.sds.constitution` - Define specification design principles
+- `/metaspec.sds.specify` - Define specification entities, operations, validation rules
+- `/metaspec.sds.clarify` - Resolve ambiguities in domain specification
+- `/metaspec.sds.plan` - Plan specification architecture and sub-specifications
+- `/metaspec.sds.tasks` - Break down specification work
+- `/metaspec.sds.implement` - Write specification documents
+- `/metaspec.sds.checklist` - Generate quality checklist for specification
+- `/metaspec.sds.analyze` - Check specification consistency
+
+**Output**: `specs/domain/` directory
+
+### Layer 2: SDD (Spec-Driven Development) - 8 Commands
+
+Develop toolkit implementation:
+
+- `/metaspec.sdd.constitution` - Define toolkit development principles
+- `/metaspec.sdd.specify` - Define toolkit specifications
+- `/metaspec.sdd.clarify` - Resolve toolkit ambiguities
+- `/metaspec.sdd.plan` - Plan toolkit implementation
+- `/metaspec.sdd.tasks` - Break down implementation work
+- `/metaspec.sdd.implement` - Build toolkit code
+- `/metaspec.sdd.checklist` - Validate quality
+- `/metaspec.sdd.analyze` - Check consistency
+
+**Output**: `specs/toolkit/` directory + `src/` code
+
+### Layer 3: Evolution - 3 Shared Commands
+
+Manage specification changes:
+
+- `/metaspec.proposal` - Propose changes (use `--type sds|sdd`)
+- `/metaspec.apply` - Apply approved changes
+- `/metaspec.archive` - Archive completed changes
+
+**Output**: `changes/` directory
+
+---
+
+## 🚀 Development Workflow
+
+### Phase 1: Define Specification (SDS)
+
+**Simple Path** (Recommended starting point):
+
+```bash
+# Core Flow
+/metaspec.sds.constitution  # 1. Define specification principles
+/metaspec.sds.specify       # 2. Define specification entities
+
+# Quality Assurance (Recommended)
+/metaspec.sds.checklist     # 3. Generate quality checklist
+/metaspec.sds.analyze       # 4. Check consistency
+```
+
+**Complex Path** (If splitting needed):
+
+```bash
+# Core Flow
+/metaspec.sds.constitution  # 1. Define specification principles
+/metaspec.sds.specify       # 2. Define root specification
+/metaspec.sds.plan          # 3. Plan sub-specification architecture
+/metaspec.sds.tasks         # 4. Break down specification tasks
+/metaspec.sds.implement     # 5. Write sub-specification documents (NOT code)
+
+# Quality Assurance (Recommended)
+/metaspec.sds.checklist     # 6. Generate quality checklist
+/metaspec.sds.analyze       # 7. Check consistency
+```
+
+**On-Demand**: Use `/metaspec.sds.clarify` to resolve ambiguities at any stage.
+
+**Output**: `specs/domain/001-{domain}-spec/spec.md`
+
+### Phase 2: Design Toolkit (SDD)
+
+```bash
+# Step 1: Define toolkit principles
+/metaspec.sdd.constitution
+
+# Step 2: Define toolkit specs
+/metaspec.sdd.specify
+
+# Step 3: Plan implementation
+/metaspec.sdd.plan
+```
+
+**Output**: `specs/toolkit/001-{name}/spec.md` + `plan.md`
+
+### Phase 3: Implement Toolkit (SDD)
+
+```bash
+# Step 1: Break down tasks
+/metaspec.sdd.tasks
+
+# Step 2: Execute implementation
+/metaspec.sdd.implement
+
+# Step 3: Validate quality
+/metaspec.sdd.checklist
+/metaspec.sdd.analyze
+```
+
+**Output**: Working code in `src/` directory
+
+### Phase 4: Evolve (When Stable)
+
+```bash
+# Propose specification change
+/metaspec.proposal "Add GraphQL support" --type sds
+
+# Propose toolkit change
+/metaspec.proposal "Add streaming support" --type sdd
+
+# Apply approved changes
+/metaspec.apply <proposal-id>
+
+# Archive completed changes
+/metaspec.archive <proposal-id>
+```
+
+---
+
+## 🔄 Iteration Support
+
+MetaSpec commands support iteration modes to track progress:
+
+| Mode | Action | When to Use |
+|------|--------|-------------|
+| **update** | Update output, preserve history | Re-run after fixes |
+| **new** | Create fresh output (backup existing) | Start over |
+| **append** | Add supplementary output | Different focus |
+
+**Example**:
+```bash
+# Initial validation
+/metaspec.sdd.checklist
+
+# After fixes, track improvement
+/metaspec.sdd.checklist  # Auto-detects existing → update mode
+```
+
+**Default behavior**: If you say "re-run checklist", AI uses **update** mode.
+
+---
+
+## 📁 Project Structure
+
+```
+{{ name }}/
+├── specs/
+│   ├── domain/          ← SDS commands work here
+│   │   └── 001-{domain}-spec/
+│   │       └── spec.md
+│   └── toolkit/           ← SDD commands work here
+│       └── 001-{name}/
+│           ├── spec.md
+│           └── plan.md
+├── changes/               ← Evolution commands work here
+│   ├── add-feature-x/
+│   └── improve-feature-y/
+├── src/                   ← Generated by /metaspec.sdd.implement
+│   └── {{ package_name }}/
+└── .metaspec/
+    ├── README.md          ← You are here
+    ├── commands/          ← 19 MetaSpec commands
+    └── templates/         ← Output format templates
+```
+
+---
+
+## 🎯 When to Use What
+
+**Use SDS commands** when:
+- ✅ Defining domain specifications from scratch
+- ✅ Specifying specification entities, operations, validation rules
+- ✅ Creating specification specs independent of implementation
+
+**Use SDD commands** when:
+- ✅ Developing toolkit features
+- ✅ Planning and implementing parsers, validators, CLI
+- ✅ Building tools to support a specification
+
+**Use Evolution commands** when:
+- ✅ Specification is stable and in use
+- ✅ Changes need review or approval
+- ✅ Want to track change history
+
+---
+
+## 📚 Command Details
+
+Each command in `.metaspec/commands/` is self-contained with:
+- Complete usage instructions
+- Input/output specifications
+- Examples and best practices
+- Error handling guidance
+
+**To use a command**:
+1. Open the command file in `.metaspec/commands/`
+2. Read the instructions
+3. AI will guide you through the process
+
+---
+
+## 🔗 Resources
+
+- **MetaSpec GitHub**: https://github.com/ACNet-AI/MetaSpec
+- **Constitution**: `memory/constitution.md` (toolkit principles)
+- **Root AGENTS.md**: For speckit users (not developers)
+
+---
+
+**Generated by**: MetaSpec {{ metaspec_version }}  
+**For**: Speckit developers maintaining {{ name }}
+
