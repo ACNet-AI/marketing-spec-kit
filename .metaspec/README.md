@@ -1,18 +1,18 @@
-# Developing {{ name }} with MetaSpec
+# Developing marketing-spec-kit with MetaSpec
 
-> **For Speckit Developers**: This guide helps you develop and maintain {{ name }} using MetaSpec's AI-assisted commands.
+> **For Speckit Developers**: This guide helps you develop and maintain marketing-spec-kit using MetaSpec's AI-assisted commands.
 
 ---
 
 ## 🎯 Who Should Read This
 
 This document is for **speckit developers** who want to:
-- Add new features to {{ name }}
+- Add new features to marketing-spec-kit
 - Improve existing toolkit functionality
 - Define or evolve domain specifications
 - Maintain toolkit quality
 
-If you just want to **use** {{ name }}, see the root `AGENTS.md` and `README.md`.
+If you just want to **use** marketing-spec-kit, see the root `AGENTS.md` and `README.md`.
 
 ---
 
@@ -54,9 +54,9 @@ Develop toolkit implementation:
 
 Manage specification changes:
 
-- `/metaspec.proposal` - Propose changes (use `--type sds|sdd`)
-- `/metaspec.apply` - Apply approved changes
-- `/metaspec.archive` - Archive completed changes
+- `/metaspec.evolution.proposal` - Propose changes (use `--type sds|sdd`)
+- `/metaspec.evolution.apply` - Apply approved changes
+- `/metaspec.evolution.archive` - Archive completed changes
 
 **Output**: `changes/` directory
 
@@ -73,9 +73,9 @@ Manage specification changes:
 /metaspec.sds.constitution  # 1. Define specification principles
 /metaspec.sds.specify       # 2. Define specification entities
 
-# Quality Assurance (Recommended)
-/metaspec.sds.checklist     # 3. Generate quality checklist
-/metaspec.sds.analyze       # 4. Check consistency
+# Quality Gates (Recommended)
+/metaspec.sds.clarify       # 3. Clarify ambiguities
+/metaspec.sds.checklist     # 4. Final quality validation
 ```
 
 **Complex Path** (If splitting needed):
@@ -84,46 +84,56 @@ Manage specification changes:
 # Core Flow
 /metaspec.sds.constitution  # 1. Define specification principles
 /metaspec.sds.specify       # 2. Define root specification
-/metaspec.sds.plan          # 3. Plan sub-specification architecture
-/metaspec.sds.tasks         # 4. Break down specification tasks
-/metaspec.sds.implement     # 5. Write sub-specification documents (NOT code)
 
-# Quality Assurance (Recommended)
-/metaspec.sds.checklist     # 6. Generate quality checklist
-/metaspec.sds.analyze       # 7. Check consistency
+# Quality Gates
+/metaspec.sds.clarify       # 3. Clarify ambiguities (BEFORE plan)
+
+# Core Flow (Continued)
+/metaspec.sds.plan          # 4. Plan sub-specification architecture
+
+# Quality Gates
+/metaspec.sds.checklist     # 5. Validate requirements (AFTER plan)
+
+# Core Flow (Continued)
+/metaspec.sds.tasks         # 6. Break down specification tasks
+
+# Quality Gates
+/metaspec.sds.analyze       # 7. Check task consistency (BEFORE implement)
+
+# Core Flow (Continued)
+/metaspec.sds.implement     # 8. Write sub-specification documents (NOT code)
 ```
 
 **On-Demand**: Use `/metaspec.sds.clarify` to resolve ambiguities at any stage.
 
 **Output**: `specs/domain/001-{domain}-spec/spec.md`
 
-### Phase 2: Design Toolkit (SDD)
+### Phase 2: Develop Toolkit (SDD)
+
+**Complete Path** (follows spec-kit workflow - toolkit development always needs full process):
 
 ```bash
-# Step 1: Define toolkit principles
-/metaspec.sdd.constitution
+# Core Flow
+/metaspec.sdd.constitution  # 1. Define toolkit implementation principles
+/metaspec.sdd.specify       # 2. Define toolkit specifications
 
-# Step 2: Define toolkit specs
-/metaspec.sdd.specify
+# Quality Gates
+/metaspec.sdd.clarify       # 3. Clarify technical decisions (BEFORE plan)
 
-# Step 3: Plan implementation
-/metaspec.sdd.plan
-```
+# Core Flow (Continued)
+/metaspec.sdd.plan          # 4. Plan implementation architecture
 
-**Output**: `specs/toolkit/001-{name}/spec.md` + `plan.md`
+# Quality Gates
+/metaspec.sdd.checklist     # 5. Validate requirements (AFTER plan)
 
-### Phase 3: Implement Toolkit (SDD)
+# Core Flow (Continued)
+/metaspec.sdd.tasks         # 6. Break down implementation work
 
-```bash
-# Step 1: Break down tasks
-/metaspec.sdd.tasks
+# Quality Gates
+/metaspec.sdd.analyze       # 7. Check architecture consistency (BEFORE implement)
 
-# Step 2: Execute implementation
-/metaspec.sdd.implement
-
-# Step 3: Validate quality
-/metaspec.sdd.checklist
-/metaspec.sdd.analyze
+# Core Flow (Continued)
+/metaspec.sdd.implement     # 8. Build toolkit - write code
 ```
 
 **Output**: Working code in `src/` directory
@@ -132,16 +142,16 @@ Manage specification changes:
 
 ```bash
 # Propose specification change
-/metaspec.proposal "Add GraphQL support" --type sds
+/metaspec.evolution.proposal "Add GraphQL support" --type sds
 
 # Propose toolkit change
-/metaspec.proposal "Add streaming support" --type sdd
+/metaspec.evolution.proposal "Add streaming support" --type sdd
 
 # Apply approved changes
-/metaspec.apply <proposal-id>
+/metaspec.evolution.apply <proposal-id>
 
 # Archive completed changes
-/metaspec.archive <proposal-id>
+/metaspec.evolution.archive <proposal-id>
 ```
 
 ---
@@ -172,20 +182,20 @@ MetaSpec commands support iteration modes to track progress:
 ## 📁 Project Structure
 
 ```
-{{ name }}/
+marketing-spec-kit/
 ├── specs/
 │   ├── domain/          ← SDS commands work here
 │   │   └── 001-{domain}-spec/
 │   │       └── spec.md
 │   └── toolkit/           ← SDD commands work here
-│       └── 001-{name}/
+│       └── 001-marketing-spec-kit/
 │           ├── spec.md
 │           └── plan.md
 ├── changes/               ← Evolution commands work here
 │   ├── add-feature-x/
 │   └── improve-feature-y/
 ├── src/                   ← Generated by /metaspec.sdd.implement
-│   └── {{ package_name }}/
+│   └── marketing_spec_kit/
 └── .metaspec/
     ├── README.md          ← You are here
     ├── commands/          ← 19 MetaSpec commands
@@ -236,6 +246,5 @@ Each command in `.metaspec/commands/` is self-contained with:
 
 ---
 
-**Generated by**: MetaSpec {{ metaspec_version }}  
-**For**: Speckit developers maintaining {{ name }}
-
+**Generated by**: MetaSpec 0.6.2  
+**For**: Speckit developers maintaining marketing-spec-kit
