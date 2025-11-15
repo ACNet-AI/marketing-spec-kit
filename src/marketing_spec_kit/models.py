@@ -1,15 +1,21 @@
 """Pydantic models for Marketing Operations Specification
 
-This module defines 7 entities from the domain specification:
+This module defines 9 entities from the domain specification (v2.0.0):
 - Project: Brand identity and core values
 - Product: Feature offerings and positioning
+- MarketingPlan: Strategic marketing plan (NEW in v2.0.0)
 - Campaign: Time-bound marketing activities
 - Channel: Distribution platforms
 - Tool: Integration automation
 - ContentTemplate: Brand guidelines and constraints
 - Milestone: Timeline markers and events
+- Analytics: Performance analytics report (NEW in v2.0.0)
 
 All models use Pydantic v2.0+ for automatic validation.
+
+Breaking Changes in v2.0.0:
+- Campaign.plan_id is now REQUIRED (was not present in v1.x)
+- All campaigns must belong to a MarketingPlan
 """
 
 from enum import Enum
@@ -50,6 +56,185 @@ class ChannelType(str, Enum):
     FORUM = "forum"
     VIDEO = "video"
     PODCAST = "podcast"
+
+
+class PlanStatus(str, Enum):
+    """Marketing plan status (NEW in v2.0.0)"""
+
+    DRAFT = "draft"
+    APPROVED = "approved"
+    ACTIVE = "active"
+    COMPLETED = "completed"
+    ARCHIVED = "archived"
+
+
+class AnalyticsType(str, Enum):
+    """Analytics report type (NEW in v2.0.0)"""
+
+    CAMPAIGN = "campaign"
+    PLAN = "plan"
+
+
+class InsightType(str, Enum):
+    """Analytics insight category (NEW in v2.0.0)"""
+
+    SUCCESS = "success"
+    CONCERN = "concern"
+    OPPORTUNITY = "opportunity"
+
+
+class OptimizationPriority(str, Enum):
+    """Optimization recommendation priority (NEW in v2.0.0)"""
+
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+
+class OptimizationEffort(str, Enum):
+    """Implementation effort for optimization (NEW in v2.0.0)"""
+
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+class KPIPriority(str, Enum):
+    """KPI importance level (NEW in v2.0.0)"""
+
+    P0 = "P0"  # Critical
+    P1 = "P1"  # Important
+    P2 = "P2"  # Nice-to-have
+
+
+class AudiencePriority(str, Enum):
+    """Target audience segment priority (NEW in v2.0.0)"""
+
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+
+class ContentStatus(str, Enum):
+    """Content calendar entry status (NEW in v2.0.0)"""
+
+    PLANNED = "planned"
+    CREATED = "created"
+    PUBLISHED = "published"
+
+
+# ============================================================================
+# Nested Models (NEW in v2.0.0)
+# ============================================================================
+
+
+class PlanPeriod(BaseModel):
+    """Time period for marketing plan"""
+
+    start_date: str = Field(..., description="Plan start date (ISO 8601)")
+    end_date: str = Field(..., description="Plan end date (ISO 8601)")
+    duration_weeks: int = Field(..., ge=4, le=52, description="Duration in weeks")
+
+
+class PlanBudget(BaseModel):
+    """Budget allocation for marketing plan"""
+
+    total: float = Field(..., gt=0, description="Total budget")
+    currency: str = Field(default="USD", description="Currency code (ISO 4217)")
+    allocation: Dict[str, float] = Field(
+        ...,
+        description="Budget breakdown by category",
+        examples=[
+            {
+                "content_creation": 2000,
+                "paid_promotion": 2500,
+                "tools": 300,
+                "contingency": 200,
+            }
+        ],
+    )
+
+
+class TargetAudience(BaseModel):
+    """Target audience segment for marketing plan"""
+
+    segment: str = Field(..., description="Audience segment name")
+    description: str = Field(..., description="Detailed segment description")
+    size_estimate: int = Field(..., gt=0, description="Estimated audience size")
+    priority: AudiencePriority = Field(..., description="Targeting priority")
+
+
+class Strategy(BaseModel):
+    """Marketing strategy for plan"""
+
+    name: str = Field(..., description="Strategy name")
+    description: str = Field(..., description="Strategy details")
+    rationale: str = Field(..., description="Why this strategy was chosen")
+    success_criteria: str = Field(..., description="How success is measured")
+
+
+class PlanKPI(BaseModel):
+    """Key Performance Indicator for plan"""
+
+    name: str = Field(..., description="KPI name")
+    target: float = Field(..., description="Target value to achieve")
+    unit: str = Field(..., description="Measurement unit")
+    measurement: str = Field(..., description="How to measure this KPI")
+    priority: KPIPriority = Field(..., description="KPI priority")
+
+
+class PlanApproval(BaseModel):
+    """Approval metadata for plan"""
+
+    approved_by: str = Field(..., description="Name or ID of approver")
+    approved_at: str = Field(..., description="Approval timestamp (ISO 8601)")
+    comments: Optional[str] = Field(None, description="Approval notes or feedback")
+
+
+class ContentCalendarEntry(BaseModel):
+    """Single entry in content calendar"""
+
+    date: str = Field(..., description="Publish date (ISO 8601)")
+    content_type: str = Field(..., description="Type of content")
+    channel_id: str = Field(..., description="Target channel")
+    title: str = Field(..., description="Content title or description")
+    status: ContentStatus = Field(..., description="Content status")
+
+
+class AnalyticsPeriod(BaseModel):
+    """Time period for analytics report"""
+
+    start_date: str = Field(..., description="Analysis start date (ISO 8601)")
+    end_date: str = Field(..., description="Analysis end date (ISO 8601)")
+
+
+class KPIComparison(BaseModel):
+    """KPI target vs actual comparison"""
+
+    target: float = Field(..., description="Target value")
+    actual: float = Field(..., description="Actual value achieved")
+    achievement: float = Field(..., description="Achievement percentage")
+    status: str = Field(
+        ..., description="Status: exceeds, meets, on_track, below_target, far_below"
+    )
+
+
+class AnalyticsInsight(BaseModel):
+    """AI-generated insight from data analysis"""
+
+    type: InsightType = Field(..., description="Insight category")
+    description: str = Field(..., description="What the insight is about")
+    evidence: str = Field(..., description="Data supporting this insight")
+    recommendation: str = Field(..., description="Suggested action")
+
+
+class Optimization(BaseModel):
+    """AI-generated optimization recommendation"""
+
+    priority: OptimizationPriority = Field(..., description="Optimization priority")
+    action: str = Field(..., description="Specific action to take")
+    expected_impact: str = Field(..., description="Expected result")
+    effort: OptimizationEffort = Field(..., description="Implementation effort")
 
 
 # ============================================================================
@@ -127,6 +312,10 @@ class Campaign(BaseModel):
     )
     name: str = Field(..., description="Campaign name")
     goal: CampaignGoal = Field(..., description="Primary objective (AIDA funnel stage)")
+    plan_id: str = Field(
+        ...,
+        description="Parent MarketingPlan identifier (REQUIRED in v2.0.0, BREAKING CHANGE)",
+    )
     project_id: str = Field(..., description="Parent Project identifier")
     product_ids: Optional[List[str]] = Field(
         None, description="Products promoted in this campaign"
@@ -144,7 +333,102 @@ class Campaign(BaseModel):
         None,
         description="Key performance indicators (e.g., {'CTR': 0.05, 'ROAS': 4.0})",
     )
+    expected_kpis: Optional[Dict[str, float]] = Field(
+        None,
+        description="Expected KPI targets (NEW in v2.0.0, for design phase)",
+    )
+    content_calendar: Optional[List[ContentCalendarEntry]] = Field(
+        None,
+        description="Content publishing schedule (NEW in v2.0.0)",
+    )
     status: str = Field(default="draft", description="Campaign status")
+
+
+class MarketingPlan(BaseModel):
+    """MarketingPlan entity - Strategic marketing plan (NEW in v2.0.0)
+    
+    Represents a comprehensive marketing plan with objectives, strategies, budget allocation,
+    and KPI targets. Plans contain multiple campaigns and span weeks to months.
+    """
+
+    id: str = Field(
+        ...,
+        pattern=r"^[a-z0-9-]+$",
+        description="Unique plan identifier (lowercase, hyphens only)",
+    )
+    name: str = Field(..., min_length=3, description="Plan name")
+    project_id: str = Field(..., description="Parent Project identifier")
+    period: PlanPeriod = Field(..., description="Plan time period")
+    objectives: List[str] = Field(
+        ...,
+        min_items=1,
+        max_items=5,
+        description="High-level marketing objectives (1-5)",
+    )
+    target_audience: List[TargetAudience] = Field(
+        ..., min_items=1, description="Target audience segments"
+    )
+    strategies: List[Strategy] = Field(
+        ...,
+        min_items=1,
+        max_items=8,
+        description="Marketing strategies to achieve objectives",
+    )
+    budget: PlanBudget = Field(..., description="Budget allocation")
+    kpis: List[PlanKPI] = Field(
+        ...,
+        min_items=1,
+        max_items=10,
+        description="Key performance indicators (1-10)",
+    )
+    campaign_ids: Optional[List[str]] = Field(
+        None, description="Campaigns executed under this plan"
+    )
+    status: PlanStatus = Field(default=PlanStatus.DRAFT, description="Plan status")
+    created_at: str = Field(..., description="Creation timestamp (ISO 8601)")
+    updated_at: str = Field(..., description="Last update timestamp (ISO 8601)")
+    approval: Optional[PlanApproval] = Field(
+        None, description="Approval metadata (required for APPROVED/ACTIVE status)"
+    )
+
+
+class Analytics(BaseModel):
+    """Analytics entity - Performance analytics report (NEW in v2.0.0)
+    
+    Represents an AI-generated analytics report for a campaign or plan,
+    including KPI comparisons, insights, and optimization recommendations.
+    """
+
+    id: str = Field(
+        ...,
+        pattern=r"^[a-z0-9-]+$",
+        description="Unique analytics report identifier",
+    )
+    type: AnalyticsType = Field(..., description="Report type: campaign or plan")
+    entity_id: str = Field(
+        ..., description="ID of the campaign or plan being analyzed"
+    )
+    period: AnalyticsPeriod = Field(..., description="Analysis time period")
+    metrics: Dict[str, float] = Field(
+        ..., description="Measured metrics (e.g., {'reach': 50000, 'conversions': 120})"
+    )
+    vs_target: Dict[str, KPIComparison] = Field(
+        ..., description="KPI target vs actual comparisons"
+    )
+    insights: List[AnalyticsInsight] = Field(
+        ...,
+        min_items=1,
+        max_items=10,
+        description="AI-generated insights (1-10)",
+    )
+    optimizations: Optional[List[Optimization]] = Field(
+        None,
+        max_items=10,
+        description="AI-generated optimization recommendations (max 10)",
+    )
+    generated_at: str = Field(
+        ..., description="Report generation timestamp (ISO 8601)"
+    )
 
 
 class Channel(BaseModel):
@@ -299,6 +583,9 @@ class MarketingSpec(BaseModel):
     products: List[Product] = Field(
         default_factory=list, description="Product offerings"
     )
+    plans: List[MarketingPlan] = Field(
+        default_factory=list, description="Marketing plans (NEW in v2.0.0)"
+    )
     campaigns: List[Campaign] = Field(
         default_factory=list, description="Marketing campaigns"
     )
@@ -313,5 +600,8 @@ class MarketingSpec(BaseModel):
     )
     milestones: List[Milestone] = Field(
         default_factory=list, description="Timeline milestones"
+    )
+    analytics: List[Analytics] = Field(
+        default_factory=list, description="Analytics reports (NEW in v2.0.0)"
     )
 

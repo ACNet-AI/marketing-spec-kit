@@ -6,6 +6,11 @@ Supports:
 - Python dictionaries
 - String content (YAML/JSON)
 
+v2.0.0 Changes:
+- Automatically parses 'plans' field (MarketingPlan entities)
+- Automatically parses 'analytics' field (Analytics reports)
+- Campaign.plan_id is now REQUIRED (BREAKING CHANGE from v1.x)
+
 Performance Target: Parse <100ms for typical specs (<1000 lines)
 """
 

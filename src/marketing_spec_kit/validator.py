@@ -1,15 +1,17 @@
 """Validator for Marketing Operations Specification
 
-Implements 42 validation rules from domain specification:
+Implements 45 validation rules from domain specification v2.0.0:
 - Project: VR-P01 to VR-P06 (6 rules)
 - Product: VR-PR01 to VR-PR05 (5 rules)
-- Campaign: VR-C01 to VR-C09 (9 rules)
+- MarketingPlan: PLAN-01 to PLAN-05 (5 rules) [NEW in v2.0.0]
+- Campaign: VR-C01 to VR-C11 (11 rules, includes 4 new rules) [UPDATED in v2.0.0]
 - Channel: VR-CH01 to VR-CH06 (6 rules)
 - Tool: VR-T01 to VR-T06 (6 rules)
 - ContentTemplate: VR-CT01 to VR-CT05 (5 rules)
 - Milestone: VR-M01 to VR-M05 (5 rules)
+- Analytics: ANLY-01 (1 rule) [NEW in v2.0.0]
 
-Performance Target: Validate <200ms for typical specs
+Performance Target: Validate <250ms for typical specs
 """
 
 import re
@@ -79,14 +81,18 @@ class MarketingSpecValidator:
         self.result = ValidationResult(valid=True)
         self._project_id: str = ""
         self._product_ids: Set[str] = set()
+        self._plan_ids: Set[str] = set()  # NEW in v2.0.0
         self._campaign_ids: Set[str] = set()
         self._channel_ids: Set[str] = set()
         self._tool_ids: Set[str] = set()
         self._template_ids: Set[str] = set()
         self._milestone_ids: Set[str] = set()
+        self._analytics_ids: Set[str] = set()  # NEW in v2.0.0
+        self._plans: List[Any] = []  # Store plans for budget validation
+        self._campaigns: List[Any] = []  # Store campaigns for budget validation
 
     def validate(self, spec: MarketingSpec) -> ValidationResult:
-        """Validate a MarketingSpec against all 42 rules
+        """Validate a MarketingSpec against all 45 rules (v2.0.0)
         
         Args:
             spec: MarketingSpec object (already parsed by Pydantic)
@@ -104,6 +110,9 @@ class MarketingSpecValidator:
         for product in spec.products:
             self._validate_product(product)
         
+        for plan in spec.plans:
+            self._validate_plan(plan)
+        
         for campaign in spec.campaigns:
             self._validate_campaign(campaign)
         
@@ -119,19 +128,27 @@ class MarketingSpecValidator:
         for milestone in spec.milestones:
             self._validate_milestone(milestone)
         
+        for analytics in spec.analytics:
+            self._validate_analytics(analytics)
+        
         # Final result
         self.result.valid = len(self.result.errors) == 0
         return self.result
 
     def _collect_ids(self, spec: MarketingSpec):
-        """Collect all entity IDs for reference validation"""
+        """Collect all entity IDs for reference validation (v2.0.0)"""
         self._project_id = spec.project.name.lower().replace(" ", "-")
         self._product_ids = {p.id for p in spec.products}
+        self._plan_ids = {p.id for p in spec.plans}
         self._campaign_ids = {c.id for c in spec.campaigns}
         self._channel_ids = {ch.id for ch in spec.channels}
         self._tool_ids = {t.id for t in spec.tools}
         self._template_ids = {ct.id for ct in spec.content_templates}
         self._milestone_ids = {m.id for m in spec.milestones}
+        self._analytics_ids = {a.id for a in spec.analytics}
+        # Store entities for cross-validation
+        self._plans = list(spec.plans)
+        self._campaigns = list(spec.campaigns)
 
     # ========================================================================
     # Project Validation (6 rules)
@@ -230,7 +247,76 @@ class MarketingSpecValidator:
                 )
 
     # ========================================================================
-    # Campaign Validation (9 rules)
+    # MarketingPlan Validation (5 rules) - NEW in v2.0.0
+    # ========================================================================
+
+    def _validate_plan(self, plan):
+        """Validate MarketingPlan entity (PLAN-01 to PLAN-05)"""
+        
+        # PLAN-01: objectives must be 1-5 non-empty strings (Pydantic handles count)
+        self.result.rules_checked += 1
+        if plan.objectives:
+            empty_objectives = [obj for obj in plan.objectives if not obj.strip()]
+            if empty_objectives:
+                self._add_issue(
+                    "PLAN-01",
+                    "error",
+                    "plan",
+                    plan.id,
+                    "objectives",
+                    f"Plan has {len(empty_objectives)} empty objective(s)",
+                    "Remove empty strings from objectives list",
+                )
+            else:
+                self.result.rules_passed += 1
+        
+        # PLAN-02: period.duration_weeks must be 4-52 (Pydantic handles)
+        self.result.rules_checked += 1
+        self.result.rules_passed += 1  # Handled by Pydantic Field(ge=4, le=52)
+        
+        # PLAN-03: budget.allocation sum must equal budget.total
+        self.result.rules_checked += 1
+        if plan.budget and plan.budget.allocation:
+            allocation_sum = sum(plan.budget.allocation.values())
+            tolerance = 0.01  # Allow $0.01 rounding difference
+            if abs(allocation_sum - plan.budget.total) > tolerance:
+                self._add_issue(
+                    "PLAN-03",
+                    "error",
+                    "plan",
+                    plan.id,
+                    "budget",
+                    f"Budget allocation sum (${allocation_sum:.2f}) != total (${plan.budget.total:.2f})",
+                    f"Adjust allocation to sum to ${plan.budget.total:.2f}",
+                )
+            else:
+                self.result.rules_passed += 1
+        
+        # PLAN-04: status APPROVED/ACTIVE requires approval field
+        self.result.rules_checked += 1
+        from marketing_spec_kit.models import PlanStatus
+        if plan.status in [PlanStatus.APPROVED, PlanStatus.ACTIVE]:
+            if not plan.approval:
+                self._add_issue(
+                    "PLAN-04",
+                    "error",
+                    "plan",
+                    plan.id,
+                    "approval",
+                    f"Plan status '{plan.status.value}' requires approval metadata",
+                    "Add approval field with approved_by, approved_at, and optional comments",
+                )
+            else:
+                self.result.rules_passed += 1
+        else:
+            self.result.rules_passed += 1
+        
+        # PLAN-05: strategies count must be 1-8 (Pydantic handles)
+        self.result.rules_checked += 1
+        self.result.rules_passed += 1  # Handled by Pydantic Field(min_items=1, max_items=8)
+
+    # ========================================================================
+    # Campaign Validation (11 rules) - UPDATED in v2.0.0
     # ========================================================================
 
     def _validate_campaign(self, campaign):
@@ -341,6 +427,91 @@ class MarketingSpecValidator:
                     "Consider increasing budget efficiency or raising target ROAS",
                 )
             self._pass_rule()
+        
+        # CAMP-08: plan_id must reference existing MarketingPlan (NEW in v2.0.0)
+        self.result.rules_checked += 1
+        if campaign.plan_id not in self._plan_ids:
+            self._add_issue(
+                "CAMP-08",
+                "error",
+                "campaign",
+                campaign.id,
+                "plan_id",
+                f"Campaign references non-existent plan '{campaign.plan_id}'",
+                f"Use one of: {', '.join(self._plan_ids) if self._plan_ids else '(no plans defined)'}",
+            )
+        else:
+            self.result.rules_passed += 1
+        
+        # CAMP-09 & CAMP-10: Campaign dates must be within plan's period (NEW in v2.0.0)
+        if campaign.plan_id in self._plan_ids:
+            plan = next((p for p in self._plans if p.id == campaign.plan_id), None)
+            if plan:
+                # CAMP-09: start_date within plan period
+                self.result.rules_checked += 1
+                campaign_start = campaign.start_date
+                plan_start = plan.period.start_date
+                plan_end = plan.period.end_date
+                
+                if campaign_start < plan_start or campaign_start > plan_end:
+                    self._add_issue(
+                        "CAMP-09",
+                        "error",
+                        "campaign",
+                        campaign.id,
+                        "start_date",
+                        f"Campaign start ({campaign_start}) outside plan period ({plan_start} to {plan_end})",
+                        f"Adjust start_date to be between {plan_start} and {plan_end}",
+                    )
+                else:
+                    self.result.rules_passed += 1
+                
+                # CAMP-10: end_date within plan period and >= start_date
+                self.result.rules_checked += 1
+                campaign_end = campaign.end_date
+                
+                if campaign_end < plan_start or campaign_end > plan_end:
+                    self._add_issue(
+                        "CAMP-10",
+                        "error",
+                        "campaign",
+                        campaign.id,
+                        "end_date",
+                        f"Campaign end ({campaign_end}) outside plan period ({plan_start} to {plan_end})",
+                        f"Adjust end_date to be between {plan_start} and {plan_end}",
+                    )
+                elif campaign_end < campaign_start:
+                    self._add_issue(
+                        "CAMP-10",
+                        "error",
+                        "campaign",
+                        campaign.id,
+                        "end_date",
+                        f"Campaign end ({campaign_end}) before start ({campaign_start})",
+                        "Set end_date to be >= start_date",
+                    )
+                else:
+                    self.result.rules_passed += 1
+                
+                # CAMP-11: Budget check (warning) (NEW in v2.0.0)
+                self.result.rules_checked += 1
+                plan_total_budget = plan.budget.total
+                campaigns_in_plan = [c for c in self._campaigns if c.plan_id == plan.id]
+                total_campaign_budgets = sum(c.budget for c in campaigns_in_plan)
+                
+                if total_campaign_budgets > plan_total_budget * 1.05:  # Allow 5% over
+                    self._add_issue(
+                        "CAMP-11",
+                        "warning",
+                        "campaign",
+                        campaign.id,
+                        "budget",
+                        f"Total campaign budgets (${total_campaign_budgets:.2f}) exceed plan budget (${plan_total_budget:.2f})",
+                        f"Consider reducing campaign budgets or increasing plan budget",
+                    )
+                    self.result.rules_passed += 1
+                else:
+                    self.result.rules_passed += 1
 
     # ========================================================================
     # Channel Validation (6 rules)
@@ -559,6 +730,44 @@ class MarketingSpecValidator:
                 f"Invalid date format: {e}",
                 "Use ISO 8601 format: YYYY-MM-DD",
             )
+
+    # ========================================================================
+    # Analytics Validation (1 rule) - NEW in v2.0.0
+    # ========================================================================
+
+    def _validate_analytics(self, analytics):
+        """Validate Analytics entity (ANLY-01)"""
+        
+        # ANLY-01: entity_id must reference existing Campaign or Plan
+        self.result.rules_checked += 1
+        from marketing_spec_kit.models import AnalyticsType
+        
+        if analytics.type == AnalyticsType.CAMPAIGN:
+            if analytics.entity_id not in self._campaign_ids:
+                self._add_issue(
+                    "ANLY-01",
+                    "error",
+                    "analytics",
+                    analytics.id,
+                    "entity_id",
+                    f"Analytics references non-existent campaign '{analytics.entity_id}'",
+                    f"Use one of: {', '.join(self._campaign_ids) if self._campaign_ids else '(no campaigns defined)'}",
+                )
+            else:
+                self.result.rules_passed += 1
+        elif analytics.type == AnalyticsType.PLAN:
+            if analytics.entity_id not in self._plan_ids:
+                self._add_issue(
+                    "ANLY-01",
+                    "error",
+                    "analytics",
+                    analytics.id,
+                    "entity_id",
+                    f"Analytics references non-existent plan '{analytics.entity_id}'",
+                    f"Use one of: {', '.join(self._plan_ids) if self._plan_ids else '(no plans defined)'}",
+                )
+            else:
+                self.result.rules_passed += 1
 
     # ========================================================================
     # Helper Methods
