@@ -7,6 +7,226 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2025-11-15
+
+### 🚨 BREAKING CHANGES
+
+- **Campaign.plan_id is now REQUIRED**: All campaigns must be linked to a MarketingPlan
+  - **Migration Required**: Existing v1.x specs need to add `plan_id` to all campaigns
+  - See [MIGRATION.md](./docs/MIGRATION.md) for upgrade guide
+- **Spec validation now requires 45 rules** (was 42)
+- **Package version jump**: 0.1.0 → 2.0.0 to reflect breaking changes
+
+### ✨ Major Features
+
+#### 🎯 5-Phase Marketing Workflow System
+Complete workflow redesign from "toolbox" to "workflow system":
+```
+Strategic Planning → Campaign Design → Content Creation → Execution → Analytics
+```
+
+#### 📋 New Entity: MarketingPlan (14 fields)
+- **Purpose**: Strategic marketing planning with objectives, budget allocation, and KPIs
+- **Fields**: id, name, project_id, period, objectives, target_audience, strategies, budget, kpis, campaign_ids, status, created_at, updated_at, approval
+- **Validation Rules**: PLAN-01 to PLAN-05 (5 rules)
+- **Key Features**:
+  - Budget allocation with automatic sum validation
+  - 1-5 objectives, 1-8 strategies
+  - Multi-segment target audience with priorities
+  - 1-10 KPIs with P0/P1/P2 prioritization
+  - Approval workflow for APPROVED/ACTIVE status
+
+#### 📊 New Entity: Analytics (9 fields)
+- **Purpose**: AI-powered performance analytics and optimization recommendations
+- **Fields**: id, type, entity_id, period, metrics, vs_target, insights, optimizations, generated_at
+- **Validation Rules**: ANLY-01 (1 rule)
+- **Key Features**:
+  - Campaign-level and Plan-level analytics
+  - Target vs actual KPI comparisons
+  - AI-generated insights (success/concern/opportunity)
+  - Prioritized optimization recommendations (high/medium/low)
+
+#### 🔄 Updated Entity: Campaign
+- **New Required Field**: `plan_id` (links to MarketingPlan)
+- **New Optional Fields**: 
+  - `expected_kpis`: Projected performance for design phase
+  - `content_calendar`: List of scheduled content entries
+- **New Validation Rules**: CAMP-08 to CAMP-11 (4 rules)
+  - CAMP-08: plan_id must reference existing plan
+  - CAMP-09: start_date within plan period
+  - CAMP-10: end_date within plan period and >= start_date
+  - CAMP-11: Budget check (warning if campaigns exceed plan budget)
+
+### 🤖 New AI Agent Slash Commands (+9, total 22)
+
+#### Strategic Planning Commands (4)
+1. **`/marketing.plan.create`** (217 lines)
+   - Create marketing plan with AI assistance
+   - Interactive gathering of objectives, audience, strategies, budget, KPIs
+   - Validates against PLAN-01~05
+
+2. **`/marketing.plan.validate`** (67 lines)
+   - Validate plan against 5 rules
+   - Clear pass/fail reporting with actionable fixes
+
+3. **`/marketing.plan.get`** (71 lines)
+   - Display formatted plan details
+   - Markdown output with tables and structured sections
+
+4. **`/marketing.plan.analyze`** (149 lines)
+   - Multi-dimensional AI analysis
+   - Scores: Strategic Alignment, Resource Feasibility, KPI Quality, Execution Readiness
+   - Prioritized recommendations (P0/P1/P2)
+   - Risk assessment
+
+#### Campaign Design Command (1)
+5. **`/marketing.campaign.design`** (198 lines)
+   - AI-assisted campaign design based on plan
+   - Suggests timeline, budget, channels, content calendar
+   - Validates against CAMP-08~11 constraints
+   - Provides design rationale
+
+#### Content Planning Command (1)
+6. **`/marketing.content.plan`** (187 lines)
+   - Generate content calendar for campaign
+   - Cadence based on goal (awareness/consideration/conversion)
+   - Even distribution across timeline
+   - Content strategy summary
+
+#### Analytics & Optimization Commands (3)
+7. **`/marketing.analytics.campaign`** (318 lines)
+   - Campaign performance report
+   - KPI target vs actual comparisons with status
+   - AI insights (3-10 per report)
+   - Optimization recommendations with effort/impact estimates
+
+8. **`/marketing.analytics.plan`** (402 lines)
+   - Plan-level aggregate analytics
+   - Cross-campaign performance comparison
+   - Objective achievement analysis
+   - Q+1 plan recommendations based on learnings
+
+9. **`/marketing.optimize.suggest`** (380 lines)
+   - Multi-dimensional optimization analysis
+   - Effort vs Impact priority matrix
+   - Quick Wins + Strategic Improvements
+   - Implementation steps for each suggestion
+
+### 🏗️ Models & Architecture
+
+#### New Enums (8)
+- `PlanStatus`: draft, approved, active, completed, archived
+- `AnalyticsType`: campaign, plan
+- `InsightType`: success, concern, opportunity
+- `OptimizationPriority`: high, medium, low
+- `OptimizationEffort`: low, medium, high
+- `KPIPriority`: P0 (critical), P1 (important), P2 (nice-to-have)
+- `AudiencePriority`: high, medium, low
+- `ContentStatus`: planned, created, published
+
+#### New Nested Models (11)
+- `PlanPeriod`: Time period with start/end dates and duration_weeks
+- `PlanBudget`: Total, currency, and allocation breakdown
+- `TargetAudience`: Segment definition with size estimate and priority
+- `Strategy`: Marketing strategy with rationale and success criteria
+- `PlanKPI`: KPI definition with target, unit, measurement, priority
+- `PlanApproval`: Approval metadata (required for APPROVED/ACTIVE plans)
+- `ContentCalendarEntry`: Single content entry with date, type, channel, status
+- `AnalyticsPeriod`: Time range for analytics reports
+- `KPIComparison`: Target vs actual comparison with achievement percentage
+- `AnalyticsInsight`: AI insight with type, description, evidence, recommendation
+- `Optimization`: Optimization recommendation with priority, action, impact, effort
+
+### ✅ Validation Enhancements
+
+- **Total Rules**: 42 → 45 (+3 net, +10 new rules, -7 renumbered)
+- **New Rule Families**:
+  - PLAN-01 to PLAN-05: MarketingPlan validation (5 rules)
+  - CAMP-08 to CAMP-11: Campaign-Plan relationship validation (4 rules)
+  - ANLY-01: Analytics entity reference validation (1 rule)
+- **Performance**: <250ms for typical specs (was <200ms)
+
+### 📖 Documentation
+
+#### Major Updates
+- **README.md**: Complete rewrite for v2.0.0
+  - 5-phase workflow documentation
+  - 22 command reference
+  - v1.0 vs v2.0 comparison table
+  - Breaking changes section
+
+- **Domain Spec**: `specs/domain/001-marketing-operations-spec/spec.md` (v2.0.0)
+  - 1,917 → 3,143 lines (+64%)
+  - New: Workflow Specification section (310 lines)
+  - New: MarketingPlan entity (360 lines)
+  - New: Analytics entity (240 lines)
+  - Updated: Campaign entity with 3 new fields
+
+- **Constitution**: `memory/constitution.md` (v1.3.0)
+  - Part II: Added "Workflow Completeness" principle
+  - Part III: Unchanged (toolkit implementation principles)
+
+#### Evolution Proposal
+- **Complete Change Documentation**: `changes/2025-11-15-add-workflow-system/`
+  - `proposal.md`: 661 lines - Full change rationale and design
+  - `tasks.md`: 436 lines - 55 implementation tasks across 9 phases
+  - `impact.md`: 632 lines - Breaking changes, migration guide, version bump
+  - `specs/spec-delta.md`: 839 lines - Detailed spec changes
+
+#### Examples
+- **`examples/metaspec-marketing.yaml`** (395 lines)
+  - Complete v2.0.0 specification example
+  - Includes Plan, Campaigns, Analytics
+  
+- **`examples/metaspec-marketing-plan.md`** (292 lines)
+  - Detailed strategic plan documentation
+  - Demonstrates Plan-to-Campaign relationship
+
+#### Design Documents
+- **`specs/domain/.../workflow-redesign.md`** (1,060 lines)
+  - 5-phase workflow design
+  - New entities and commands
+  - Validation rules expansion
+
+### 🔧 Technical Improvements
+
+- **Parser**: Automatic support for `plans` and `analytics` fields (no code changes, Pydantic handles)
+- **Validator**: 
+  - Extended to support Plan and Analytics entities
+  - Added cross-entity validation (campaign dates within plan period)
+  - Budget sum validation with tolerance (±$0.01)
+- **Type Safety**: All new entities fully typed with Pydantic v2
+- **Error Handling**: Clear error messages for new validation rules
+
+### 📦 Package Changes
+
+- **Version**: 0.1.0 → 2.0.0
+- **Exports**: Added 8 enums, 11 nested models, 2 entities to `__init__.py`
+- **Backward Compatibility**: ❌ **BREAKING** - `Campaign.plan_id` now required
+
+### 📊 Code Statistics
+
+| Metric | v1.0.0 | v2.0.0 | Change |
+|--------|---------|---------|--------|
+| Entities | 7 | 9 | +2 |
+| Enums | 3 | 11 | +8 |
+| Nested Models | 0 | 11 | +11 |
+| Validation Rules | 42 | 45 | +3 |
+| Slash Commands | 13 | 22 | +9 |
+| Python Code Lines | 1,836 | 2,379 | +543 |
+| Template Lines | 1,593 | 3,394 | +1,801 |
+| Total Lines | 3,429 | 5,773 | +2,344 (+68%) |
+
+### 🐛 Bug Fixes
+
+- None (clean v1.0.0 to v2.0.0 upgrade)
+
+### ⚠️ Deprecations
+
+- None (v1.0.0 specs require migration due to breaking change)
+
+---
+
 ## [0.1.0] - 2025-11-15
 
 ### Added
@@ -62,6 +282,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 2.0.0 | 2025-11-15 | Workflow system with Plan & Analytics entities (BREAKING) |
 | 0.1.0 | 2025-11-15 | Full MVP release with 4 phases complete |
 
 ---
