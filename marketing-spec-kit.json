@@ -1,0 +1,20 @@
+{
+  "name": "marketing-spec-kit",
+  "command": "marketing_spec_kit",
+  "description": "A spec-driven toolkit for marketing operations management. Define specs for projects, products, features, campaigns, milestones and content to drive AI-powered marketing workflows.",
+  "version": "0.1.0",
+  "pypi_package": "marketing-spec-kit",
+  "repository": "https://github.com/ACNet-AI/marketing-spec-kit",
+  "author": "marketing-spec-kit Contributors",
+  "tags": [
+    "marketing",
+    "operations",
+    "content-management",
+    "campaign",
+    "spec-driven"
+  ],
+  "cli_commands": [
+    "info"
+  ]
+}
+
