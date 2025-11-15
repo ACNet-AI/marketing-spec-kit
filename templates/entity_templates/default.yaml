@@ -1,0 +1,101 @@
+# Marketing Specification - Default Template
+# Complete example with common entities
+
+project:
+  name: "Example Project"
+  tagline: "An example marketing specification"
+  brand_voice: "Professional"
+  website: "https://example.com"
+  target_audience:
+    - "Developers"
+    - "Product Managers"
+  value_propositions:
+    - "Easy to use and understand"
+    - "Comprehensive feature set"
+    - "Great community support"
+  logo_url: "https://example.com/logo.png"
+  social_handles:
+    twitter: "@example"
+    github: "example-org"
+
+products:
+  - id: "core-product"
+    name: "Core Product"
+    description: "Our main product offering with essential features"
+    project_id: "example-project"
+    target_audience:
+      - "Developers"
+    key_features:
+      - "Feature 1: Core functionality"
+      - "Feature 2: Advanced tools"
+      - "Feature 3: Integration support"
+    positioning: "The best solution for modern teams"
+    launch_date: "2025-01-15"
+
+  - id: "premium-product"
+    name: "Premium Product"
+    description: "Enhanced version with advanced capabilities"
+    project_id: "example-project"
+    target_audience:
+      - "Enterprise teams"
+    key_features:
+      - "All core features"
+      - "Priority support"
+      - "Custom integrations"
+    positioning: "Enterprise-grade solution"
+
+campaigns:
+  - id: "launch-campaign"
+    name: "Product Launch Campaign"
+    goal: "awareness"  # Options: awareness, consideration, conversion
+    project_id: "example-project"
+    product_ids:
+      - "core-product"
+    target_audience:
+      - "Developers"
+    budget: 5000.0
+    start_date: "2025-02-01"
+    end_date: "2025-03-31"
+    channels:
+      - "twitter"
+      - "dev-blog"
+    kpis:
+      target_impressions: 100000
+      target_ctr: 0.05  # 5% CTR
+      target_conversions: 500
+    status: "draft"
+
+channels:
+  - id: "twitter"
+    name: "Twitter (X)"
+    type: "social_media"
+    platform: "twitter"
+    audiences:
+      - "Developers"
+    content_types:
+      - "short_text"
+      - "images"
+      - "video"
+    constraints:
+      max_text_length: 280
+      max_hashtags: 5
+
+  - id: "dev-blog"
+    name: "Developer Blog"
+    type: "blog"
+    platform: "wordpress"
+    audiences:
+      - "Developers"
+      - "Product Managers"
+    content_types:
+      - "long_text"
+      - "images"
+      - "code"
+    constraints:
+      min_length: 800
+      max_length: 3000
+
+tools: []
+content_templates: []
+milestones: []
+

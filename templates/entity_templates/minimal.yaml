@@ -1,0 +1,21 @@
+# Marketing Specification - Minimal Template
+# This is a minimal spec with only required fields
+
+project:
+  name: "TODO: Your Project Name"  # e.g., "MetaSpec", "Acme Corp"
+  tagline: "TODO: Short memorable tagline (≤100 chars)"  # e.g., "Spec-Driven Development Framework"
+  brand_voice: "Professional"  # Options: Technical, Friendly, Professional, Casual, Educational
+  website: "https://example.com"  # Must be HTTPS
+  target_audience:  # At least 1 audience segment
+    - "TODO: Primary audience"  # e.g., "Developers", "Marketing Teams"
+  value_propositions:  # At least 1 value proposition
+    - "TODO: Key benefit 1"  # e.g., "Save time", "Increase efficiency"
+
+# Optional: Add products, campaigns, channels, tools, templates, milestones below
+products: []
+campaigns: []
+channels: []
+tools: []
+content_templates: []
+milestones: []
+
