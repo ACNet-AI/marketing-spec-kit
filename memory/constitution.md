@@ -314,8 +314,91 @@ Campaign:
 
 **Rationale**: Domain-faithful specifications are intuitive for marketing professionals and follow industry best practices.
 
+### 7. Workflow Completeness
+
+All domain specifications must define a complete user workflow from start to finish.
+
+**Marketing Operations Workflow Phases**:
+1. **Strategic Planning**: Define marketing plan, objectives, budget, target audience
+2. **Campaign Design**: Design campaigns aligned with plan objectives
+3. **Content Creation**: Generate content assets for campaigns and channels
+4. **Execution & Publishing**: Publish content to channels, start data collection
+5. **Analytics & Optimization**: Track KPIs, generate reports, optimize based on data
+
+**Rules**:
+- **Phase Definition**: Each workflow phase must have clear purpose, entry/exit criteria
+- **Operation Mapping**: All operations (Slash Commands) must map to specific workflow phases
+- **Sequencing**: Document operation ordering and dependencies (e.g., "Plan before Campaign")
+- **Decision Points**: Specify branching logic (e.g., "If KPI below target → optimize, else → next campaign")
+- **Quality Gates**: Define checkpoints between phases (e.g., "Plan must be approved before Campaign design")
+- **End-to-End Examples**: Provide workflow walkthroughs from planning to analytics
+
+**Example** (Marketing Operations Workflow):
+```yaml
+Phase 1: Strategic Planning
+  Purpose: Define marketing strategy and resource allocation
+  Entry: Business goals defined, Project/Product specs ready
+  Operations:
+    - /marketing.plan.create: Create marketing plan
+    - /marketing.plan.validate: Verify plan completeness
+    - /marketing.plan.analyze: Get AI improvement suggestions
+  Exit: Approved Plan with budget and KPIs
+  Quality Gate: Plan status = "approved", KPIs defined
+
+Phase 2: Campaign Design
+  Purpose: Design campaigns to achieve Plan objectives
+  Entry: Approved Plan exists
+  Operations:
+    - /marketing.campaign.design: AI-generate campaign suggestions
+    - /marketing.campaign.create: Create campaign
+  Exit: Campaigns linked to Plan, budget allocated
+  Quality Gate: Campaign.budget ≤ Plan.remaining_budget
+
+Phase 3: Content Creation
+  Purpose: Generate marketing content for campaigns
+  Entry: Campaign created, Channels configured
+  Operations:
+    - /marketing.content.plan: Generate content calendar
+    - /marketing.generate.post: Create social media posts
+    - /marketing.generate.article: Create blog articles
+  Exit: Content assets ready for publishing
+  Quality Gate: Content passes brand consistency check
+
+Phase 4: Execution & Publishing
+  Purpose: Publish content to channels
+  Entry: Content ready, publish date reached
+  Operations:
+    - /marketing.execute.schedule: Schedule future publish
+    - /marketing.execute.publish: Publish immediately
+  Exit: Content live on channels, data tracking active
+  Quality Gate: All scheduled content published successfully
+
+Phase 5: Analytics & Optimization
+  Purpose: Measure performance and optimize
+  Entry: Campaign running ≥1 week, data available
+  Operations:
+    - /marketing.analytics.campaign: Analyze campaign KPIs
+    - /marketing.analytics.plan: Analyze plan-level performance
+    - /marketing.optimize.suggest: Get AI optimization recommendations
+  Exit: Analytics report, optimization decisions
+  Decision: If KPI met → continue; if not → optimize and retry
+```
+
+**Workflow Visualization**:
+```
+Plan → Campaign → Content → Publish → Analytics
+  ↑                                        ↓
+  └─────── Optimize (if needed) ──────────┘
+```
+
+**Rationale**: 
+- **User Guidance**: Users need clear paths through the toolkit, not just isolated commands
+- **AI Assistance**: Workflow context helps AI guide users through correct operation sequences
+- **Consistency**: Following MetaSpec's own design (SDS/SDD workflows are clearly defined)
+- **Value**: "Workflow systems" are more valuable than "tool collections"
+
 <!-- Managed by /metaspec.sds.constitution -->
-<!-- Last updated: 2025-11-14 v1.1.0 - Customized for Marketing Operations domain -->
+<!-- Last updated: 2025-11-15 v1.3.0 - Added Principle 7: Workflow Completeness -->
 
 ---
 
