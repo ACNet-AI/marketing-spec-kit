@@ -59,6 +59,7 @@ generated/
 logs/
 
 # marketing-spec-kit specific
+docs/internal/
 
 # Temporary files
 tmp/
