@@ -1,0 +1,24 @@
+{
+  "name": "marketing-spec-kit",
+  "command": "marketing_spec_kit",
+  "description": "Specification Toolkit for Marketing Operations - Transform marketing chaos into structured, AI-driven workflows",
+  "version": "2.0.0",
+  "pypi_package": "marketing-spec-kit",
+  "repository": "https://github.com/ACNet-AI/marketing-spec-kit",
+  "author": "marketing-spec-kit Contributors",
+  "tags": [
+    "marketing",
+    "marketing-operations",
+    "spec-driven",
+    "campaign-management",
+    "marketing-automation",
+    "ai-agents",
+    "workflow"
+  ],
+  "cli_commands": [
+    "info",
+    "init",
+    "validate"
+  ]
+}
+
