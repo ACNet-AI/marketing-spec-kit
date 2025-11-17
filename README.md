@@ -150,12 +150,37 @@ marketing-spec-kit v0.3.0 manages 9 marketing entities:
 **Recommended** (5 steps): `discover → clarify → strategy → create → checklist`  
 **Complete** (10 steps): All commands for complex campaigns with optimization
 
-**Closed-Loop Marketing**:
+---
+
+### 🤖 Spec-Driven Marketing Architecture
+
+**SDM's Role**: Create and manage marketing specifications (YAML files)
+
 ```
-Planning (8) → Execution → Review (2) → Next Campaign Planning
-     ↑____________________________________________↓
-              (Continuous Improvement)
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 1: Specification Creation (SDM Commands 1-8)         │
+│  → Output: marketing-spec.yaml                              │
+└─────────────────────┬───────────────────────────────────────┘
+                      ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 2: Execution (AI Agent + MCP Tools)                  │
+│  → AI Agent reads specification                             │
+│  → Generates content per Campaign + ContentTemplate         │
+│  → Publishes to Channels using MCP tools/APIs               │
+│  → Tracks Analytics and collects data                       │
+└─────────────────────┬───────────────────────────────────────┘
+                      ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 3: Analysis & Optimization (SDM Commands 9-10)       │
+│  → Compares planned vs. actual results                      │
+│  → Generates optimization recommendations                    │
+│  → Feeds into next cycle's planning                         │
+└─────────────────────────────────────────────────────────────┘
+        ↓
+    [Continuous Improvement Loop]
 ```
+
+**Key Insight**: SDM defines **WHAT** (specification), AI Agents execute **HOW** (using MCP tools), SDM analyzes **RESULTS** (review & optimize).
 
 ### Documentation
 
