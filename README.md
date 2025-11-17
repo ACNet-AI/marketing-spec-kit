@@ -261,41 +261,54 @@ marketing-spec-kit/
 ├── CHANGELOG.md                # Version history
 ├── AGENTS.md                   # AI Agent guide (v0.3.0 SDM workflow)
 ├── pyproject.toml              # Python project config
+├── LICENSE                     # MIT License
+│
+├── .metaspec/                  # MetaSpec commands (speckit development)
+│   ├── commands/               # 19 MetaSpec SDS/SDD commands
+│   └── README.md               # MetaSpec usage guide
 │
 ├── memory/
-│   └── constitution.md         # Core principles (v1.3.0)
+│   └── constitution.md         # Core principles (v0.3.0)
 │
 ├── specs/
 │   ├── domain/
 │   │   └── 001-marketing-operations-spec/
 │   │       ├── spec.md         # Domain specification (v0.3.0)
-│   │       └── workflow-redesign.md
+│   │       ├── analysis/       # Quality analysis reports
+│   │       │   ├── full-analysis.md
+│   │       │   └── quick-analysis.md
+│   │       └── checklists/     # Quality checklists
+│   │           └── comprehensive-quality.md
 │   └── toolkit/
 │       └── 001-marketing-spec-kit-implementation/
-│           └── spec.md         # Toolkit specification
-│
-├── changes/
-│   └── 2025-11-15-add-workflow-system/  # v0.2.0 evolution proposal
-│       ├── proposal.md
-│       ├── tasks.md
-│       ├── impact.md
-│       └── specs/spec-delta.md
+│           ├── spec.md         # Toolkit specification (v0.3.0)
+│           ├── plan.md         # Implementation plan
+│           ├── tasks.md        # Task breakdown
+│           ├── analysis/       # Quality analysis reports
+│           └── checklists/     # Quality checklists
 │
 ├── examples/
-│   ├── metaspec-marketing.yaml        # Complete v0.3.0 example
-│   └── metaspec-marketing-plan.md     # Plan documentation
+│   ├── complete-example.yaml           # Complete v0.3.0 example
+│   ├── metaspec-marketing.yaml         # MetaSpec format example
+│   ├── metaspec-marketing-plan.md      # Plan documentation
+│   └── sdm-workflow-example.md         # SDM workflow walkthrough
 │
 ├── templates/
 │   ├── entity_templates/       # Init templates (minimal/default/full)
 │   └── sdm/
+│       ├── README.md           # SDM system documentation
 │       └── commands/           # 10 SDM workflow commands
+│
+├── docs/
+│   └── internal/               # Internal documentation (gitignored)
+│       └── architecture-decisions-2025-11-16.md
 │
 └── src/marketing_spec_kit/
     ├── __init__.py             # Package exports (v0.3.0)
     ├── models.py               # 9 entities + 11 nested models
     ├── parser.py               # YAML/JSON parser
     ├── validator.py            # 45 validation rules
-    ├── cli.py                  # CLI commands
+    ├── cli.py                  # CLI commands (init, validate, info)
     └── exceptions.py           # Custom exceptions
 ```
 

@@ -1,17 +1,17 @@
 <!--
-Constitution Part II Update Report
-===================================
-Version: 1.0.0 → 1.1.0 (MINOR)
-Updated: 2025-11-14
-Rationale: Customized Part II from generic template to Marketing Operations domain-specific principles
+Constitution Update Report
+==========================
+Version: v0.3.0 (aligned with project version)
+Updated: 2025-11-17
+Rationale: Update Part II to reflect v0.3.0 project state (9 entities, 45 rules, 10 SDM commands)
 
 Key Changes:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Modified Principles (Part II ONLY):
-• Entity Clarity: Added Marketing Operations entities (Project, Product, Campaign, Channel, Tool, ContentTemplate, Milestone)
-• Validation Completeness: Added marketing-specific constraints (budget, dates, brand voice)
-• Operation Semantics: Added AI Agent Slash Commands (13 commands for content generation and task execution)
-• Domain Fidelity: Added marketing domain standards (ROAS, CTR, CPM metrics; brand consistency)
+• Entity Clarity: Updated to 9 entities (added MarketingPlan, Analytics)
+• Validation Completeness: Updated to 45 validation rules (was 42)
+• Operation Semantics: Replaced 13 entity commands with 10 SDM workflow commands
+• Domain Fidelity: Updated marketing metrics and workflow patterns
 
 Added Domain-Specific Guidance:
 • Marketing entity relationships (Project → Products → Campaigns → Channels)
@@ -105,14 +105,16 @@ Focus on your domain. Generic toolkits are weak toolkits.
 
 All marketing entity definitions must be complete and unambiguous.
 
-**Marketing Operations Entities**:
+**Marketing Operations Entities** (9 total):
 - **Project**: Brand identity, voice, value propositions, target audience
 - **Product**: Feature offerings, positioning, unique selling points
-- **Campaign**: Goals, strategies, metrics, timelines, budgets
+- **MarketingPlan**: Strategic planning, objectives, budget allocation, KPIs (NEW in v0.2.0)
+- **Campaign**: Goals, strategies, metrics, timelines, budgets (plan_id REQUIRED)
 - **Channel**: Platform type (social, email, blog), configuration, audiences
 - **Tool**: MCP integration or REST API for task automation
 - **ContentTemplate**: Brand guidelines, tone, style constraints
 - **Milestone**: Version releases, launch events, community activities
+- **Analytics**: Performance tracking, metrics, insights, optimization recommendations (NEW in v0.2.0)
 
 **Rules**:
 - All fields have explicit types and descriptions
@@ -169,51 +171,49 @@ Campaign.dates:
 
 ### 3. Operation Semantics
 
-All marketing operations (Slash Commands) must have clear purposes and interfaces.
+All marketing workflow commands (SDM Slash Commands) must have clear purposes and interfaces.
 
-**Marketing Operations (AI Agent Slash Commands)**:
+**SDM (Spec-Driven Marketing) Workflow Commands** (10 total):
 
-**Specification Access Commands** (7):
-- `/marketing.project` - Get project brand identity and positioning
-- `/marketing.product` - Get product feature details
-- `/marketing.campaign` - Get campaign goals and strategy
-- `/marketing.channel` - Get channel configuration
-- `/marketing.tool` - Get tool integration details
-- `/marketing.content_template` - Get brand guidelines and constraints
-- `/marketing.milestone` - Get release timeline and events
+**Core Workflow** (8):
+- `/marketspec.constitution` - Establish marketing project principles
+- `/marketspec.discover` - Identify business objectives and target audience
+- `/marketspec.clarify` - Resolve ambiguities and refine requirements
+- `/marketspec.strategy` - Design campaign structure and channel mix
+- `/marketspec.checklist` - Validate completeness and quality
+- `/marketspec.tasks` - Break down into actionable tasks
+- `/marketspec.analyze` - Check specification consistency
+- `/marketspec.create` - Generate validated YAML specification
 
-**Content Generation Commands** (4):
-- `/marketing.generate.post` - Generate social media post
-- `/marketing.generate.article` - Generate blog article
-- `/marketing.generate.email` - Generate email campaign
-- `/marketing.generate.landing_page` - Generate landing page copy
-
-**Task Execution Commands** (2):
-- `/marketing.execute.schedule` - Schedule content via Tool (MCP)
-- `/marketing.execute.publish` - Publish content via Tool (MCP)
+**Extension Commands** (2):
+- `/marketspec.review` - Analyze campaign performance vs. planned
+- `/marketspec.optimize` - Generate optimization recommendations for next cycle
 
 **Rules**:
-- Request/response schemas fully specified (input: entity ID, output: entity data or generated content)
-- Side effects documented (e.g., `/execute.publish` creates post on platform)
-- Idempotency requirements stated (e.g., `/generate.post` is idempotent, `/execute.publish` is not)
-- Error handling explicit (e.g., "Tool not configured → suggest MCP setup")
+- Command purpose clearly stated (guides user through workflow step)
+- Input requirements specified (what user provides at this step)
+- Output artifacts documented (what files/data are created)
+- Quality criteria defined (how to verify step completion)
+- Workflow position clear (which step comes before/after)
 
 **Example Command Specification**:
 ```yaml
-/marketing.generate.post:
+/marketspec.discover:
+  purpose: "Identify business objectives, target audience, initial strategy"
   input:
-    campaign_id: string  # Required
-    channel_id: string  # Required
-    tone: string  # Optional, defaults to brand_voice
+    user_description: string  # Free-form business goals
+    context: optional  # Project background, competitive landscape
   output:
-    content: string  # Generated post text
-    hashtags: list[string]  # Suggested hashtags
-    image_prompt: string  # AI image generation prompt
-  side_effects: none  # Read-only, no state changes
-  idempotent: true
+    discovery_notes: markdown  # Structured interview results
+    draft_entities: yaml  # Initial MarketingPlan + Campaign entities
+  quality_criteria:
+    - "1-5 objectives defined with priorities (P0/P1/P2)"
+    - "Target audience segments identified"
+    - "3-8 initial strategies outlined"
+  workflow_position: "Step 2 of 10 (after constitution, before clarify)"
 ```
 
-**Rationale**: Well-defined operations enable AI agents to reliably access specs and execute marketing tasks.
+**Rationale**: Well-defined workflow commands enable AI agents to guide users through specification creation systematically.
 
 ### 4. Implementation Neutrality
 
@@ -270,10 +270,10 @@ Channel:
 
 **Versioning Example**:
 ```yaml
-spec_version: "1.2.0"  # MAJOR.MINOR.PATCH
-# 2.0.0: Breaking changes (remove required fields)
-# 1.3.0: New entity types (add ContentTemplate)
-# 1.2.1: Fix typos, clarifications
+spec_version: "0.3.0"  # MAJOR.MINOR.PATCH (0.x = development)
+# 0.3.0: Complete SDM workflow system (10 commands)
+# 0.2.0: Add MarketingPlan, Analytics entities (breaking: plan_id required)
+# 0.1.0: Initial release (7 entities, 42 rules)
 ```
 
 **Rationale**: Marketing needs evolve rapidly; specifications must support new channels, content types, and metrics without breaking changes.
@@ -398,7 +398,7 @@ Plan → Campaign → Content → Publish → Analytics
 - **Value**: "Workflow systems" are more valuable than "tool collections"
 
 <!-- Managed by /metaspec.sds.constitution -->
-<!-- Last updated: 2025-11-15 v1.3.0 - Added Principle 7: Workflow Completeness -->
+<!-- Last updated: 2025-11-17 v0.3.0 - Updated entities (9), validation rules (45), SDM commands (10) -->
 
 ---
 
