@@ -2,7 +2,7 @@
 
 **Date**: 2025-11-17  
 **Mode**: Quick Mode (< 2 min)  
-**Specification**: 001-marketing-spec-kit-implementation v1.0.0  
+**Specification**: 001-marketing-spec-kit-implementation v0.3.0  
 **Type**: Toolkit (SDD)  
 **Status**: Draft
 
@@ -45,7 +45,7 @@
 
 ```yaml
 toolkit_id: "001-marketing-spec-kit-implementation"  ✅
-toolkit_version: "1.0.0"                             ✅
+toolkit_version: "0.3.0"                             ✅
 toolkit_status: "draft"                              ✅
 primary_language: "python"                           ✅
 generated_by: "MetaSpec v0.6.2"                      ✅

@@ -1,7 +1,7 @@
 # Marketing-Spec-Kit Toolkit - Comprehensive Quality Checklist
 
-**Toolkit**: 001-marketing-spec-kit-implementation v1.0.0  
-**Generated**: 2025-11-17 (Updated - Post Dependency Sync)  
+**Toolkit**: 001-marketing-spec-kit-implementation v0.3.0  
+**Generated**: 2025-11-17 (Updated - Post Dependency Sync + Version Alignment)  
 **Purpose**: Validate toolkit specification quality (NOT implementation correctness)  
 **Focus**: Domain Dependency + Entity Models + Validation Rules + Slash Commands + Architecture Design
 
