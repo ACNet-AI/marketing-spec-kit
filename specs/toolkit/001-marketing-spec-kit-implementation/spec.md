@@ -114,7 +114,7 @@ Implements support for: `domain/001-marketing-operations-spec` v0.3.0
 
 2. **Validate Marketing Specifications**
    - User runs: `marketing_spec_kit validate metaspec-marketing.yaml`
-   - Toolkit checks: All 25 validation rules
+   - Toolkit checks: All 45 validation rules
    - Output: Error/warning reports with actionable fixes
 
 3. **AI-Driven Content Generation** (Primary Use Case)
@@ -171,9 +171,9 @@ marketing_spec_kit validate metaspec-marketing.yaml
 
 **Core Components** (MVP):
 - ✅ **Parser** - Parse YAML/JSON marketing specifications into Python objects
-- ✅ **Validator** - Enforce 25 validation rules from domain specification
+- ✅ **Validator** - Enforce 45 validation rules from domain specification
 - ✅ **CLI** - User commands (`info`, `init`, `validate`)
-- ✅ **Slash Commands** - 13 AI Agent operations (to be implemented)
+- ✅ **Slash Commands** - 10 SDM Workflow commands (implemented in `templates/sdm/`)
 
 **Future Enhancements** (Post-MVP):
 - ⏭️ **Generator** - Generate marketing content templates
@@ -189,9 +189,9 @@ marketing_spec_kit validate metaspec-marketing.yaml
 src/
   marketing_spec_kit/
     __init__.py           # Package initialization
-    models.py             # Pydantic models for 7 entities
+    models.py             # Pydantic models for 9 entities
     parser.py             # YAML/JSON parser
-    validator.py          # 25 validation rules implementation
+    validator.py          # 45 validation rules implementation
     cli.py                # CLI entry point (init, validate)
     exceptions.py         # Custom exceptions (13 error codes)
     templates/            # Entity templates for init command
@@ -228,7 +228,7 @@ Parse user marketing specifications from YAML/JSON into validated Python objects
 
 #### Entity Models (From Specification)
 
-Based on `domain/001-marketing-operations-spec`, parse these 7 entities:
+Based on `domain/001-marketing-operations-spec`, parse these 9 entities:
 
 1. **Project**: Brand identity, voice, value propositions
    - Required fields: name, tagline, brand_voice, website, target_audience, value_propositions
@@ -238,26 +238,34 @@ Based on `domain/001-marketing-operations-spec`, parse these 7 entities:
    - Required fields: id, name, description, project_id, target_audience, key_features
    - Optional fields: positioning, launch_date
 
-3. **Campaign**: Marketing activities, goals, budget, timeline
-   - Required fields: id, name, goal, project_id, target_audience, budget, start_date, end_date, channels, status
+3. **MarketingPlan**: Strategic planning with objectives, budget, KPIs
+   - Required fields: id, name, project_id, objectives, target_audience, total_budget, budget_allocation, start_date, end_date, kpis, strategies
+   - Optional fields: description, status
+
+4. **Campaign**: Marketing activities, goals, budget, timeline
+   - Required fields: id, name, goal, plan_id, project_id, target_audience, budget, start_date, end_date, channels, status
    - Optional fields: product_ids, kpis
 
-4. **Channel**: Distribution platforms (Twitter, Reddit, Email, Blog)
+5. **Channel**: Distribution platforms (Twitter, Reddit, Email, Blog)
    - Required fields: id, name, type, platform, content_types
    - Optional fields: audiences, constraints, tool_id, config
 
-5. **Tool**: MCP server or REST API integrations
+6. **Tool**: MCP server or REST API integrations
    - Required fields: id, name, type, capabilities, status
    - Conditional fields: mcp_config (if type=mcp), api_config (if type=rest_api)
    - Optional fields: channel_ids
 
-6. **ContentTemplate**: Brand guidelines, style rules, tone
+7. **ContentTemplate**: Brand guidelines, style rules, tone
    - Required fields: id, name, type, tone, style_guidelines, project_id
    - Optional fields: constraints, examples
 
-7. **Milestone**: Release events, timeline markers
+8. **Milestone**: Release events, timeline markers
    - Required fields: id, name, type, date, project_id, status
    - Optional fields: description, product_ids, campaign_ids
+
+9. **Analytics**: Performance tracking and optimization recommendations
+   - Required fields: id, entity_type, entity_id, analysis_date, performance_summary
+   - Optional fields: insights, optimization_recommendations
 
 #### Error Handling
 
@@ -303,7 +311,7 @@ except ParseError as e:
 ### Component 2: Validator
 
 #### Purpose
-Validate marketing specifications against the 25 validation rules defined in `domain/001-marketing-operations-spec`.
+Validate marketing specifications against the 45 validation rules defined in `domain/001-marketing-operations-spec`.
 
 #### Validation Rules (Reference Specification)
 
@@ -335,7 +343,7 @@ Validate marketing specifications against the 25 validation rules defined in `do
 **ContentTemplate Rules (VR-CT01 to VR-CT05)**: 5 rules  
 **Milestone Rules (VR-M01 to VR-M05)**: 5 rules
 
-**Total**: 25 validation rules
+**Total**: 45 validation rules
 
 #### Validation Levels
 
@@ -848,9 +856,9 @@ Guide users to discover and define marketing objectives, target audience, and su
 ```
 marketing_spec_kit/
 ├── __init__.py                # Package initialization, version info
-├── models.py                  # Pydantic models for 7 entities
+├── models.py                  # Pydantic models for 9 entities
 ├── parser.py                  # YAML/JSON parser
-├── validator.py               # 25 validation rules implementation
+├── validator.py               # 45 validation rules implementation
 ├── cli.py                     # CLI entry point (typer app)
 ├── exceptions.py              # Custom exceptions (13 error codes)
 ├── templates/                 # Entity templates for init command
@@ -865,9 +873,9 @@ marketing_spec_kit/
 ```
 User Input (YAML/JSON)
     ↓
-  Parser  ───→ MarketingSpec object (7 entities)
+  Parser  ───→ MarketingSpec object (9 entities)
     ↓
-Validator ───→ ValidationResult (25 rules checked)
+Validator ───→ ValidationResult (45 rules checked)
     ↓
 CLI Output  ───→ User feedback (errors/warnings/success)
 
@@ -1091,10 +1099,10 @@ jobs:
 
 ### MVP Features
 
-- ✅ **Parser**: Parse all 7 entity types from YAML/JSON
-- ✅ **Validator**: Implement all 25 validation rules
+- ✅ **Parser**: Parse all 9 entity types from YAML/JSON
+- ✅ **Validator**: Implement all 45 validation rules
 - ✅ **CLI**: `info`, `init`, `validate` commands working
-- ✅ **Slash Commands**: 13 AI agent operations implemented
+- ✅ **Slash Commands**: 10 SDM workflow commands implemented
 - ✅ **Error Handling**: 13 error codes with clear messages
 - ✅ **Templates**: Default, minimal, full templates
 
@@ -1104,7 +1112,7 @@ jobs:
 - ✅ 80%+ code coverage
 - ✅ No critical linting errors (ruff check)
 - ✅ Type hints complete (mypy passes with no errors)
-- ✅ All 25 validation rules have dedicated tests
+- ✅ All 45 validation rules have dedicated tests
 
 ### Documentation
 
