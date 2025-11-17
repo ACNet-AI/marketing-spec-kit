@@ -1,28 +1,28 @@
 # SDM Workflow Example
 
-完整的营销规划和优化闭环示例。
+Complete marketing planning and optimization loop example.
 
 ---
 
-## 🎯 场景
+## 🎯 Scenario
 
-**目标**：为 MetaSpec 项目规划 Q1 2025 开发者增长活动，并在执行后进行优化。
+**Goal**: Plan Q1 2025 developer growth campaign for MetaSpec project and optimize after execution.
 
-**预算**：$10,000  
-**周期**：11 周（2025-01-15 到 2025-03-31）  
-**团队**：4 人（内容、设计、社媒、负责人）
+**Budget**: $10,000  
+**Duration**: 11 weeks (2025-01-15 to 2025-03-31)  
+**Team**: 4 people (Content, Design, Social Media, Lead)
 
 ---
 
-## 📋 第一期活动：规划阶段（8 步）
+## 📋 Campaign #1: Planning Phase (8 Steps)
 
-### 1. 定义营销原则（可选）
+### 1. Define Marketing Principles (Optional)
 
 ```bash
 /marketspec.constitution
 ```
 
-**AI 输出**：
+**AI Output**:
 ```markdown
 # Marketing Constitution - MetaSpec
 
@@ -66,17 +66,17 @@
 - No misleading comparisons
 ```
 
-**保存到**：`memory/marketing-constitution.md`
+**Save to**: `memory/marketing-constitution.md`
 
 ---
 
-### 2. 发现营销需求（必需）
+### 2. Discover Marketing Needs (Required)
 
 ```bash
 /marketspec.discover "Grow MetaSpec developer user base in Q1 2025"
 ```
 
-**AI 交互**：
+**AI Interaction**:
 ```
 AI: I'll help you discover your marketing needs for MetaSpec.
 
@@ -98,617 +98,1207 @@ Let's start with some questions:
 5️⃣ What's worked in the past?
    > Technical tutorials on our blog got good engagement
 
-6️⃣ What hasn't worked?
-   > Product announcements on LinkedIn got no traction
+AI: Based on your answers, I've identified 3 key marketing needs:
 
----
+1. **Build Community Presence**
+   - Low GitHub visibility (50 stars)
+   - Need developer trust and social proof
 
-✅ Discovery Complete!
+2. **Content Distribution Strategy**
+   - Good content but limited reach
+   - Need multi-channel amplification
 
-Key findings:
-- Ambitious growth target (10x GitHub stars)
-- Technical audience prefers depth over breadth
-- Limited budget requires high ROI channels
-- Blog content is a proven strength
-- Need to expand beyond current channels
-
-📄 Saved to: specs/discovery/metaspec-q1-2025-discovery.md
+3. **Technical Credibility**
+   - Target senior devs need proof of value
+   - Need case studies and technical depth
 ```
 
+**Save to**: `specs/needs-summary.txt`
+
 ---
 
-### 3. 澄清需求（可选）
+### 3. Clarify Objectives (Quality Gate)
 
 ```bash
 /marketspec.clarify
 ```
 
-**AI 交互**：
+**AI Output**:
+```markdown
+# Clarified Marketing Objectives
+
+## Primary Objective
+Grow MetaSpec GitHub repository from 50 to 500 stars by 2025-03-31
+
+## Success Metrics
+- **Primary KPI**: 500 GitHub stars
+- **Secondary KPIs**:
+  - 10,000 monthly website visits
+  - 50 Discord community members
+  - 5 case study contributors
+
+## Target Audience (Prioritized)
+1. **Primary**: Senior Python/JS devs (5+ years)
+   - Pain point: Tool integration complexity
+   - Value prop: "Simplify your dev toolkit"
+   
+2. **Secondary**: Engineering Managers
+   - Pain point: Team productivity
+   - Value prop: "Standardize team workflows"
+
+## Constraints
+- Budget: $10,000 (mostly content, avoid paid ads)
+- Timeline: 11 weeks
+- Resources: 4-person team
+
+## Risks
+- Short timeline for community building
+- Competitive landscape (AI dev tools)
+- Budget constraints limit paid promotion
 ```
-AI: I've reviewed your discovery document. Let me clarify some ambiguities:
 
-❓ Question 1: GitHub Stars Goal
-Your target is 500 stars (10x growth). This is ambitious.
-- Conservative target: 200 stars (4x)
-- Balanced target: 350 stars (7x)
-- Aggressive target: 500 stars (10x)
-
-Which do you prefer, or should we keep 500?
-> Keep 500, but add milestone at 350
-
-✅ Clarified: Primary target 500, success milestone 350
+**Review & Approve**: ✅ Objectives confirmed
 
 ---
 
-❓ Question 2: Target Audience Segmentation
-You mentioned two segments. Which is higher priority?
-- Senior developers (hands-on users)
-- Engineering managers (decision-makers)
-
-> Primary: Senior developers (80% effort)
-> Secondary: Engineering managers (20% effort)
-
-✅ Clarified: 80/20 split in targeting
-
----
-
-📄 Saved to: specs/clarifications/metaspec-q1-2025-clarification.md
-```
-
----
-
-### 4. 规划策略（可选）
+### 4. Plan Marketing Strategy (Recommended)
 
 ```bash
 /marketspec.strategy
 ```
 
-**AI 输出**（摘要）：
+**AI Output**:
 ```yaml
 strategy:
-  approach: "Developer-first content marketing with community amplification"
-  
-  campaigns:
-    - name: "Developer Onboarding"
-      goal: "Drive GitHub stars and email signups"
-      duration: "11 weeks"
-      budget: 6000
+  phases:
+    - name: "Foundation Phase"
+      duration: "Week 1-3"
+      focus: "Content & Community Setup"
+      activities:
+        - Launch technical blog series (4 posts)
+        - Set up Discord community
+        - Create GitHub showcase projects
+      budget: $2,000
       
-    - name: "Power User Stories"
-      goal: "Build trust with case studies"
-      duration: "6 weeks"
-      budget: 4000
-  
-  channels:
-    - dev-blog (owned, high priority)
-    - dev-twitter (amplification)
-    - dev-to (community reach)
-    - reddit-programming (viral potential)
-    - github-discussions (community)
-  
+    - name: "Amplification Phase"
+      duration: "Week 4-8"
+      focus: "Multi-channel Distribution"
+      activities:
+        - Social media campaign (Twitter, Reddit, HN)
+        - Developer conference talks (virtual)
+        - Partnership with dev communities
+      budget: $5,000
+      
+    - name: "Conversion Phase"
+      duration: "Week 9-11"
+      focus: "Drive GitHub Engagement"
+      activities:
+        - "Star & Share" campaign
+        - Case study showcase
+        - Community contributor rewards
+      budget: $3,000
+
   content_pillars:
-    - Technical tutorials
-    - Case studies
-    - Tool comparisons
-  
-  budget_allocation:
-    content_creation: 4000
-    paid_promotion: 3000
-    tools: 1500
-    community: 1000
-    contingency: 500
+    - "Technical Tutorials"
+    - "Architecture Deep-Dives"
+    - "Community Showcases"
+    - "Behind-the-Scenes"
+
+  distribution_channels:
+    primary:
+      - GitHub (showcase projects)
+      - Dev.to (technical blog)
+      - Twitter (daily engagement)
+    secondary:
+      - Reddit (r/programming)
+      - HackerNews (monthly)
+      - Discord (community)
 ```
 
-**保存到**：`specs/strategy/metaspec-q1-2025-strategy.md`
+**Review**: Strategy aligns with $10K budget and 11-week timeline ✅
 
 ---
 
-### 5. 质量检查（推荐）
+### 5. Quality Checklist (Recommended)
 
 ```bash
 /marketspec.checklist
 ```
 
-**AI 输出**：
+**AI Output**:
+```markdown
+# Marketing Quality Checklist
+
+## Strategic Alignment (10/10) ✅
+- [x] Goals are SMART
+- [x] Audience clearly defined
+- [x] Budget allocated by phase
+- [x] Timeline realistic
+- [x] Team roles assigned
+
+## Tactical Planning (9/10) ⚠️
+- [x] Content calendar created
+- [x] Channel mix appropriate
+- [x] Measurement plan defined
+- [ ] A/B testing plan (Recommended: Add)
+- [x] Contingency budget ($1K reserve)
+
+## Resource Readiness (8/10) ⚠️
+- [x] Team capacity confirmed
+- [x] Tools and platforms ready
+- [ ] External vendors identified (Recommended: Designer)
+- [x] Budget approved
+- [x] Timeline communicated
+
+## Risk Management (7/10) ⚠️
+- [x] Key risks identified
+- [x] Mitigation strategies planned
+- [ ] Escalation path defined (Required: Add)
+- [x] Success criteria clear
+
+## Overall Score: 8.5/10
+
+## Recommendations:
+1. ⚠️ Add A/B testing plan for content
+2. ⚠️ Identify backup designer vendor
+3. 🔴 Define escalation path for issues
+
+## Decision: Proceed with minor improvements ✅
 ```
-✅ Strategy Validation
 
-Automated Checks (6/6 passed):
-✅ Budget sums correctly ($10,000)
-✅ Timeline is realistic (11 weeks)
-✅ Channels are well-distributed (5 channels)
-✅ Campaigns cover full period
-✅ Target audience addressed in strategy
-✅ All objectives have supporting campaigns
-
-Manual Review Checklist (46 items):
-- Strategic Alignment (8 items)
-- Target Audience (6 items)
-- Budget Allocation (8 items)
-- Channel Selection (7 items)
-- Content Strategy (8 items)
-- Execution Feasibility (9 items)
-
-📄 Full checklist: marketing-spec-checklist.md
-
-✅ Ready to proceed to task breakdown!
-```
+**Action**: Address 3 recommendations before execution
 
 ---
 
-### 6. 分解任务（可选）
+### 6. Break Down Tasks (Recommended)
 
 ```bash
 /marketspec.tasks
 ```
 
-**AI 输出**（摘要）：
-```yaml
-tasks:
-  setup_phase:
-    - SETUP-001: Configure analytics (Google Analytics, social tracking)
-    - SETUP-002: Set up ConvertKit for email
-    - SETUP-003: Create content calendar
-  
-  content_phase:
-    - CONTENT-001: Write 5 technical tutorials
-    - CONTENT-002: Create 3 case studies
-    - CONTENT-003: Design visuals (12 graphics)
-  
-  distribution_phase:
-    - DIST-001: Publish blog posts (weekly)
-    - DIST-002: Share on Reddit (12 posts)
-    - DIST-003: Cross-post to Dev.to
-  
-  engagement_phase:
-    - ENGAGE-001: Respond to comments (<1hr)
-    - ENGAGE-002: Host GitHub Discussions
-    - ENGAGE-003: Weekly community check-ins
-  
-  optimization_phase:
-    - OPT-001: Weekly analytics review
-    - OPT-002: A/B test headlines
-    - OPT-003: Adjust based on performance
+**AI Output**:
+```markdown
+# Marketing Task Breakdown
 
-Total: 25 tasks, 480 hours, $10,000 budget
+## Phase 1: Foundation (Week 1-3)
+
+### Task 1.1: Launch Technical Blog Series
+- **Owner**: Content Lead
+- **Duration**: 3 weeks
+- **Effort**: 40 hours
+- **Subtasks**:
+  1. Write "Intro to MetaSpec" post (8h)
+  2. Write "Advanced Patterns" post (10h)
+  3. Write "Integration Guide" post (10h)
+  4. Write "Case Study #1" post (12h)
+- **Dependencies**: None
+- **Deliverable**: 4 blog posts live on Dev.to
+
+### Task 1.2: Set Up Discord Community
+- **Owner**: Social Media Manager
+- **Duration**: 1 week
+- **Effort**: 16 hours
+- **Subtasks**:
+  1. Create Discord server (2h)
+  2. Design channels and roles (4h)
+  3. Write community guidelines (4h)
+  4. Invite seed members (6h)
+- **Dependencies**: None
+- **Deliverable**: Discord with 20+ seed members
+
+### Task 1.3: Create Showcase Projects
+- **Owner**: Tech Lead
+- **Duration**: 2 weeks
+- **Effort**: 30 hours
+- **Subtasks**:
+  1. Build "starter-kit" example (12h)
+  2. Build "real-world-api" example (18h)
+- **Dependencies**: None
+- **Deliverable**: 2 demo projects on GitHub
+
+## Phase 2: Amplification (Week 4-8)
+
+### Task 2.1: Social Media Campaign
+- **Owner**: Social Media Manager
+- **Duration**: 5 weeks
+- **Effort**: 60 hours
+- **Subtasks**:
+  1. Daily Twitter posts (25h)
+  2. Weekly Reddit posts (15h)
+  3. Monthly HN submission (10h)
+  4. Engagement responses (10h)
+- **Dependencies**: Task 1.1 (content ready)
+- **Deliverable**: 50+ social posts, 5K impressions
+
+### Task 2.2: Virtual Conference Talks
+- **Owner**: Tech Lead
+- **Duration**: 4 weeks
+- **Effort**: 32 hours
+- **Subtasks**:
+  1. Submit CFPs to 5 conferences (4h)
+  2. Prepare talk slides (16h)
+  3. Rehearse presentation (8h)
+  4. Deliver 2 talks (4h)
+- **Dependencies**: Task 1.3 (demo ready)
+- **Deliverable**: 2 conference talks delivered
+
+## Phase 3: Conversion (Week 9-11)
+
+### Task 3.1: "Star & Share" Campaign
+- **Owner**: Marketing Lead
+- **Duration**: 3 weeks
+- **Effort**: 36 hours
+- **Subtasks**:
+  1. Design campaign mechanics (8h)
+  2. Create promotional assets (12h)
+  3. Launch and promote campaign (8h)
+  4. Track and engage participants (8h)
+- **Dependencies**: Task 2.1 (audience built)
+- **Deliverable**: 200+ campaign participants
+
+### Task 3.2: Case Study Showcase
+- **Owner**: Content Lead
+- **Duration**: 2 weeks
+- **Effort**: 24 hours
+- **Subtasks**:
+  1. Interview 5 early adopters (10h)
+  2. Write case study articles (12h)
+  3. Design showcase page (2h)
+- **Dependencies**: Task 1.1 (blog platform ready)
+- **Deliverable**: 5 case studies published
+
+## Resource Summary
+
+| Role | Total Hours | Weeks |
+|------|-------------|-------|
+| Content Lead | 100h | 11 |
+| Social Media Manager | 100h | 11 |
+| Tech Lead | 80h | 11 |
+| Marketing Lead | 60h | 11 |
+
+## Budget Allocation
+
+| Phase | Tasks | Budget |
+|-------|-------|--------|
+| Phase 1 | Tasks 1.1-1.3 | $2,000 |
+| Phase 2 | Tasks 2.1-2.2 | $5,000 |
+| Phase 3 | Tasks 3.1-3.2 | $3,000 |
 ```
 
-**保存到**：`specs/tasks/metaspec-q1-2025-tasks.md`
+**Review**: Tasks are clear, owners assigned, timeline feasible ✅
 
 ---
 
-### 7. 一致性检查（可选）
+### 7. Analyze Consistency (Quality Gate)
 
 ```bash
 /marketspec.analyze
 ```
 
-**AI 输出**：
+**AI Output**:
+```markdown
+# Consistency Analysis Report
+
+## Cross-Document Validation
+
+### 1. Budget Consistency ✅
+- Constitution: No budget mentioned
+- Needs: $10,000 requested
+- Strategy: $10,000 allocated ($2K + $5K + $3K)
+- Tasks: $10,000 distributed across phases
+- **Status**: CONSISTENT
+
+### 2. Timeline Consistency ✅
+- Needs: Q1 2025 (11 weeks)
+- Strategy: Week 1-11 breakdown
+- Tasks: All tasks within 11-week window
+- **Status**: CONSISTENT
+
+### 3. Team Consistency ✅
+- Needs: 4-person team mentioned
+- Tasks: 4 roles assigned (Content, Social, Tech, Marketing Lead)
+- **Status**: CONSISTENT
+
+### 4. Goal Consistency ✅
+- Needs: 50 → 500 stars
+- Objectives: 500 stars by 2025-03-31
+- Strategy: Conversion phase targets stars
+- Tasks: Task 3.1 drives star growth
+- **Status**: CONSISTENT
+
+### 5. Audience Consistency ✅
+- Needs: Senior devs + Engineering managers
+- Objectives: Prioritized same audiences
+- Strategy: Content pillars match audience interests
+- Tasks: Content addresses both segments
+- **Status**: CONSISTENT
+
+## Dependency Validation
+
+### Critical Path: ✅
+1. Task 1.1 (Content) → Task 2.1 (Distribution) → Task 3.1 (Conversion)
+2. Task 1.3 (Demo) → Task 2.2 (Talks) → Increased credibility
+
+### Resource Conflicts: ⚠️
+- Week 5-6: Content Lead overloaded (Task 1.1 + Task 3.2 prep)
+- **Recommendation**: Shift Task 3.2 start to Week 7
+
+## Overall Consistency Score: 9.5/10
+
+## Issues Found: 1
+
+### Issue #1: Resource Conflict (Medium Priority)
+- **Problem**: Content Lead has overlapping tasks in Week 5-6
+- **Impact**: May delay blog series or case studies
+- **Recommendation**: Adjust Task 3.2 start date to Week 7
+- **Status**: ⚠️ Needs adjustment
+
+## Decision: Approved with 1 adjustment ✅
 ```
-📊 Consistency Analysis
 
-Checking 7 categories across 4 documents...
-
-✅ Objective Alignment: 100% (all objectives addressed)
-✅ Budget Consistency: 100% (all numbers match)
-✅ Timeline Coherence: 100% (no conflicts)
-⚠️ Coverage Analysis: 92% (minor gap in email tactics)
-⚠️ Entity References: 95% (1 undefined channel reference)
-✅ KPI Consistency: 95% (minor tracking setup issue)
-⚠️ Resource Allocation: 85% (capacity mismatch)
-
-Overall Consistency: 92/100 (A-)
-
-Issues Found (5):
-1. ⚠️ Channel "github-discussions" referenced but not fully configured
-2. ⚠️ Email subscriber growth needs dedicated tactics
-3. ℹ️ Content Writer capacity exceeds requirements
-
-✅ Ready to proceed to /marketspec.create
-
-📄 Full report: consistency-report.md
-```
+**Action**: Adjust Task 3.2 timeline before final approval
 
 ---
 
-### 8. 生成规范（必需）
+### 8. Create Marketing Specification (Required)
 
 ```bash
 /marketspec.create
 ```
 
-**AI 输出**：
+**AI Output**:
+```yaml
+# marketing-spec.yaml - Q1 2025 MetaSpec Campaign
+
+project:
+  name: "MetaSpec"
+  tagline: "Specification-Driven Development for GenAI Era"
+  brand_voice: "Technical, transparent, developer-first"
+  website: "https://metaspec.dev"
+  target_audience:
+    - "Senior Python/JavaScript developers"
+    - "Engineering managers"
+  value_propositions:
+    - "Transform specs into production code"
+    - "AI-assisted development with best practices"
+  social_handles:
+    twitter: "@metaspec"
+    github: "metaspec"
+    discord: "metaspec-community"
+
+products:
+  - id: "metaspec-core"
+    name: "MetaSpec Core Framework"
+    description: "Specification-driven development framework"
+    target_audience:
+      - "Developers"
+      - "Tool creators"
+    key_features:
+      - "SDS/SDD command system"
+      - "AI-assisted spec creation"
+      - "Speckit generator"
+    launch_date: "2025-01-15"
+    status: "active"
+
+plans:
+  - id: "q1-2025-growth"
+    name: "Q1 2025 Developer Growth Plan"
+    project_id: "metaspec"
+    period:
+      start_date: "2025-01-15"
+      end_date: "2025-03-31"
+      weeks: 11
+    objectives:
+      - text: "Grow GitHub stars from 50 to 500"
+        priority: "P0"
+      - text: "Build Discord community (50+ members)"
+        priority: "P1"
+      - text: "Achieve 10K monthly website visits"
+        priority: "P2"
+    target_audience:
+      - segment: "Senior Developers"
+        priority: "primary"
+      - segment: "Engineering Managers"
+        priority: "secondary"
+    strategies:
+      - "Technical content marketing"
+      - "Community-driven growth"
+      - "Developer relations"
+    budget:
+      total: 10000.0
+      allocation:
+        - category: "Content Creation"
+          amount: 2000.0
+        - category: "Social Media"
+          amount: 5000.0
+        - category: "Community"
+          amount: 3000.0
+    kpis:
+      - metric: "GitHub Stars"
+        target: 500
+        priority: "P0"
+      - metric: "Discord Members"
+        target: 50
+        priority: "P1"
+      - metric: "Website Visits"
+        target: 10000
+        priority: "P2"
+    status: "approved"
+
+campaigns:
+  - id: "q1-foundation"
+    name: "Foundation Phase - Content & Community"
+    goal: "awareness"
+    project_id: "metaspec"
+    plan_id: "q1-2025-growth"
+    target_audience:
+      - "Senior Developers"
+    budget: 2000.0
+    start_date: "2025-01-15"
+    end_date: "2025-02-04"
+    channels:
+      - "blog"
+      - "github"
+      - "discord"
+    kpis:
+      target_impressions: 5000
+      target_ctr: 0.03
+      target_conversions: 150
+    status: "planned"
+
+  - id: "q1-amplification"
+    name: "Amplification Phase - Multi-channel Distribution"
+    goal: "consideration"
+    project_id: "metaspec"
+    plan_id: "q1-2025-growth"
+    target_audience:
+      - "Senior Developers"
+      - "Engineering Managers"
+    budget: 5000.0
+    start_date: "2025-02-05"
+    end_date: "2025-03-11"
+    channels:
+      - "twitter"
+      - "reddit"
+      - "hackernews"
+      - "conferences"
+    kpis:
+      target_impressions: 50000
+      target_ctr: 0.05
+      target_conversions: 2500
+    status: "planned"
+
+  - id: "q1-conversion"
+    name: "Conversion Phase - Drive GitHub Engagement"
+    goal: "conversion"
+    project_id: "metaspec"
+    plan_id: "q1-2025-growth"
+    target_audience:
+      - "Senior Developers"
+    budget: 3000.0
+    start_date: "2025-03-12"
+    end_date: "2025-03-31"
+    channels:
+      - "github"
+      - "twitter"
+      - "discord"
+    kpis:
+      target_conversions: 450
+      target_engagement_rate: 0.10
+    status: "planned"
+
+channels:
+  - id: "github"
+    name: "GitHub (metaspec/metaspec)"
+    type: "forum"
+    platform: "github"
+    audiences:
+      - "Developers"
+    content_types:
+      - "code"
+      - "markdown"
+
+  - id: "blog"
+    name: "Dev.to Blog"
+    type: "blog"
+    platform: "dev.to"
+    audiences:
+      - "Developers"
+    content_types:
+      - "long_text"
+      - "code"
+
+  - id: "twitter"
+    name: "Twitter (@metaspec)"
+    type: "social_media"
+    platform: "twitter"
+    audiences:
+      - "Developers"
+    content_types:
+      - "short_text"
+    constraints:
+      max_text_length: 280
+      max_hashtags: 5
+
+tasks:
+  - id: "content-blog-series"
+    title: "Launch Technical Blog Series"
+    description: "Create and publish 4 technical blog posts"
+    campaign_ids:
+      - "q1-foundation"
+    owner: "Content Lead"
+    effort_hours: 40
+    due_date: "2025-02-04"
+    status: "pending"
+
+  - id: "community-discord-setup"
+    title: "Set Up Discord Community"
+    description: "Create and launch Discord server with 20+ seed members"
+    campaign_ids:
+      - "q1-foundation"
+    owner: "Social Media Manager"
+    effort_hours: 16
+    due_date: "2025-01-22"
+    status: "pending"
+
+  - id: "social-campaign"
+    title: "Social Media Campaign"
+    description: "Execute multi-channel social media distribution"
+    campaign_ids:
+      - "q1-amplification"
+    owner: "Social Media Manager"
+    dependencies:
+      - "content-blog-series"
+    effort_hours: 60
+    due_date: "2025-03-11"
+    status: "pending"
+
+  - id: "star-campaign"
+    title: "Star & Share Campaign"
+    description: "Drive GitHub star growth through incentive campaign"
+    campaign_ids:
+      - "q1-conversion"
+    owner: "Marketing Lead"
+    dependencies:
+      - "social-campaign"
+    effort_hours: 36
+    due_date: "2025-03-31"
+    status: "pending"
 ```
-🎯 Generating marketing-spec.yaml...
 
-Step 1/13: Creating project metadata... ✅
-Step 2/13: Defining marketing plans... ✅
-Step 3/13: Configuring products... ✅
-Step 4/13: Setting up campaigns... ✅
-Step 5/13: Defining channels... ✅
-Step 6/13: Planning content... ✅
-Step 7/13: Allocating budget... ✅
-Step 8/13: Setting up tracking... ✅
-Step 9/13: Configuring analytics... ✅
-Step 10/13: Defining team roles... ✅
-Step 11/13: Creating milestones... ✅
-Step 12/13: Validating specification... ✅
-Step 13/13: Writing YAML file... ✅
-
-✅ Successfully generated marketing-spec.yaml (450 lines)
-
-Summary:
-- 1 marketing plan
-- 2 campaigns
-- 5 channels
-- 12 content pieces
-- $10,000 budget
-- 11-week timeline
-
-📄 Output: marketing-spec.yaml
-
-Ready to execute! 🚀
-```
+**Save to**: `marketing-spec.yaml`  
+**Status**: ✅ Q1 2025 campaign ready for execution!
 
 ---
 
-## 🚀 执行阶段（11 周）
+## ⏳ Execution Period (3 weeks)
 
-活动按计划执行...
+*Execute campaigns according to plan...*
 
-**实际结果**（11 周后）：
-- GitHub Stars: 420（目标 500）
-- Email Subscribers: 850（目标 1,000）
-- Website Traffic: 45,000（目标 50,000）
-- 预算支出: $9,500（预算 $10,000）
+**Results after 11 weeks**:
+- ✅ GitHub stars: 520 (target: 500)
+- ✅ Discord members: 62 (target: 50)
+- ⚠️ Website visits: 8,500 (target: 10,000)
+- ✅ Blog posts: 4 published, 12K total reads
+- ✅ Social campaign: 65K impressions, 3.2% CTR
 
 ---
 
-## 📊 回顾优化阶段（2 步）
+## 📊 Campaign #1: Review Phase (Post-Execution)
 
-### 9. 分析实际效果
+### 9. Review Actual Results
 
 ```bash
 /marketspec.review
 ```
 
-**AI 交互**：
+**AI Output**:
+```markdown
+# Q1 2025 Campaign Performance Review
+
+## Executive Summary
+
+**Overall Performance**: 8.5/10 ✅
+
+- **Primary Goal (GitHub Stars)**: ✅ EXCEEDED (520 vs 500 target)
+- **Secondary Goal (Community)**: ✅ EXCEEDED (62 vs 50 target)
+- **Secondary Goal (Traffic)**: ⚠️ UNDERPERFORMED (8,500 vs 10,000 target)
+
+## Detailed Analysis
+
+### 1. Goal Achievement
+
+| KPI | Target | Actual | Achievement | Δ |
+|-----|--------|--------|-------------|---|
+| GitHub Stars | 500 | 520 | 104% | +20 |
+| Discord Members | 50 | 62 | 124% | +12 |
+| Website Visits | 10,000 | 8,500 | 85% | -1,500 |
+| Blog Reads | 8,000 | 12,000 | 150% | +4,000 |
+
+### 2. Campaign Performance
+
+#### Foundation Phase (Week 1-3)
+- **Status**: ✅ Successful
+- **Highlights**:
+  - Blog series exceeded expectations (12K reads vs 8K target)
+  - Discord community launched with strong engagement (62 members, 35% DAU)
+  - Showcase projects got 150 GitHub stars combined
+- **Issues**:
+  - Week 2 blog post delayed by 3 days (resolved)
+
+#### Amplification Phase (Week 4-8)
+- **Status**: ✅ Successful
+- **Highlights**:
+  - Twitter campaign: 65K impressions, 3.2% CTR (target: 2.5%)
+  - 2 conference talks delivered, 500+ attendees
+  - Reddit r/programming post hit #3 (3K upvotes)
+- **Issues**:
+  - HackerNews submission didn't gain traction (150 points)
+  - Twitter ad budget $500 overspent (reallocated from contingency)
+
+#### Conversion Phase (Week 9-11)
+- **Status**: ✅ Successful
+- **Highlights**:
+  - "Star & Share" campaign: 220 participants, 180 new stars
+  - 5 case studies published, featured by users
+  - Community referrals drove 30% of new stars
+- **Issues**:
+  - Website traffic lower than expected (backlinks didn't convert)
+  - Case studies took 1 week longer (quality over speed)
+
+### 3. Budget Performance
+
+| Phase | Budgeted | Actual | Δ | Notes |
+|-------|----------|--------|---|-------|
+| Foundation | $2,000 | $1,850 | -$150 | Under budget (no designer needed) |
+| Amplification | $5,000 | $5,500 | +$500 | Twitter ads overspent |
+| Conversion | $3,000 | $2,800 | -$200 | Rewards less popular than expected |
+| **Total** | **$10,000** | **$10,150** | **+$150** | 1.5% over budget |
+
+### 4. Channel Performance
+
+| Channel | Impressions | CTR | Conversions | ROI |
+|---------|-------------|-----|-------------|-----|
+| Blog (Dev.to) | 15,000 | 5.2% | 150 | High |
+| Twitter | 65,000 | 3.2% | 180 | Medium |
+| Reddit | 8,000 | 8.5% | 120 | High |
+| HackerNews | 2,500 | 2.1% | 20 | Low |
+| Discord | N/A | N/A | 50 | High |
+
+**Top Performers**:
+1. 🥇 Reddit (highest engagement)
+2. 🥈 Blog (highest quality traffic)
+3. 🥉 Twitter (best reach)
+
+**Underperformers**:
+1. HackerNews (low engagement)
+2. Website SEO (expected traffic didn't materialize)
+
+### 5. Content Performance
+
+| Content Type | Pieces | Total Engagement | Avg. Engagement |
+|--------------|--------|------------------|-----------------|
+| Blog Posts | 4 | 12,000 reads | 3,000 reads |
+| Twitter Threads | 12 | 2,500 engagements | 208 engagements |
+| Case Studies | 5 | 4,500 reads | 900 reads |
+| Conference Talks | 2 | 500 attendees | 250 attendees |
+
+**Best Performing Content**:
+1. "Advanced Patterns" blog post (5K reads, 200 comments)
+2. "Real-world API Integration" case study (1.5K reads)
+3. PyCon Virtual talk (300 attendees, #1 trending)
+
+### 6. Audience Insights
+
+#### Demographics
+- 78% Senior Developers (target: 70%)
+- 22% Engineering Managers (target: 30%)
+
+**Insight**: Senior devs more responsive than expected; managers need different content approach
+
+#### Behavior
+- Primary conversion path: Blog → GitHub → Star (65%)
+- Secondary path: Twitter → Discord → GitHub (25%)
+- Tertiary path: Conference → GitHub (10%)
+
+**Insight**: Content-driven conversion works best; community engagement drives loyalty
+
+### 7. Key Learnings
+
+#### What Worked ✅
+1. **Technical deep-dives** resonated strongly (5K+ reads)
+2. **Community-first approach** built authentic engagement
+3. **Case studies** provided social proof (900 avg reads)
+4. **Reddit r/programming** delivered high-quality traffic (8.5% CTR)
+
+#### What Didn't Work ❌
+1. **HackerNews timing** (posted during busy news cycle)
+2. **Website SEO** (new site, no domain authority yet)
+3. **Engineering manager content** (wrong messaging)
+4. **Paid Twitter ads** (low ROI vs organic)
+
+#### Surprises 🎉
+1. Discord community more active than expected (35% DAU vs 20% target)
+2. Community-driven stars (30%) exceeded paid campaign (20%)
+3. Conference talks had 3x longer engagement time
+
+### 8. Recommendations for Next Campaign
+
+1. **Double down on what works**:
+   - More technical blog content (2x frequency)
+   - Expand Reddit presence to r/python, r/javascript
+   - Host monthly community calls in Discord
+
+2. **Fix what didn't work**:
+   - Rethink engineering manager messaging
+   - Invest in website SEO (backlinks, content)
+   - Avoid paid Twitter ads, focus on organic
+
+3. **New opportunities**:
+   - YouTube tutorials (video format requested)
+   - Guest posting on high-authority blogs
+   - Partnership with developer communities
+
+4. **Budget adjustments**:
+   - Reduce HackerNews budget (-$200)
+   - Increase Reddit/community budget (+$500)
+   - Add YouTube content budget (+$300)
+
+## Overall Assessment
+
+**Grade**: A- (8.5/10)
+
+**Strengths**:
+- ✅ Exceeded primary goals
+- ✅ Built engaged community
+- ✅ Established technical credibility
+
+**Weaknesses**:
+- ⚠️ Website traffic underperformed
+- ⚠️ Manager segment needs work
+- ⚠️ Budget slightly exceeded
+
+**Recommendation**: 🟢 Continue strategy with optimizations for Q2
 ```
-AI: Let's review your campaign performance!
 
-📄 Loaded: marketing-spec.yaml
-📅 Period: 2025-01-15 to 2025-03-31 (11 weeks)
+**Save to**: `reports/q1-2025-review.md`
 
 ---
 
-Please provide actual results:
+## 🎯 Campaign #2: Optimization Phase
 
-1️⃣ GitHub Stars
-   Planned: 50 → 500 (+450)
-   > Actual: 420
-
-2️⃣ Email Subscribers
-   Planned: 100 → 1,000 (+900)
-   > Actual: 850
-
-3️⃣ Website Traffic
-   Planned: 500 → 50,000 (+49,500)
-   > Actual: 45000
-
-4️⃣ Total Spent
-   Planned: $10,000
-   > Actual: 9500
-
----
-
-✅ Analysis Complete!
-
-Achievement Summary:
-- GitHub Stars: 420 (82% of target) ⚠️
-- Email Subscribers: 850 (83% of target) ⚠️
-- Website Traffic: 45,000 (90% of target) ⚠️
-- Budget: $9,500 (95% utilized) ✅
-
-Overall Achievement: 85.1% (B+)
-ROI: 154% (Excellent!)
-
-Top Performers:
-✅ Reddit (ROI: 9/10) - Best cost-per-star
-✅ Dev.to (ROI: 8/10) - Strong engagement
-✅ Blog (ROI: 8/10) - High conversions
-
-Underperformers:
-⚠️ LinkedIn (ROI: 4/10) - Wrong audience fit
-
-Key Insights:
-- Tutorial content outperformed announcements 3:1
-- Growth plateaued in weeks 8-11 (content fatigue)
-- No dedicated email lead magnet hurt conversions
-- Community-driven channels (Reddit, Dev.to) performed best
-
-📄 Full report: campaign-review.md
-```
-
----
-
-### 10. 生成优化建议
+### 10. Optimize for Next Campaign
 
 ```bash
 /marketspec.optimize
 ```
 
-**AI 输出**（摘要）：
-```
-📈 Optimization Recommendations
+**AI Output**:
+```markdown
+# Q2 2025 Campaign Optimization Plan
 
-Based on your 85.1% achievement rate, here are data-driven recommendations:
+## Based on Q1 Review Data
 
-🔴 High Impact Changes:
+### Optimization Strategy
 
-1. Budget Reallocation: LinkedIn → Reddit/Dev.to
-   - Current: LinkedIn $1,000 (ROI 4) → Recommended: $300
-   - Increase: Reddit $500 → $1,000 (+$500)
-   - Increase: Dev.to $800 → $1,200 (+$400)
-   - Expected Impact: +50-80 GitHub stars
+**Approach**: Data-driven improvements + new experiments
 
-2. Add Email Lead Magnet
-   - Current: No lead magnet, 850 subscribers
-   - Recommended: Create "MetaSpec Quick Start Guide" PDF
-   - Expected Impact: +200-300 subscribers
-
-3. Content Variety (Prevent Plateau)
-   - Problem: Growth plateaued weeks 8-11
-   - Solution: Add developer stories, live coding
-   - Expected Impact: Sustain 60 stars/week through week 11
+**Goal**: Grow GitHub stars from 520 to 1,200 (680 new stars, +130%)
 
 ---
 
-Budget Scenarios:
+## Recommended Changes
 
-Conservative ($10K, same budget):
-- Expected achievement: 90-93% (+5-8%)
-- Key changes: Reallocate within categories
+### 1. Budget Reallocation
 
-Balanced ($10K, bigger shifts):
-- Expected achievement: 95-100% (+10-15%)
-- Key changes: Cut LinkedIn 70%, double Reddit
+#### Q1 Spend vs Q2 Recommended
 
-Aggressive ($15K, increased budget):
-- Expected achievement: 110-120% (+25-35%)
-- Key changes: Scale what works, test YouTube
+| Category | Q1 Actual | Q1 ROI | Q2 Recommended | Δ |
+|----------|-----------|--------|----------------|---|
+| Blog Content | $1,200 | High | $2,000 | +$800 |
+| Reddit/Community | $1,500 | High | $2,500 | +$1,000 |
+| Twitter Organic | $1,800 | Medium | $2,000 | +$200 |
+| YouTube (NEW) | $0 | N/A | $1,500 | +$1,500 |
+| Conference Talks | $2,000 | Medium | $1,500 | -$500 |
+| Twitter Ads | $500 | Low | $0 | -$500 |
+| HackerNews | $300 | Low | $100 | -$200 |
+| Website SEO | $150 | Low | $800 | +$650 |
+| Discord Community | $2,700 | High | $2,600 | -$100 |
+| **Total** | **$10,150** | N/A | **$13,000** | **+$2,850** |
 
----
-
-Recommended KPI Targets (Next Campaign):
-
-| KPI | Last Target | Achievement | Next Target | Increase |
-|-----|-------------|-------------|-------------|----------|
-| GitHub Stars | 500 | 84% (420) | 520 | +24% |
-| Email Subscribers | 1,000 | 85% (850) | 1,100 | +29% |
-| Website Traffic | 50,000 | 90% (45K) | 60,000 | +33% |
-
----
-
-Implementation Roadmap:
-
-⚡ Immediate (Week 1-2): $700, 32 hours
-- Create email lead magnet
-- Optimize email CTAs
-
-📅 Short-term (Week 3-4): $2,000, 52 hours
-- Expand Reddit presence
-- Create first 3 video tutorials
-
-🎯 Medium-term (Week 5-8): $2,000, 88 hours
-- Launch Dev.to series
-- Test HackerNews
+**Justification**:
+- Double down on high-ROI channels (blog, Reddit, community)
+- Cut low-ROI channels (Twitter ads, HackerNews)
+- Add YouTube based on user requests
+- Invest in website SEO (long-term asset)
 
 ---
 
-Expected Results (Balanced Scenario):
-- GitHub Stars: 520 → 95% of target ✅
-- Email Subscribers: 1,100 → 100% of target ✅
-- Website Traffic: 60,000 → 100% of target ✅
-- Overall Achievement: 95-100% (up from 85%)
+### 2. Content Strategy Improvements
 
-📄 Full recommendations: optimization-recommendations.md
+#### Blog Content (Q1 → Q2)
 
-Ready to start Q2 campaign with these insights! 🚀
+**Q1 Performance**:
+- 4 posts, 12K reads (3K avg)
+- Best: "Advanced Patterns" (5K reads)
+
+**Q2 Plan**:
+```yaml
+frequency: "2 posts per month" (was: 4 posts in 3 months)
+focus:
+  - Technical deep-dives (60%)
+  - Case studies (30%)
+  - Behind-the-scenes (10%)
+topics:
+  - "MetaSpec vs Traditional Development"
+  - "Building a Speckit from Scratch"
+  - "5 Real-world MetaSpec Projects"
+  - "How We Built MetaSpec (Architecture)"
+target: "20K reads (vs 12K in Q1)"
 ```
 
+#### YouTube Content (NEW)
+
+**Rationale**: 27% of Discord members requested video tutorials
+
+**Q2 Plan**:
+```yaml
+frequency: "2 videos per month"
+format:
+  - 5-10 minute tutorials
+  - Screen recordings with narration
+  - Code walkthroughs
+topics:
+  - "MetaSpec in 5 Minutes"
+  - "Building Your First Speckit"
+  - "Advanced SDS/SDD Patterns"
+  - "Live Coding: Real-world Integration"
+target: "5K views total, 100 subscribers"
+budget: "$1,500 (editing, thumbnails, promotion)"
+```
+
+#### Engineering Manager Content (PIVOT)
+
+**Q1 Issue**: Wrong messaging (too technical)
+
+**Q2 Approach**:
+```markdown
+Content Type: "Manager-focused case studies"
+Angle: "How MetaSpec improved team productivity"
+Format: 
+  - Team productivity metrics
+  - Before/after comparisons
+  - ROI calculations
+Distribution:
+  - LinkedIn (new channel)
+  - Engineering manager communities
+Target: "500 manager impressions, 50 downloads"
+```
+
 ---
 
-## 🔄 第二期活动：应用优化建议
+### 3. Channel Strategy Adjustments
 
-### 基于优化建议开始新一轮
+#### Expand Reddit Presence
+
+**Q1**: Only r/programming  
+**Q2**: Add r/python, r/javascript, r/devops
+
+**Plan**:
+```yaml
+frequency: "1 post per subreddit per month"
+content_mix:
+  - Project showcases (50%)
+  - "Ask Me Anything" sessions (25%)
+  - Case study shares (25%)
+budget: "+$1,000 (community rewards, AMAs)"
+target: "15K impressions (vs 8K in Q1)"
+```
+
+#### Reduce HackerNews Focus
+
+**Q1 Issue**: Low engagement (2.1% CTR)
+
+**Q2 Plan**:
+- Only submit highest-quality content (1-2 per quarter)
+- Focus on timing (avoid news-heavy days)
+- Budget: $100 (vs $300 in Q1)
+
+#### Add LinkedIn (Engineering Managers)
+
+**Rationale**: Manager segment underperformed in Q1
+
+**Q2 Plan**:
+```yaml
+content: "Manager-focused case studies"
+frequency: "1 post per week"
+format: "Results-focused, data-driven"
+target: "500 manager impressions"
+budget: "$300 (content creation)"
+```
+
+---
+
+### 4. Community Building Enhancements
+
+#### Discord Community Growth
+
+**Q1 Success**: 62 members, 35% DAU (exceeded target)
+
+**Q2 Plan**:
+```yaml
+goal: "150 members, 30% DAU"
+initiatives:
+  - Monthly "Office Hours" (live Q&A)
+  - Weekly "Showcase Saturday" (user projects)
+  - Contributor recognition program
+  - Partnership with adjacent communities
+budget: "$2,600"
+```
+
+#### Community Referral Program (NEW)
+
+**Rationale**: 30% of Q1 stars came from community referrals
+
+**Q2 Plan**:
+```yaml
+mechanics:
+  - Refer 5 users → "Contributor" badge
+  - Refer 20 users → Featured in newsletter
+  - Top 3 referrers → $100 credit each
+goal: "100 referred stars (vs 156 organic in Q1)"
+budget: "$500 (rewards)"
+```
+
+---
+
+### 5. Measurement & Optimization
+
+#### A/B Testing Plan (NEW)
+
+**Q1 Gap**: No systematic testing
+
+**Q2 Tests**:
+```yaml
+Test 1: Blog Post Titles
+  - Variant A: "How to Build X"
+  - Variant B: "Build X in 5 Minutes"
+  - Metric: Click-through rate
+
+Test 2: Twitter CTA
+  - Variant A: "Star on GitHub"
+  - Variant B: "Try MetaSpec Today"
+  - Metric: Conversion rate
+
+Test 3: Discord Onboarding
+  - Variant A: Auto-welcome message
+  - Variant B: Manual DM from moderator
+  - Metric: 7-day retention
+```
+
+#### Dashboard & Tracking
+
+**Q2 Setup**:
+```yaml
+tools:
+  - Google Analytics (website)
+  - Plausible (lightweight alternative)
+  - Discord analytics bot
+  - GitHub traffic insights
+metrics:
+  - Daily: GitHub stars, Discord members
+  - Weekly: Blog reads, social impressions
+  - Monthly: Conversion rates, ROI by channel
+alerts:
+  - Star growth below 10/day
+  - Blog CTR below 4%
+  - Budget overspend > 10%
+```
+
+---
+
+### 6. Team & Process Improvements
+
+#### Team Expansion
+
+**Q1 Team**: 4 people (Content, Social, Tech, Lead)
+
+**Q2 Addition**:
+```yaml
+new_role: "Video Content Creator" (part-time)
+rationale: "YouTube content requires specialized skills"
+budget: "$1,500/month"
+```
+
+#### Process Changes
+
+**Q1 Issue**: Case studies took 1 week longer
+
+**Q2 Process**:
+```markdown
+1. Earlier planning (Week 0 instead of Week 1)
+2. Interview scheduling buffer (2 weeks instead of 1)
+3. Review cycles (2-day turnaround max)
+4. Backup contributors (in case interview falls through)
+```
+
+---
+
+## Q2 2025 Campaign Spec Draft
+
+**Goal**: 520 → 1,200 stars (+680, +130%)
+
+**Budget**: $13,000 (+$2,850 vs Q1)
+
+**Duration**: 12 weeks (2025-04-01 to 2025-06-23)
+
+**Key Changes**:
+- ✅ 2x blog frequency (8 posts vs 4)
+- ✅ Add YouTube (8 videos)
+- ✅ Expand to 3 new subreddits
+- ✅ Launch community referral program
+- ✅ Add LinkedIn for managers
+- ✅ Implement A/B testing
+- ✅ Cut Twitter ads & reduce HN
+
+**Expected Outcomes**:
+- Primary KPI: 1,200 GitHub stars
+- Secondary KPIs:
+  - 150 Discord members
+  - 20K blog reads
+  - 5K YouTube views
+  - 100 community-referred stars
+
+---
+
+## Implementation Roadmap
+
+### Week 1-2: Setup & Planning
+- [ ] Hire video content creator
+- [ ] Set up YouTube channel
+- [ ] Configure analytics dashboard
+- [ ] Plan Q2 content calendar
+- [ ] Design community referral program
+
+### Week 3-14: Execution
+- [ ] Publish 8 blog posts (1 every 1.5 weeks)
+- [ ] Create 8 YouTube videos (1 every 1.5 weeks)
+- [ ] Execute Reddit expansion (r/python, r/javascript, r/devops)
+- [ ] Run 3 A/B tests
+- [ ] Host 3 monthly community calls
+- [ ] Launch referral program
+
+### Week 15: Review & Optimize
+- [ ] Conduct Q2 review
+- [ ] Analyze A/B test results
+- [ ] Plan Q3 adjustments
+
+---
+
+## Risk Mitigation
+
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| YouTube content underperforms | Medium | Medium | Start with 2 videos, test before scaling |
+| Community referral abuse | Low | High | Implement verification, cap rewards |
+| Budget overrun | Medium | Medium | Weekly budget reviews, 10% contingency |
+| Video creator unavailable | Medium | High | Backup freelancer identified |
+| Reddit moderation issues | Low | Medium | Follow subreddit rules strictly |
+
+---
+
+## Success Criteria
+
+**Q2 will be considered successful if**:
+1. ✅ 1,200 stars achieved (primary goal)
+2. ✅ YouTube channel established with 100+ subscribers
+3. ✅ Community referral program drives 100+ stars
+4. ✅ A/B tests provide actionable insights
+5. ✅ Budget within 10% of $13K
+
+**Stretch Goals**:
+- 1,500 stars (125% of target)
+- Featured on GitHub Trending
+- Partnership with major dev community
+
+---
+
+**Status**: Ready to generate Q2 marketing-spec.yaml
+```
+
+**Save to**: `reports/q2-2025-optimization-plan.md`
+
+---
+
+## 🔄 Generate Q2 Campaign Spec
 
 ```bash
-/marketspec.discover "Q2 2025 Growth with Q1 Learnings" --based-on optimization-recommendations.md
+/marketspec.create
 ```
 
-**AI 输出**：
-```
-AI: I'll help you plan Q2 based on Q1 learnings!
+**Based on optimization plan, AI generates**:
+- `marketing-spec-q2-2025.yaml`
 
-📄 Loaded Q1 optimization recommendations
+**With**:
+- Updated budget allocations
+- New YouTube campaigns
+- Expanded Reddit strategy
+- Community referral program
+- A/B testing framework
 
-Key learnings applied:
-✅ Reddit budget increased: $500 → $1,000
-✅ LinkedIn reduced: $1,000 → $300
-✅ Lead magnet planned: "MetaSpec Quick Start Guide"
-✅ Content variety: Added developer stories + live coding
-✅ Targets adjusted: Stars 500→520, Email 1000→1100
-
-Let me ask a few questions about Q2:
-
-1️⃣ Will your total budget change?
-   Q1: $10,000
-   > Q2: $12,000 (20% increase based on Q1 ROI)
-
-2️⃣ Any new channels to test?
-   Q1 best performers: Reddit, Dev.to, Blog
-   > Yes, test YouTube (recommended in optimization)
-
-3️⃣ Team capacity changes?
-   > Same team, but add 10 hrs/week for video content
+**The cycle continues...**
 
 ---
 
-✅ Q2 Discovery Complete with Q1 optimizations applied!
+## 📈 Results Summary
 
-This is continuous improvement in action! 🎉
+### Q1 2025 → Q2 2025 Improvement
 
-📄 Saved to: specs/discovery/metaspec-q2-2025-discovery.md
-```
+| Metric | Q1 Target | Q1 Actual | Q2 Target | Growth |
+|--------|-----------|-----------|-----------|--------|
+| GitHub Stars | 500 | 520 | 1,200 | +130% |
+| Discord Members | 50 | 62 | 150 | +142% |
+| Blog Reads | 8,000 | 12,000 | 20,000 | +67% |
+| Campaign Budget | $10,000 | $10,150 | $13,000 | +28% |
 
-**继续 Q2 规划**：strategy → tasks → create...
+### Key Learnings
 
----
+1. **Data-driven optimization works**
+   - Review actual results vs plans
+   - Identify what worked and what didn't
+   - Reallocate budget based on ROI
 
-## 📊 完整闭环示意图
+2. **Community drives growth**
+   - 30% of stars came from community referrals
+   - Discord engagement exceeded expectations
+   - Authentic engagement > paid ads
 
-```
-┌─────────────────────────────────────────────────────┐
-│              Q1 Campaign (规划阶段)                    │
-├─────────────────────────────────────────────────────┤
-│ 1. constitution  → 定义原则                          │
-│ 2. discover      → 发现需求 (目标: 500 stars)         │
-│ 3. clarify       → 澄清目标                          │
-│ 4. strategy      → 规划策略 (预算: $10K)              │
-│ 5. checklist     → 质量检查                          │
-│ 6. tasks         → 分解任务 (25 tasks)                │
-│ 7. analyze       → 一致性检查                         │
-│ 8. create        → 生成 YAML                         │
-└─────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────┐
-│              Q1 Campaign (执行阶段)                    │
-├─────────────────────────────────────────────────────┤
-│ 执行活动 11 周...                                      │
-│                                                     │
-│ 结果:                                                │
-│ - Stars: 420 (84%)                                 │
-│ - Email: 850 (85%)                                 │
-│ - Traffic: 45K (90%)                               │
-│ - ROI: 154%                                        │
-└─────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────┐
-│            Q1 Campaign (回顾优化阶段)                  │
-├─────────────────────────────────────────────────────┤
-│ 9. review        → 分析实际效果                       │
-│                    - Reddit 表现最好 (ROI 9/10)      │
-│                    - LinkedIn 表现差 (ROI 4/10)      │
-│                    - 需要 lead magnet               │
-│                                                     │
-│ 10. optimize     → 生成优化建议                       │
-│                    - 预算重分配方案                   │
-│                    - 新 KPI 目标                     │
-│                    - 实施路线图                      │
-└─────────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────────┐
-│              Q2 Campaign (规划阶段)                    │
-├─────────────────────────────────────────────────────┤
-│ 1. discover      → 应用 Q1 learnings                 │
-│                    - Stars 目标: 520 (调整后)        │
-│                    - Reddit 预算: $1,000 (翻倍)      │
-│                    - 添加 lead magnet                │
-│                    - 预期达成率: 95-100%             │
-│                                                     │
-│ 2-8. 继续完整流程...                                  │
-└─────────────────────────────────────────────────────┘
-                        ↓
-                     持续改进...
-```
+3. **Content quality beats quantity**
+   - Technical deep-dives resonated strongly
+   - Case studies provided social proof
+   - Video content highly requested
+
+4. **Continuous improvement is key**
+   - Q1 informed Q2 strategy
+   - A/B testing for optimization
+   - Regular review cycles
 
 ---
 
-## 🎯 关键要点
+## 🎓 Closed-Loop Marketing Achieved
 
-### 1. 灵活的工作流
+This example demonstrates the complete SDM workflow:
 
-**最小流程**（快速测试）：
-```bash
-discover → create
-```
+1. **Plan** (Commands 1-8): Constitution → Discover → Clarify → Strategy → Checklist → Tasks → Analyze → Create
+2. **Execute** (External): Run the campaigns
+3. **Review** (Command 9): Analyze actual results vs plan
+4. **Optimize** (Command 10): Generate data-driven improvements
+5. **Repeat**: Create Q2 spec based on Q1 learnings
 
-**推荐流程**（标准项目）：
-```bash
-discover → clarify → strategy → create → checklist
-```
-
-**完整规划**（复杂项目）：
-```bash
-constitution → discover → clarify → strategy → 
-checklist → tasks → analyze → create
-```
-
-**闭环优化**（持续改进）：
-```bash
-完整规划 → [执行] → review → optimize → 下一期 discover
-```
-
-### 2. 数据驱动的改进
-
-- Q1：凭经验规划，85% 达成率
-- Q2：基于 Q1 数据优化，预期 95-100% 达成率
-- Q3：基于 Q2 数据继续优化...
-
-### 3. 命令类型
-
-- 🔴 **Required (2)**：discover, create
-- 🟡 **Recommended (1)**：checklist
-- ⚪ **Optional (7)**：根据项目复杂度选择
-
-### 4. 输出文件
-
-**规划阶段**：
-- `memory/marketing-constitution.md`
-- `specs/discovery/*.md`
-- `specs/clarifications/*.md`
-- `specs/strategy/*.md`
-- `specs/tasks/*.md`
-- `consistency-report.md`
-- `marketing-spec.yaml` ⭐（核心输出）
-
-**执行后**：
-- `campaign-review.md`
-- `optimization-recommendations.md`
+**Result**: Continuous improvement cycle that compounds over time.
 
 ---
 
-## 💡 最佳实践
-
-### 1. 首次使用
-
-如果是第一次使用 marketing-spec-kit：
-1. 从最小流程开始（discover → create）
-2. 熟悉后逐步添加其他步骤
-3. 复杂项目才使用完整 8 步
-
-### 2. 闭环优化
-
-确保每期活动都执行 review → optimize：
-- 积累数据资产
-- 避免重复错误
-- 持续提升 ROI
-
-### 3. 文档保存
-
-妥善保存所有输出文档：
-- 规划文档可复用
-- review 是宝贵的学习资料
-- optimize 建议可应用多期
-
-### 4. 团队协作
-
-- constitution：团队共同制定
-- discover/strategy：营销负责人主导
-- review：全团队参与复盘
-- optimize：基于数据客观分析
-
----
-
-**恭喜！你已掌握完整的 SDM 闭环营销系统！** 🎉
-
+**Generated by**: marketing-spec-kit v0.3.0  
+**Workflow**: SDM Complete (10 commands)  
+**Pattern**: Plan → Execute → Review → Optimize → Repeat

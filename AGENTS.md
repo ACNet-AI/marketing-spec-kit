@@ -1,0 +1,214 @@
+# marketing-spec-kit - AI Agent Guide
+
+> **For AI Assistants**: This document provides guidance on using marketing-spec-kit for generic development.
+
+---
+
+## 🎯 Your Role
+
+You are helping a developer use **marketing-spec-kit** - a spec-driven toolkit for marketing operations.
+
+**Toolkit Version**: 0.3.0  
+**Domain**: marketing  
+**Lifecycle**: Development (0.x phase) 
+
+---
+
+## 📋 Core Entity: Spec
+
+This toolkit centers around the `Spec` entity with the following structure:
+
+- **name** (`string`): Spec name
+- **version** (`string`): Spec version
+- **description** (`string`): Spec description
+- **status** (`string`): Spec status (draft, review, approved)
+
+---
+
+## 🔧 Available CLI Commands
+
+### `info`
+
+Show speckit information
+
+
+
+---
+
+## 📝 Workflow
+
+### Standard Flow
+
+```
+1. Initialize Specification
+   ↓
+2. Define Spec Structure
+   ↓
+3. Validate Specification
+   ↓
+4. Generate Implementation
+   ↓
+5. Customize & Extend
+```
+
+### Example Session
+
+```
+Human: "I need to create a new Spec"
+
+AI: "I'll help you create a Spec using marketing-spec-kit.
+
+First, let me initialize the specification:
+
+[Creates spec-spec.md with appropriate structure]
+
+This defines:
+- name: Spec name
+- version: Spec version
+- description: Spec description
+
+Would you like me to validate and generate it?"
+```
+
+---
+
+## 🚀 Helping Users Initialize Projects
+
+When users want to create a new project using marketing-spec-kit, guide them to set up the standard structure:
+
+### Recommended Project Structure
+
+```
+user-project/
+├── .marketingspeckit/
+│   ├── commands/              # (Optional) If you implement project init
+│   │   └── marketingspeckit.*.md
+│   └── templates/             # Output templates
+│
+├── memory/
+│   └── constitution.md        # User project's development principles
+│
+├── specs/                     # User project's specifications
+│   └── {entity_name}-spec.md
+│
+├── changes/                   # (Optional) Evolution proposals
+│   ├── add-feature-x/
+│   └── improve-feature-y/
+│
+└── README.md
+```
+
+**Note**: Use `.marketingspeckit/` instead of `.cursor/` to be AI-editor agnostic. Not all users use Cursor - they might use Claude, other AI editors, or no AI at all.
+
+### Initialization Guidance
+
+1. **Create project directory**
+2. **Set up memory/constitution.md** - Define project's core principles
+3. **Create specs/ directory** - For specification documents
+4. **Create first spec** - Define initial Spec
+
+**Example assistance**:
+```
+Human: "I want to create a new project using marketing-spec-kit"
+
+AI: "I'll help you set up a project with marketing-spec-kit.
+
+Let me create the standard structure:
+
+1. Create memory/constitution.md to define your project's principles
+2. Create specs/ directory for your specifications
+3. Create your first Spec specification
+
+Shall we start with memory/constitution.md?"
+```
+
+---
+
+## 🔒 Constitutional Constraints
+
+**ALWAYS follow** `memory/constitution.md` which defines:
+- Core principles for this toolkit
+- Quality standards
+- Prohibited patterns
+- Required patterns
+
+**Key principles**:
+1. **Specification-First**: Always define specs before implementation
+2. **Validation-Driven**: Validate specs before generation
+3. **Incremental Development**: Start with MVP, add features progressively
+4. **Domain Specificity**: Respect generic constraints
+
+---
+
+## 🎨 Domain-Specific Guidance
+
+### Generic Best Practices
+
+- Follow industry standards for generic
+- Document all assumptions
+- Include validation rules
+- Provide clear examples
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# 1. Initialize new specification
+marketing_spec_kit init my-spec-spec.md
+
+# 2. Edit specification (use your editor)
+# Define Spec structure
+
+# 3. Validate specification
+marketing_spec_kit validate my-spec-spec.md
+
+# 4. Generate implementation
+marketing_spec_kit generate my-spec-spec.md --output ./output
+```
+
+---
+
+## 📚 Examples
+
+See `examples/` directory for:
+- Minimal Spec specification
+- Complete Spec with all fields
+- Common patterns and anti-patterns
+
+---
+
+## 🐛 Troubleshooting
+
+### Issue: Validation fails
+
+**Solution**: Check specification format against schema. Common issues:
+- Missing required field: `name`
+- Missing required field: `version`
+- Missing required field: `description`
+- Missing required field: `status`
+
+### Issue: Generation produces errors
+
+**Solution**: Ensure specification is validated first. Run:
+```bash
+marketing_spec_kit validate <spec-file> --strict
+```
+
+---
+
+## 🛠️ For Speckit Developers
+
+If you want to **develop or maintain** marketing-spec-kit itself (not just use it), see:
+
+- **`.metaspec/README.md`** - Complete development guide
+- **`.metaspec/commands/`** - 16 AI-assisted MetaSpec commands
+
+This includes specifications for defining specifications (SDS), developing toolkit features (SDD), and managing changes (Evolution).
+
+---
+
+**Generated by**: MetaSpec 0.6.2  
+**Date**: 2025-11-14  
+**Domain**: generic
+

@@ -2,7 +2,7 @@
 
 **Specification Toolkit for Marketing Operations** - Transform marketing chaos into structured, AI-driven workflows.
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](./CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.9+-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](./LICENSE)
 
@@ -17,7 +17,7 @@ A **Spec-Driven Toolkit** that enables marketing teams to:
 ✅ **Execute** with 22 AI Agent Slash Commands for automated workflows  
 ✅ **Analyze** performance with AI-generated insights and optimization recommendations  
 
-**v2.0.0** introduces a complete **5-phase marketing workflow** system:
+**v0.3.0** introduces a complete **10-command SDM (Spec-Driven Marketing) workflow** system with closed-loop optimization:
 
 ```
 Strategic Planning → Campaign Design → Content Creation → Execution → Analytics & Optimization
@@ -49,7 +49,7 @@ marketing_spec_kit validate my-marketing-spec.yaml
 
 ### Use SDM (Spec-Driven Marketing) Commands
 
-**New in v2.1**: Complete 10-command workflow system with closed-loop optimization!
+**New in v0.3.0**: Complete 10-command workflow system with closed-loop optimization!
 
 ```bash
 # Minimal workflow (2 steps) - Quick campaign
@@ -89,7 +89,7 @@ marketing_spec_kit validate my-marketing-spec.yaml
 
 ## 📋 Core Entities (9)
 
-marketing-spec-kit v2.0.0 manages 9 marketing entities:
+marketing-spec-kit v0.3.0 manages 9 marketing entities:
 
 | Entity | Purpose | Fields | New in v2.0 |
 |--------|---------|--------|-------------|

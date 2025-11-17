@@ -1,0 +1,216 @@
+# Marketing Specification - Full Template
+# Comprehensive example with all entities and optional fields
+
+project:
+  name: "MetaSpec"
+  tagline: "Specification-Driven Development for GenAI Era"
+  brand_voice: "Technical"
+  website: "https://metaspec.dev"
+  target_audience:
+    - "Developers"
+    - "AI Engineers"
+    - "Open Source Maintainers"
+  value_propositions:
+    - "Transform specifications into production-ready code"
+    - "AI-assisted development with best practices"
+    - "Extensible toolkit architecture"
+  logo_url: "https://metaspec.dev/logo.png"
+  social_handles:
+    twitter: "@metaspec"
+    github: "metaspec"
+    discord: "metaspec-community"
+
+products:
+  - id: "speckit-generator"
+    name: "Speckit Generator"
+    description: "Generate domain-specific specification toolkits from templates with AI assistance"
+    project_id: "metaspec"
+    target_audience:
+      - "Developers"
+      - "Tool creators"
+    key_features:
+      - "Template-based generation"
+      - "AI-powered customization"
+      - "Built-in validation"
+    positioning: "The fastest way to create specification toolkits"
+    launch_date: "2025-11-01"
+
+  - id: "sds-commands"
+    name: "SDS Commands"
+    description: "13 AI-accessible slash commands for specification-driven workflows"
+    project_id: "metaspec"
+    target_audience:
+      - "AI Engineers"
+      - "Developers"
+    key_features:
+      - "/specify, /plan, /implement"
+      - "Progressive refinement"
+      - "Multi-layer architecture"
+    positioning: "AI-first development commands"
+    launch_date: "2025-11-14"
+
+campaigns:
+  - id: "metaspec-v060-launch"
+    name: "MetaSpec v0.6.0 Launch"
+    goal: "awareness"
+    project_id: "metaspec"
+    product_ids:
+      - "speckit-generator"
+      - "sds-commands"
+    target_audience:
+      - "Developers"
+      - "AI Engineers"
+      - "Open Source Maintainers"
+    budget: 500.0
+    start_date: "2025-11-15"
+    end_date: "2025-11-29"
+    channels:
+      - "twitter"
+      - "reddit-programming"
+      - "devto-blog"
+    kpis:
+      target_impressions: 50000
+      target_ctr: 0.05
+      target_conversions: 100
+      target_roas: 5.0
+    status: "scheduled"
+
+channels:
+  - id: "twitter"
+    name: "Twitter/X"
+    type: "social_media"
+    platform: "twitter"
+    audiences:
+      - "Developers"
+      - "AI Engineers"
+    content_types:
+      - "short_text"
+      - "images"
+      - "video"
+    constraints:
+      max_text_length: 280
+      max_hashtags: 5
+      image_formats: ["png", "jpg", "gif"]
+    tool_id: "buffer-scheduler"
+
+  - id: "reddit-programming"
+    name: "r/programming Subreddit"
+    type: "forum"
+    platform: "reddit"
+    audiences:
+      - "Developers"
+    content_types:
+      - "long_text"
+      - "link"
+    constraints:
+      max_text_length: 40000
+      title_max_length: 300
+
+  - id: "devto-blog"
+    name: "Dev.to Blog"
+    type: "blog"
+    platform: "dev.to"
+    audiences:
+      - "Developers"
+      - "AI Engineers"
+    content_types:
+      - "long_text"
+      - "code"
+      - "images"
+    tool_id: "devto-api"
+
+tools:
+  - id: "buffer-scheduler"
+    name: "Buffer Social Scheduler"
+    type: "rest_api"
+    capabilities:
+      - "schedule"
+      - "publish"
+      - "analytics"
+    status: "active"
+    api_config:
+      base_url: "https://api.bufferapp.com"
+      auth_type: "oauth2"
+    channel_ids:
+      - "twitter"
+
+  - id: "devto-api"
+    name: "Dev.to API"
+    type: "rest_api"
+    capabilities:
+      - "publish"
+      - "update"
+      - "analytics"
+    status: "active"
+    api_config:
+      base_url: "https://dev.to/api"
+      auth_type: "api_key"
+    channel_ids:
+      - "devto-blog"
+
+content_templates:
+  - id: "technical-blog-post"
+    name: "Technical Blog Post Template"
+    type: "blog_article"
+    tone: "technical"
+    style_guidelines:
+      - "Use code examples to illustrate concepts"
+      - "Define technical terms on first use"
+      - "Include practical use cases"
+      - "End with clear call-to-action"
+    project_id: "metaspec"
+    constraints:
+      min_length: 800
+      max_length: 2000
+      required_sections:
+        - "Introduction"
+        - "Problem Statement"
+        - "Solution"
+        - "Example"
+        - "Conclusion"
+      forbidden_words:
+        - "obviously"
+        - "simply"
+        - "just"
+    examples:
+      - "https://metaspec.dev/blog/introducing-metaspec"
+
+  - id: "social-announcement"
+    name: "Social Media Announcement"
+    type: "social_post"
+    tone: "friendly"
+    style_guidelines:
+      - "Start with a hook"
+      - "Include emojis for engagement"
+      - "Use hashtags strategically"
+      - "Add call-to-action"
+    project_id: "metaspec"
+    constraints:
+      max_length: 280
+      required_sections:
+        - "Hook"
+        - "Value"
+        - "CTA"
+
+milestones:
+  - id: "v060-release"
+    name: "MetaSpec v0.6.0 Release"
+    type: "version_release"
+    date: "2025-11-14"
+    description: "Major release with SDS/SDD commands and speckit generator"
+    project_id: "metaspec"
+    product_ids:
+      - "speckit-generator"
+      - "sds-commands"
+    campaign_ids:
+      - "metaspec-v060-launch"
+    status: "completed"
+
+  - id: "community-launch"
+    name: "Community Forum Launch"
+    type: "community_event"
+    date: "2025-12-01"
+    description: "Launch of MetaSpec Discord community"
+    project_id: "metaspec"
+    status: "planned"
+

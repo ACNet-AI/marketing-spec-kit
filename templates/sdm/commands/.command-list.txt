@@ -1,0 +1,13 @@
+New SDM Command System (8 commands)
+====================================
+
+1. marketspec.constitution - Define marketing execution principles
+2. marketspec.discover - Discover marketing needs
+3. marketspec.clarify - Clarify marketing objectives  
+4. marketspec.strategy - Plan marketing strategy
+5. marketspec.tasks - Break down marketing tasks
+6. marketspec.create - Create marketing specification (YAML)
+7. marketspec.checklist - Generate quality checklist
+8. marketspec.analyze - Analyze specification consistency
+
+Based on MetaSpec structure, customized for marketing domain.

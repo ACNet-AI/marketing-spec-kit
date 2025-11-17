@@ -1,6 +1,6 @@
-# MetaSpec营销规范
-# 基于方案：examples/metaspec-marketing-plan.md
-# 方案期间：2025 Q1-Q2 (6个月)
+# MetaSpec Marketing Specification
+# Based on plan: examples/metaspec-marketing-plan.md
+# Plan period: 2025 Q1-Q2 (6 months)
 
 project:
   name: "MetaSpec"
@@ -37,13 +37,13 @@ products:
     launch_date: "2025-11-15"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 营销活动（按方案阶段组织）
+# Marketing Campaigns (Organized by plan phases)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 campaigns:
   # ────────────────────────────────────────────────────────
-  # 阶段1：认知启动（Month 1-2）
-  # 目标：让目标开发者知道MetaSpec的存在
+  # Phase 1: Awareness Launch (Month 1-2)
+  # Goal: Make target developers aware of MetaSpec's existence
   # ────────────────────────────────────────────────────────
   
   - id: "v060-launch"
@@ -78,9 +78,9 @@ campaigns:
       - "speckit-generator"
     target_audience:
       - "Developers"
-    budget: 0  # 自己写
+    budget: 0  # write ourselves
     start_date: "2025-11-16"
-    end_date: "2026-01-10"  # 8周，每2周1篇
+    end_date: "2026-01-10"  # 8 weeks, 1 post every 2 weeks
     channels:
       - "devto-blog"
       - "personal-blog"
@@ -91,8 +91,8 @@ campaigns:
     status: "active"
 
   # ────────────────────────────────────────────────────────
-  # 阶段2：试用转化（Month 3-4）
-  # 目标：让开发者实际试用MetaSpec
+  # Phase 2: Trial Conversion (Month 3-4)
+  # Goal: Get developers to actually try MetaSpec
   # ────────────────────────────────────────────────────────
   
   - id: "30day-metaspec-challenge"
@@ -102,9 +102,9 @@ campaigns:
     target_audience:
       - "Developers"
       - "Tool creators"
-    budget: 200.0  # 奖品
+    budget: 200.0  # prizes
     start_date: "2026-01-15"
-    end_date: "2026-02-14"  # 1个月
+    end_date: "2026-02-14"  # 1 month
     channels:
       - "twitter"
       - "discord"
@@ -125,7 +125,7 @@ campaigns:
       - "Developers"
     budget: 0
     start_date: "2026-01-15"
-    end_date: "2026-04-30"  # 持续3.5个月
+    end_date: "2026-04-30"  # ongoing for 3.5 months
     channels:
       - "github"
       - "twitter"
@@ -136,8 +136,8 @@ campaigns:
     status: "planned"
 
   # ────────────────────────────────────────────────────────
-  # 阶段3：社区建设（Month 5-6）
-  # 目标：建立活跃的用户社区
+  # Phase 3: Community Building (Month 5-6)
+  # Goal: Build an active user community
   # ────────────────────────────────────────────────────────
   
   - id: "discord-community-launch"
@@ -148,9 +148,9 @@ campaigns:
       - "Developers"
       - "AI Engineers"
       - "Open Source Maintainers"
-    budget: 300.0  # 版主激励
+    budget: 300.0  # moderator incentives
     start_date: "2026-04-01"
-    end_date: "2026-04-30"  # 启动月
+    end_date: "2026-04-30"  # launch month
     channels:
       - "discord"
       - "twitter"
@@ -167,9 +167,9 @@ campaigns:
     target_audience:
       - "Open Source Maintainers"
       - "Developers"
-    budget: 500.0  # 贡献者奖励
+    budget: 500.0  # contributor rewards
     start_date: "2026-04-01"
-    end_date: "2026-06-30"  # 持续3个月
+    end_date: "2026-06-30"  # ongoing for 3 months
     channels:
       - "github"
       - "discord"
@@ -180,7 +180,7 @@ campaigns:
     status: "planned"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 营销渠道配置
+# Marketing Channels Configuration
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 channels:
@@ -281,7 +281,7 @@ channels:
       - "images"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 内容模板（品牌一致性）
+# Content Templates (Brand Consistency)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 content_templates:
@@ -339,7 +339,7 @@ content_templates:
     project_id: "metaspec"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 里程碑（关联营销活动）
+# Milestones (Linked to marketing campaigns)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 milestones:
@@ -359,7 +359,7 @@ milestones:
     name: "Q1 Marketing Plan Kickoff"
     type: "announcement"
     date: "2025-11-15"
-    description: "开始执行2025 Q1-Q2营销方案"
+    description: "Begin executing 2025 Q1-Q2 marketing plan"
     project_id: "metaspec"
     campaign_ids:
       - "v060-launch"
@@ -370,7 +370,7 @@ milestones:
     name: "Q2 Community Building Milestone"
     type: "community_event"
     date: "2026-04-01"
-    description: "Discord社区启动，进入社区建设阶段"
+    description: "Discord community launch, entering community building phase"
     project_id: "metaspec"
     campaign_ids:
       - "discord-community-launch"
@@ -381,7 +381,7 @@ milestones:
     name: "Q1-Q2 Marketing Plan Completion"
     type: "announcement"
     date: "2026-06-30"
-    description: "6个月营销方案执行完毕，进行复盘"
+    description: "6-month marketing plan execution complete, conducting retrospective"
     project_id: "metaspec"
     campaign_ids:
       - "v060-launch"
