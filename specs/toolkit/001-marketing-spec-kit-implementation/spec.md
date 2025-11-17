@@ -1,7 +1,7 @@
 <!--
 Toolkit Specification Report
 ============================
-Toolkit: 001-marketing-spec-kit-implementation v1.0.0 | Updated Dependencies
+Toolkit: 001-marketing-spec-kit-implementation v0.3.0 | Updated Dependencies
 Date: 2025-11-15 (Updated: 2025-11-17)
 
 Summary:
@@ -37,19 +37,19 @@ Updated by: Manual dependency sync (MetaSpec v0.8.1 guidance)
 
 ---
 toolkit_id: "001-marketing-spec-kit-implementation"
-toolkit_version: "1.0.0"
+toolkit_version: "0.3.0"
 toolkit_status: "draft"
 primary_language: "python"
 generated_by: "MetaSpec v0.6.2"
 generated_date: "2025-11-15"
 updated_date: "2025-11-17"
-updated_reason: "Domain spec dependency update (v1.0.0 → v0.3.0)"
+updated_reason: "Synchronized with Domain Spec v0.3.0 (semantic versioning)"
 ---
 
 # Marketing-Spec-Kit Toolkit Implementation
 
-**Version**: 1.0.0  
-**Status**: Draft  
+**Version**: 0.3.0  
+**Status**: Draft (Development Phase)  
 **Created**: 2025-11-15  
 **Primary Language**: Python 3.9+
 

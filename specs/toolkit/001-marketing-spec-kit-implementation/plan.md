@@ -1,7 +1,7 @@
 # Implementation Plan: marketing-spec-kit
 
 **Toolkit**: marketing-spec-kit  
-**Version**: 1.0.0  
+**Version**: 0.3.0  
 **Language**: Python 3.9+  
 **Architecture**: Modular  
 **Created**: 2025-11-15  

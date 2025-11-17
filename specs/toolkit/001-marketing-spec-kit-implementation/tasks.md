@@ -1,7 +1,7 @@
 # Implementation Tasks: marketing-spec-kit
 
 **Toolkit**: marketing-spec-kit  
-**Version**: 1.0.0  
+**Version**: 0.3.0  
 **Generated**: 2025-11-15  
 **Updated**: 2025-11-17 (Domain Spec v0.3.0)  
 **Total Tasks**: ~75 (estimated, updated from 65)  
