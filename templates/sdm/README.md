@@ -17,123 +17,121 @@ The SDM layer provides commands to **execute marketing activities** by creating 
 
 ## 📋 Commands (10)
 
-### Core Commands (8) - Planning Phase
+### Architecture (Based on MetaSpec SDD)
 
 ```
 Core Flow:      constitution → discover → strategy → tasks → create
+                       🔴           🔴         🔴        🔴      🔴
 Quality Gates:             ↓ clarify ↓     ↓ checklist     ↓ analyze
-                           (before)      (after)         (before)
+                              🟡              🟡                🟡
+                           (before)        (after)          (before)
 ```
 
-**Planning Flow** (Based on MetaSpec SDD):
+### Core Flow (5) - Essential Workflow
 
-| Step | Command | Type | Purpose |
-|------|---------|------|---------|
-| 1 | constitution | Core | Define principles |
-| 2 | discover | Core | Define requirements |
-| 3 | **clarify** | **Quality Gate** | **Resolve ambiguities (BEFORE strategy)** |
-| 4 | strategy | Core | Plan approach |
-| 5 | **checklist** | **Quality Gate** | **Validate requirements (AFTER strategy)** |
-| 6 | tasks | Core | Break down work |
-| 7 | **analyze** | **Quality Gate** | **Check consistency (BEFORE create)** |
-| 8 | create | Core | Generate spec |
+| # | Command | Type | Purpose |
+|---|---------|------|---------|
+| 1 | `/marketspec.constitution` | 🔴 Core | Establish marketing principles |
+| 2 | `/marketspec.discover` | 🔴 Core | Discover marketing needs |
+| 4 | `/marketspec.strategy` | 🔴 Core | Plan marketing strategy |
+| 6 | `/marketspec.tasks` | 🔴 Core | Break down implementation tasks |
+| 8 | `/marketspec.create` | 🔴 Core | Generate specification YAML |
 
-**Execution Order**: `constitution → discover → clarify → strategy → checklist → tasks → analyze → create`
+### Quality Gates (3) - Recommended for Quality Assurance
 
-### Extension Commands (2) - Post-Execution Phase
+| # | Command | Type | Purpose |
+|---|---------|------|---------|
+| 3 | `/marketspec.clarify` | 🟡 Quality Gate | Clarify ambiguities (before strategy) |
+| 5 | `/marketspec.checklist` | 🟡 Quality Gate | Validate completeness (after strategy) |
+| 7 | `/marketspec.analyze` | 🟡 Quality Gate | Check consistency (before create) |
 
-```
-... → create → [Execute Campaign] → review → optimize
-                                      ↓         ↓
-                                 分析效果   优化建议
-```
+### Extension (2) - Feedback Loop
 
-**Post-Execution Flow**:
+| # | Command | Type | Purpose |
+|---|---------|------|---------|
+| 9 | `/marketspec.review` | 🔵 Extension | Analyze actual vs. planned |
+| 10 | `/marketspec.optimize` | 🔵 Extension | Generate optimization recommendations |
 
-| Step | Command | Type | Purpose |
-|------|---------|------|---------|
-| 9 | **review** | **Extension** | **Analyze actual performance vs plan** |
-| 10 | **optimize** | **Extension** | **Generate recommendations for next campaign** |
-
-**Complete Marketing Cycle**:
+### Complete Marketing Cycle
 
 ```
-Planning (8 steps):   constitution → discover → clarify → strategy → 
-                      checklist → tasks → analyze → create
-                                                       ↓
-Execution:                                    [Execute Campaign]
-                                                       ↓
-Review (2 steps):                            review → optimize
-                                                       ↓
-Next Cycle:                              feed into next discover
+Phase 1 - Specification (Core + Quality Gates):
+constitution → discover → clarify → strategy → 
+checklist → tasks → analyze → create
+                              ↓
+Phase 2 - Execution (AI Agent + MCP Tools):
+                     [Execute Campaign]
+                              ↓
+Phase 3 - Optimization (Feedback Loop):
+                  review → optimize
+                              ↓
+Next Cycle:      feed into next discover
 ```
 
 ### Command Details
 
-#### 1. /marketspec.constitution ⚪
-**Purpose**: Define marketing execution principles  
-**Adapted from**: `metaspec.sds.constitution`  
-**Output**: Marketing execution principles document  
-**When to skip**: If principles already documented or simple one-off campaign
+#### 1. /marketspec.constitution 🔴 Core
+**Purpose**: Establish marketing principles for the project  
+**Adapted from**: `metaspec.sdd.constitution`  
+**Output**: `marketing-constitution.md`  
+**Rationale**: Sets foundation for consistent decision-making across campaigns
 
-#### 2. /marketspec.discover 🔴
-**Purpose**: Discover marketing needs and requirements  
-**Adapted from**: `metaspec.sds.specify`  
-**Output**: Initial requirements definition  
-**Required**: Always - this is the foundation
+#### 2. /marketspec.discover 🔴 Core
+**Purpose**: Discover and document marketing needs  
+**Adapted from**: `metaspec.sdd.specify`  
+**Output**: `*-discovery.md`  
+**Rationale**: Starting point - defines what needs to be specified
 
-#### 3. /marketspec.clarify ⚪
-**Purpose**: Clarify marketing objectives and resolve ambiguities  
-**Adapted from**: `metaspec.sds.clarify`  
-**Output**: Clarified requirements  
-**Type**: Quality Gate (BEFORE strategy)  
-**When to skip**: If requirements are already clear and unambiguous
+#### 3. /marketspec.clarify 🟡 Quality Gate
+**Purpose**: Resolve ambiguities before planning strategy  
+**Adapted from**: `metaspec.sdd.clarify`  
+**Output**: `*-clarification.md`  
+**Timing**: BEFORE strategy  
+**Rationale**: Prevents strategy mistakes from unclear requirements
 
-#### 4. /marketspec.strategy ⚪
-**Purpose**: Plan marketing strategy and approach  
-**Adapted from**: `metaspec.sds.plan`  
-**Output**: Strategic plan document  
-**When to skip**: Simple campaigns (< $5K, single channel, < 4 weeks)
+#### 4. /marketspec.strategy 🔴 Core
+**Purpose**: Plan the marketing approach and architecture  
+**Adapted from**: `metaspec.sdd.plan`  
+**Output**: `*-strategy.md`  
+**Rationale**: Defines how to structure the specification
 
-#### 5. /marketspec.tasks ⚪
-**Purpose**: Break down marketing tasks  
-**Adapted from**: `metaspec.sds.tasks`  
-**Output**: Task breakdown  
-**When to skip**: Small team (1-2 people) or simple execution
+#### 5. /marketspec.checklist 🟡 Quality Gate
+**Purpose**: Validate strategy completeness  
+**Adapted from**: `metaspec.sdd.checklist`  
+**Output**: `*-checklist.md`  
+**Timing**: AFTER strategy  
+**Rationale**: Catches missing requirements before task breakdown
 
-#### 6. /marketspec.create 🔴
-**Purpose**: Create marketing specification (YAML)  
-**Adapted from**: `metaspec.sds.implement`  
-**Output**: `marketing-spec.yaml`  
-**Required**: Always - this is the deliverable
+#### 6. /marketspec.tasks 🔴 Core
+**Purpose**: Break down into actionable implementation tasks  
+**Adapted from**: `metaspec.sdd.tasks`  
+**Output**: `*-tasks.md`  
+**Rationale**: Guides what to include in the specification
 
-#### 5. /marketspec.checklist ⚪
-**Purpose**: Generate quality checklist (automated validation + manual review)  
-**Adapted from**: `metaspec.sds.checklist`  
-**Output**: Quality checklist document  
-**Type**: Quality Gate (AFTER strategy)  
-**When to use**: Validate strategy before breaking down tasks
+#### 7. /marketspec.analyze 🟡 Quality Gate
+**Purpose**: Check consistency before finalizing specification  
+**Adapted from**: `metaspec.sdd.analyze`  
+**Output**: `consistency-report.md`  
+**Timing**: BEFORE create  
+**Rationale**: Final validation before generating YAML
 
-#### 8. /marketspec.analyze ⚪
-**Purpose**: Check cross-document consistency before creating spec  
-**Adapted from**: `metaspec.sds.analyze`  
-**Output**: Consistency analysis report  
-**Type**: Quality Gate (BEFORE create)  
-**When to skip**: Simple campaigns or when checklist is sufficient
+#### 8. /marketspec.create 🔴 Core
+**Purpose**: Generate the final marketing specification YAML  
+**Adapted from**: `metaspec.sdd.implement` (for specifications)  
+**Output**: `marketing-spec.yaml` ⭐  
+**Rationale**: Core output - the executable specification
 
-#### 9. /marketspec.review ⚪
-**Purpose**: Analyze actual campaign performance after execution  
-**New Command**: Original to marketing-spec-kit  
-**Output**: Campaign review report  
-**Type**: Extension (POST-EXECUTION)  
-**When to use**: After campaign execution to document results and lessons learned
+#### 9. /marketspec.review 🔵 Extension
+**Purpose**: Analyze campaign performance after execution  
+**Timing**: POST-EXECUTION  
+**Output**: `campaign-review.md`  
+**Rationale**: Measures actual vs. planned results
 
-#### 10. /marketspec.optimize ⚪
-**Purpose**: Generate optimization recommendations based on review data  
-**New Command**: Original to marketing-spec-kit  
-**Output**: Optimization recommendations  
-**Type**: Extension (POST-EXECUTION, after review)  
-**When to use**: After review to prepare data-driven recommendations for next campaign
+#### 10. /marketspec.optimize 🔵 Extension
+**Purpose**: Generate optimization recommendations based on review  
+**Timing**: POST-EXECUTION (after review)  
+**Output**: `optimization-plan.md`  
+**Rationale**: Continuous improvement for next cycle
 
 ---
 

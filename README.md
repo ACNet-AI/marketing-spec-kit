@@ -52,21 +52,25 @@ marketing_spec_kit validate my-marketing-spec.yaml
 **New in v0.3.0**: Complete 10-command workflow system with closed-loop optimization!
 
 ```bash
-# Minimal workflow (2 steps) - Quick campaign
+# Quick workflow (3 steps) - Simple campaign
 /marketspec.discover "Grow user base in Q1 2025"
+/marketspec.strategy
 /marketspec.create
 → Output: marketing-spec.yaml
 
-# Recommended workflow (5 steps) - Standard project
+# Standard workflow (8 steps) - Recommended for quality
+/marketspec.constitution
 /marketspec.discover "Grow user base in Q1 2025"
 /marketspec.clarify
 /marketspec.strategy
-/marketspec.create
 /marketspec.checklist
-→ Output: marketing-spec.yaml + quality report
+/marketspec.tasks
+/marketspec.analyze
+/marketspec.create
+→ Output: marketing-spec.yaml + quality reports
 
-# Complete workflow (10 steps) - Complex campaign with optimization
-# Planning Phase (8 steps)
+# Complete workflow (10 steps) - With feedback loop
+# Phase 1: Specification (Core + Quality Gates)
 /marketspec.constitution
 /marketspec.discover "Q1 2025 Growth"
 /marketspec.clarify
@@ -76,11 +80,12 @@ marketing_spec_kit validate my-marketing-spec.yaml
 /marketspec.analyze
 /marketspec.create
 
-# Execute campaign...
+# Phase 2: Execution (AI Agent + MCP Tools)
+# [AI Agent reads marketing-spec.yaml and executes campaign]
 
-# Review Phase (2 steps)
+# Phase 3: Optimization (Feedback Loop)
 /marketspec.review         # Analyze actual vs planned
-/marketspec.optimize       # Get optimization recommendations for next campaign
+/marketspec.optimize       # Generate optimization recommendations
 ```
 
 **See [SDM Workflow Example](./examples/sdm-workflow-example.md) for complete walkthrough!**
@@ -124,31 +129,53 @@ marketing-spec-kit v0.3.0 manages 9 marketing entities:
 
 **New in v0.3.0**: Complete Spec-Driven Marketing workflow with closed-loop optimization!
 
-### Core Commands (8) - Planning Phase
+### Core Flow (5) - Essential Workflow
 
 | # | Command | Purpose | Type | Output |
 |---|---------|---------|------|--------|
-| 1 | `/marketspec.constitution` | Define marketing principles | ⚪ Optional | `marketing-constitution.md` |
-| 2 | `/marketspec.discover` | Discover marketing needs | 🔴 Required | `*-discovery.md` |
-| 3 | `/marketspec.clarify` | Clarify objectives | ⚪ Optional | `*-clarification.md` |
-| 4 | `/marketspec.strategy` | Plan marketing strategy | ⚪ Optional | `*-strategy.md` |
-| 5 | `/marketspec.checklist` | Quality validation | 🟡 Recommended | `*-checklist.md` |
-| 6 | `/marketspec.tasks` | Break down tasks | ⚪ Optional | `*-tasks.md` |
-| 7 | `/marketspec.analyze` | Consistency checking | ⚪ Optional | `consistency-report.md` |
-| 8 | `/marketspec.create` | Generate spec YAML | 🔴 Required | `marketing-spec.yaml` ⭐ |
+| 1 | `/marketspec.constitution` | Establish marketing principles | 🔴 Core | `marketing-constitution.md` |
+| 2 | `/marketspec.discover` | Discover marketing needs | 🔴 Core | `*-discovery.md` |
+| 4 | `/marketspec.strategy` | Plan marketing strategy | 🔴 Core | `*-strategy.md` |
+| 6 | `/marketspec.tasks` | Break down implementation tasks | 🔴 Core | `*-tasks.md` |
+| 8 | `/marketspec.create` | Generate specification YAML | 🔴 Core | `marketing-spec.yaml` ⭐ |
 
-### Extension Commands (2) - Post-Execution Phase
+### Quality Gates (3) - Recommended for Quality Assurance
 
 | # | Command | Purpose | Type | Output |
 |---|---------|---------|------|--------|
-| 9 | `/marketspec.review` | Analyze actual performance | ⚪ Optional | `campaign-review.md` |
-| 10 | `/marketspec.optimize` | Optimization recommendations | ⚪ Optional | `optimization-recommendations.md` |
+| 3 | `/marketspec.clarify` | Clarify ambiguities and details | 🟡 Quality Gate | `*-clarification.md` |
+| 5 | `/marketspec.checklist` | Validate completeness | 🟡 Quality Gate | `*-checklist.md` |
+| 7 | `/marketspec.analyze` | Check consistency | 🟡 Quality Gate | `consistency-report.md` |
+
+### Extension (2) - Feedback Loop
+
+| # | Command | Purpose | Type | Output |
+|---|---------|---------|------|--------|
+| 9 | `/marketspec.review` | Analyze actual vs. planned | 🔵 Extension | `campaign-review.md` |
+| 10 | `/marketspec.optimize` | Generate optimization recommendations | 🔵 Extension | `optimization-plan.md` |
 
 ### Workflow Patterns
 
-**Minimal** (2 steps): `discover → create`  
-**Recommended** (5 steps): `discover → clarify → strategy → create → checklist`  
-**Complete** (10 steps): All commands for complex campaigns with optimization
+**Quick** (3 steps - Core only):
+```
+discover → strategy → create
+```
+Use when: Simple campaign, tight deadline
+
+**Standard** (8 steps - Core + Quality Gates):
+```
+constitution → discover → clarify → strategy → 
+checklist → tasks → analyze → create
+```
+Use when: Standard project, quality matters (Recommended)
+
+**Complete** (10 steps - With Feedback Loop):
+```
+constitution → discover → clarify → strategy → 
+checklist → tasks → analyze → create →
+[AI Agent executes] → review → optimize
+```
+Use when: Complex campaign, continuous improvement needed
 
 ---
 
