@@ -14,7 +14,7 @@ A **Spec-Driven Toolkit** that enables marketing teams to:
 
 ✅ **Define** marketing operations as structured YAML specifications  
 ✅ **Validate** plans, campaigns, and content against 45 business rules  
-✅ **Execute** with 22 AI Agent Slash Commands for automated workflows  
+✅ **Execute** with 10 SDM workflow commands for guided specification creation  
 ✅ **Analyze** performance with AI-generated insights and optimization recommendations  
 
 **v0.3.0** introduces a complete **10-command SDM (Spec-Driven Marketing) workflow** system with closed-loop optimization:
@@ -91,8 +91,8 @@ marketing_spec_kit validate my-marketing-spec.yaml
 
 marketing-spec-kit v0.3.0 manages 9 marketing entities:
 
-| Entity | Purpose | Fields | New in v2.0 |
-|--------|---------|--------|-------------|
+| Entity | Purpose | Fields | New in v0.2.0 |
+|--------|---------|--------|---------------|
 | **Project** | Brand identity and core values | 9 | |
 | **Product** | Feature offerings and positioning | 8 | |
 | **MarketingPlan** | Strategic marketing plan | 14 | ✅ |
@@ -103,54 +103,10 @@ marketing-spec-kit v0.3.0 manages 9 marketing entities:
 | **Milestone** | Timeline markers and events | 9 | |
 | **Analytics** | Performance analytics report | 9 | ✅ |
 
-**New in v2.0.0**:
+**New in v0.2.0**:
 - **MarketingPlan**: Strategic planning with objectives, budget, KPIs
 - **Analytics**: AI-powered performance analysis and optimization
 - **Campaign.plan_id**: Now REQUIRED (links campaigns to plans)
-
----
-
-## 🎯 5-Phase Workflow
-
-### Phase 1: Strategic Planning
-
-```bash
-/marketing.plan.create      # Create plan with objectives, budget, KPIs
-/marketing.plan.validate    # Validate against 5 rules
-/marketing.plan.analyze     # AI strategic analysis
-```
-
-### Phase 2: Campaign Design
-
-```bash
-/marketing.campaign.design  # AI-assisted campaign design
-/marketing.campaign         # Get campaign details
-```
-
-### Phase 3: Content Creation
-
-```bash
-/marketing.content.plan           # Generate content calendar
-/marketing.generate.post          # Generate social media post
-/marketing.generate.article       # Generate blog article
-/marketing.generate.email         # Generate email campaign
-/marketing.generate.landing_page  # Generate landing page copy
-```
-
-### Phase 4: Execution & Publishing
-
-```bash
-/marketing.execute.schedule  # Schedule content for future publication
-/marketing.execute.publish   # Publish content immediately
-```
-
-### Phase 5: Analytics & Optimization
-
-```bash
-/marketing.analytics.campaign     # Campaign performance report
-/marketing.analytics.plan         # Plan-level analytics
-/marketing.optimize.suggest       # AI optimization suggestions
-```
 
 ---
 
@@ -166,7 +122,7 @@ marketing-spec-kit v0.3.0 manages 9 marketing entities:
 
 ## 🎯 SDM Command System (10)
 
-**New in v2.1**: Complete Spec-Driven Marketing workflow with closed-loop optimization!
+**New in v0.3.0**: Complete Spec-Driven Marketing workflow with closed-loop optimization!
 
 ### Core Commands (8) - Planning Phase
 
@@ -210,44 +166,6 @@ Planning (8) → Execution → Review (2) → Next Campaign Planning
 
 ---
 
-## 🤖 Entity Commands (Planned)
-
-### Data Access (7 commands)
-- `/marketing.project` - Get brand identity
-- `/marketing.product` - Get product features
-- `/marketing.plan.get` - Get plan details **[NEW]**
-- `/marketing.campaign` - Get campaign goals
-- `/marketing.channel` - Get channel details
-- `/marketing.tool` - Get tool integrations
-- `/marketing.milestone` - Get milestone events
-
-### Strategic Planning (4 commands) **[NEW]**
-- `/marketing.plan.create` - Create marketing plan
-- `/marketing.plan.validate` - Validate plan
-- `/marketing.plan.analyze` - AI strategic analysis
-
-### Campaign & Content (3 commands)
-- `/marketing.campaign.design` - AI-assisted campaign design **[NEW]**
-- `/marketing.content_template` - Get content guidelines
-- `/marketing.content.plan` - Generate content calendar **[NEW]**
-
-### Content Generation (4 commands)
-- `/marketing.generate.post` - Generate social media post
-- `/marketing.generate.article` - Generate blog article
-- `/marketing.generate.email` - Generate email campaign
-- `/marketing.generate.landing_page` - Generate landing page copy
-
-### Task Execution (2 commands)
-- `/marketing.execute.schedule` - Schedule content
-- `/marketing.execute.publish` - Publish content
-
-### Analytics & Optimization (3 commands) **[NEW]**
-- `/marketing.analytics.campaign` - Campaign analytics report
-- `/marketing.analytics.plan` - Plan-level analytics
-- `/marketing.optimize.suggest` - AI optimization suggestions
-
----
-
 ## ✅ Validation Rules (45)
 
 marketing-spec-kit enforces 45 business rules across all entities:
@@ -256,13 +174,13 @@ marketing-spec-kit enforces 45 business rules across all entities:
 |--------|-------|----------------|
 | Project | 6 | Brand voice, website HTTPS, target audience |
 | Product | 5 | Pricing, launch date, feature list |
-| **MarketingPlan** | **5** | **Budget balance, approval, objectives** **[NEW]** |
-| Campaign | 11 | Budget, dates, channels, **plan linkage** **[UPDATED]** |
+| **MarketingPlan** | **10** | **Budget balance, approval, objectives, date ranges, KPIs** **[NEW]** |
+| Campaign | 11 | Budget, dates, channels, **plan linkage (REQUIRED)** **[UPDATED]** |
 | Channel | 6 | Platform, constraints, tool integration |
 | Tool | 6 | Credentials, rate limits, integration |
 | ContentTemplate | 5 | Brand compliance, format, examples |
 | Milestone | 5 | Date validity, product/campaign links |
-| **Analytics** | **1** | **Entity reference validation** **[NEW]** |
+| **Analytics** | **5** | **Entity reference, metrics, insights, data integrity** **[NEW]** |
 
 **Performance**: Validation completes in <250ms for typical specifications.
 
@@ -318,7 +236,7 @@ campaigns:
   - id: "q4-awareness-launch"
     name: "Product Launch Campaign"
     goal: "awareness"
-    plan_id: "q4-2025-growth"  # REQUIRED in v2.0.0
+    plan_id: "q4-2025-growth"  # REQUIRED in v0.2.0
     project_id: "awesomeapp"
     target_audience: ["Developers"]
     budget: 2000
@@ -341,7 +259,7 @@ See [`examples/`](./examples/) for complete examples.
 marketing-spec-kit/
 ├── README.md                   # This file
 ├── CHANGELOG.md                # Version history
-├── AGENTS.md                   # AI Agent guide (v2.0.0 workflow)
+├── AGENTS.md                   # AI Agent guide (v0.3.0 SDM workflow)
 ├── pyproject.toml              # Python project config
 │
 ├── memory/
@@ -350,30 +268,30 @@ marketing-spec-kit/
 ├── specs/
 │   ├── domain/
 │   │   └── 001-marketing-operations-spec/
-│   │       ├── spec.md         # Domain specification (v2.0.0)
+│   │       ├── spec.md         # Domain specification (v0.3.0)
 │   │       └── workflow-redesign.md
 │   └── toolkit/
 │       └── 001-marketing-spec-kit-implementation/
 │           └── spec.md         # Toolkit specification
 │
 ├── changes/
-│   └── 2025-11-15-add-workflow-system/  # v2.0.0 evolution
+│   └── 2025-11-15-add-workflow-system/  # v0.2.0 evolution proposal
 │       ├── proposal.md
 │       ├── tasks.md
 │       ├── impact.md
 │       └── specs/spec-delta.md
 │
 ├── examples/
-│   ├── metaspec-marketing.yaml        # Complete v2.0.0 example
+│   ├── metaspec-marketing.yaml        # Complete v0.3.0 example
 │   └── metaspec-marketing-plan.md     # Plan documentation
 │
 ├── templates/
 │   ├── entity_templates/       # Init templates (minimal/default/full)
-│   └── custom/
-│       └── commands/           # 22 Slash Command definitions
+│   └── sdm/
+│       └── commands/           # 10 SDM workflow commands
 │
 └── src/marketing_spec_kit/
-    ├── __init__.py             # Package exports (v2.0.0)
+    ├── __init__.py             # Package exports (v0.3.0)
     ├── models.py               # 9 entities + 11 nested models
     ├── parser.py               # YAML/JSON parser
     ├── validator.py            # 45 validation rules
@@ -388,7 +306,7 @@ marketing-spec-kit/
 - **[AGENTS.md](./AGENTS.md)** - Complete AI Agent workflow guide
 - **[CHANGELOG.md](./CHANGELOG.md)** - Version history and changes
 - **[memory/constitution.md](./memory/constitution.md)** - Core principles (v1.3.0)
-- **[specs/domain/](./specs/domain/)** - Domain specification (v2.0.0)
+- **[specs/domain/](./specs/domain/)** - Domain specification (v0.3.0)
 - **[changes/](./changes/)** - Evolution proposals
 
 ---
