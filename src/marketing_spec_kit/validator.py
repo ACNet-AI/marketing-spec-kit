@@ -1,15 +1,15 @@
 """Validator for Marketing Operations Specification
 
-Implements 45 validation rules from domain specification v2.0.0:
+Implements 45 validation rules from domain specification v0.3.0:
 - Project: VR-P01 to VR-P06 (6 rules)
 - Product: VR-PR01 to VR-PR05 (5 rules)
-- MarketingPlan: PLAN-01 to PLAN-05 (5 rules) [NEW in v2.0.0]
-- Campaign: VR-C01 to VR-C11 (11 rules, includes 4 new rules) [UPDATED in v2.0.0]
+- MarketingPlan: VR-MP01 to VR-MP10 (10 rules) [NEW in v0.2.0]
+- Campaign: VR-C01 to VR-C11 (11 rules, includes plan_id requirement) [UPDATED in v0.2.0]
 - Channel: VR-CH01 to VR-CH06 (6 rules)
 - Tool: VR-T01 to VR-T06 (6 rules)
 - ContentTemplate: VR-CT01 to VR-CT05 (5 rules)
 - Milestone: VR-M01 to VR-M05 (5 rules)
-- Analytics: ANLY-01 (1 rule) [NEW in v2.0.0]
+- Analytics: VR-A01 to VR-A05 (5 rules) [NEW in v0.2.0]
 
 Performance Target: Validate <250ms for typical specs
 """

@@ -2,15 +2,15 @@
 
 This toolkit provides:
 - Specification parsing (YAML/JSON → Pydantic models)
-- Validation (35 rules from domain specification v2.0.0)
+- Validation (45 rules from domain specification v0.3.0)
 - CLI commands (init, validate)
-- AI Agent Slash Commands (22 operations for content generation)
+- AI Agent Slash Commands (10 SDM workflow commands)
 
-Version 2.0.0 introduces workflow-driven marketing operations with MarketingPlan
-and Analytics entities.
+Version 0.3.0 introduces complete SDM (Spec-Driven Marketing) workflow system
+with 10 workflow commands and comprehensive validation (9 entities, 45 rules).
 """
 
-__version__ = "2.0.0"
+__version__ = "0.3.0"
 
 # Entity models (will be implemented in models.py)
 from marketing_spec_kit.models import (

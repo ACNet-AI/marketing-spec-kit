@@ -38,9 +38,10 @@ def info():
         f"[bold cyan]marketing-spec-kit[/bold cyan] [dim]v{__version__}[/dim]\n\n"
         "[yellow]Marketing Operations Specification Toolkit[/yellow]\n\n"
         "Domain: [green]Marketing Operations[/green]\n"
-        "Entities: [green]7[/green] (Project, Product, Campaign, Channel, Tool, Template, Milestone)\n"
-        "Validation Rules: [green]42[/green]\n"
-        "Commands: [green]init, validate, info[/green]",
+        "Entities: [green]9[/green] (Project, Product, MarketingPlan, Campaign, Channel, Tool, Template, Milestone, Analytics)\n"
+        "Validation Rules: [green]45[/green]\n"
+        "SDM Commands: [green]10[/green] (constitution → discover → ... → optimize)\n"
+        "CLI Commands: [green]init, validate, info[/green]",
         title="📦 Toolkit Info",
         border_style="cyan",
     ))

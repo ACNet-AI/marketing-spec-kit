@@ -1,20 +1,20 @@
 """Pydantic models for Marketing Operations Specification
 
-This module defines 9 entities from the domain specification (v2.0.0):
+This module defines 9 entities from the domain specification (v0.3.0):
 - Project: Brand identity and core values
 - Product: Feature offerings and positioning
-- MarketingPlan: Strategic marketing plan (NEW in v2.0.0)
+- MarketingPlan: Strategic marketing plan (NEW in v0.2.0)
 - Campaign: Time-bound marketing activities
 - Channel: Distribution platforms
 - Tool: Integration automation
 - ContentTemplate: Brand guidelines and constraints
 - Milestone: Timeline markers and events
-- Analytics: Performance analytics report (NEW in v2.0.0)
+- Analytics: Performance analytics report (NEW in v0.2.0)
 
 All models use Pydantic v2.0+ for automatic validation.
 
-Breaking Changes in v2.0.0:
-- Campaign.plan_id is now REQUIRED (was not present in v1.x)
+Breaking Changes in v0.2.0:
+- Campaign.plan_id is now REQUIRED (was not present in v0.1.x)
 - All campaigns must belong to a MarketingPlan
 """
 
