@@ -1,10 +1,16 @@
 # Implementation Tasks: marketing-spec-kit
 
+> ⚠️ **OUTDATED**: These tasks are based on Domain Spec v1.0.0 (7 entities, 25 rules, 13 operations).  
+> Current Domain Spec is v0.3.0 (9 entities, 45 rules, 10 SDM workflow commands).  
+> **Status**: Needs regeneration via `/metaspec.sdd.tasks`  
+> **Impact**: Task breakdown incomplete. Missing tasks for 2 new entities (MarketingPlan, Analytics) and 20 new validation rules.
+
 **Toolkit**: marketing-spec-kit  
 **Version**: 1.0.0  
 **Generated**: 2025-11-15  
-**Total Tasks**: 65  
-**Estimated Duration**: 6 weeks
+**Note**: Tasks outdated as of 2025-11-17  
+**Total Tasks**: 65 (incomplete)  
+**Estimated Duration**: 6 weeks (underestimated)
 
 ---
 

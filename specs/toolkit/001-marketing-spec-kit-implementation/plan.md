@@ -1,10 +1,16 @@
 # Implementation Plan: marketing-spec-kit
 
+> ⚠️ **OUTDATED**: This plan is based on Domain Spec v1.0.0 (7 entities, 25 rules, 13 operations).  
+> Current Domain Spec is v0.3.0 (9 entities, 45 rules, 10 SDM workflow commands).  
+> **Status**: Needs regeneration via `/metaspec.sdd.plan`  
+> **Impact**: Implementation guidance may be incomplete. Refer to `spec.md` for current requirements.
+
 **Toolkit**: marketing-spec-kit  
 **Version**: 1.0.0  
 **Language**: Python 3.9+  
 **Architecture**: Modular  
-**Created**: 2025-11-15
+**Created**: 2025-11-15  
+**Note**: Plan outdated as of 2025-11-17
 
 ---
 
