@@ -383,27 +383,6 @@ marketing-spec-kit/
 
 ---
 
-## 🆚 v2.0.0 vs v1.0.0
-
-| Feature | v1.0.0 | v2.0.0 | Change |
-|---------|--------|--------|--------|
-| **Entities** | 7 | 9 | +2 (Plan, Analytics) |
-| **Slash Commands** | 13 | 22 | +9 |
-| **Validation Rules** | 42 | 45 | +3 |
-| **Workflow Phases** | ❌ None | ✅ 5 phases | NEW |
-| **Strategic Planning** | ❌ | ✅ Plan entity | NEW |
-| **Performance Analytics** | ❌ | ✅ Analytics entity | NEW |
-| **AI Campaign Design** | ❌ | ✅ campaign.design | NEW |
-| **Content Calendar** | ❌ | ✅ content.plan | NEW |
-
-**Breaking Changes**:
-- `Campaign.plan_id` is now **REQUIRED** (was not present in v1.x)
-- All campaigns must belong to a MarketingPlan
-
-See [MIGRATION.md](./docs/MIGRATION.md) for upgrade guide.
-
----
-
 ## 📚 Documentation
 
 - **[AGENTS.md](./AGENTS.md)** - Complete AI Agent workflow guide
