@@ -1,0 +1,41 @@
+project:
+  name: "Test Project"
+  tagline: "A test marketing project"
+  brand_voice: "Technical"
+  website: "https://example.com"
+  target_audience:
+    - "developers"
+    - "tech leads"
+  value_propositions:
+    - "Fast and reliable"
+    - "Easy to use"
+
+products:
+  - id: "test-product"
+    name: "Test Product"
+    description: "A test product for demonstration"
+    project_id: "test-project"
+    target_audience:
+      - "developers"
+    key_features:
+      - "Feature 1"
+      - "Feature 2"
+      - "Feature 3"
+
+campaigns:
+  - id: "launch-campaign"
+    name: "Product Launch Campaign"
+    goal: "awareness"
+    project_id: "test-project"
+    product_ids:
+      - "test-product"
+    target_audience:
+      - "developers"
+    budget: 10000.0
+    start_date: "2025-01-01"
+    end_date: "2025-03-31"
+    channels:
+      - "social-media"
+      - "email"
+    status: "draft"
+

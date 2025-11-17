@@ -1,0 +1,529 @@
+# Complete v0.3.0 Marketing Specification Example
+# This example demonstrates all 9 entities and v0.3.0 features
+
+project:
+  name: "CloudDev Platform"
+  tagline: "Deploy Faster, Scale Smarter"
+  brand_voice: "Technical"
+  website: "https://clouddev.io"
+  target_audience:
+    - "Cloud Architects"
+    - "DevOps Engineers"
+    - "SRE Teams"
+  value_propositions:
+    - "10x faster deployments"
+    - "Auto-scaling without configuration"
+    - "Built-in monitoring and alerts"
+
+products:
+  - id: "clouddev-core"
+    name: "CloudDev Core"
+    tagline: "One-click cloud deployments"
+    project_id: "clouddev-platform"
+    description: "Deploy any application to any cloud in one click"
+    features:
+      - "Multi-cloud support (AWS, GCP, Azure)"
+      - "Auto-scaling"
+      - "Built-in monitoring"
+      - "Zero-downtime deployments"
+    target_audience: ["Cloud Architects", "DevOps Engineers"]
+    pricing:
+      model: "subscription"
+      tiers:
+        - name: "Starter"
+          price: 29
+          features: ["Up to 5 projects", "Community support"]
+        - name: "Pro"
+          price: 99
+          features: ["Unlimited projects", "Priority support", "Advanced monitoring"]
+    launch_date: "2025-10-01"
+    status: "active"
+
+# NEW in v0.3.0: MarketingPlan entity
+plans:
+  - id: "q4-2025-launch-plan"
+    name: "Q4 2025 Product Launch Plan"
+    project_id: "clouddev-platform"
+    
+    # Time period: 13 weeks (4-52 allowed)
+    period:
+      start_date: "2025-10-01"
+      end_date: "2025-12-31"
+      duration_weeks: 13
+    
+    # 1-5 objectives
+    objectives:
+      - "Achieve 100K website visitors"
+      - "Generate 5,000 qualified signups"
+      - "Reach $50K MRR"
+    
+    # Multi-segment target audience
+    target_audience:
+      - segment: "Enterprise Adopters"
+        description: "Fortune 500 companies looking for cloud deployment solutions"
+        size_estimate: 10000
+        priority: "high"
+      
+      - segment: "Startup Early Adopters"
+        description: "Fast-growing startups (Series A-B) needing scalable infrastructure"
+        size_estimate: 50000
+        priority: "high"
+      
+      - segment: "Individual Developers"
+        description: "Freelance developers and consultants"
+        size_estimate: 200000
+        priority: "medium"
+    
+    # 1-8 strategies
+    strategies:
+      - name: "Content-Led Growth"
+        description: "Publish high-quality technical content weekly"
+        rationale: "Developers discover products through search and technical blogs"
+        success_criteria: "50K monthly organic visitors from content"
+      
+      - name: "Developer Community Building"
+        description: "Active engagement in Reddit, Hacker News, Dev.to"
+        rationale: "Build trust and credibility in developer communities"
+        success_criteria: "1000+ community interactions, 100+ GitHub stars"
+      
+      - name: "Product-Led Growth"
+        description: "Free tier with upgrade path to paid"
+        rationale: "Let users experience value before committing"
+        success_criteria: "20% free-to-paid conversion rate"
+    
+    # Budget allocation (must sum to total)
+    budget:
+      total: 10000
+      currency: "USD"
+      allocation:
+        content_creation: 3000
+        paid_promotion: 4000
+        tools: 1500
+        community_engagement: 1000
+        contingency: 500
+    
+    # 1-10 KPIs with priorities
+    kpis:
+      - name: "Website Traffic"
+        target: 100000
+        unit: "visitors"
+        measurement: "Google Analytics monthly unique visitors"
+        priority: "P0"  # Critical
+      
+      - name: "Qualified Signups"
+        target: 5000
+        unit: "users"
+        measurement: "Users who complete onboarding"
+        priority: "P0"
+      
+      - name: "Monthly Recurring Revenue"
+        target: 50000
+        unit: "USD"
+        measurement: "Stripe MRR"
+        priority: "P0"
+      
+      - name: "Free-to-Paid Conversion"
+        target: 20
+        unit: "percent"
+        measurement: "Paid users / Free users"
+        priority: "P1"  # Important
+      
+      - name: "Content Reach"
+        target: 50000
+        unit: "impressions"
+        measurement: "Total blog post views"
+        priority: "P1"
+    
+    # List of campaigns under this plan
+    campaign_ids:
+      - "launch-awareness-oct"
+      - "conversion-nov-dec"
+    
+    # Plan status
+    status: "active"
+    
+    # Timestamps
+    created_at: "2025-09-15T10:00:00Z"
+    updated_at: "2025-10-01T08:00:00Z"
+    
+    # Approval metadata (required for APPROVED/ACTIVE status)
+    approval:
+      approved_by: "CMO Jane Smith"
+      approved_at: "2025-09-30T16:00:00Z"
+      comments: "Budget approved, KPIs aligned with company goals"
+
+# Campaigns (UPDATED in v0.3.0: plan_id now REQUIRED)
+campaigns:
+  - id: "launch-awareness-oct"
+    name: "October Launch Awareness Campaign"
+    goal: "awareness"
+    plan_id: "q4-2025-launch-plan"  # REQUIRED in v0.3.0
+    project_id: "clouddev-platform"
+    product_ids:
+      - "clouddev-core"
+    target_audience:
+      - "Cloud Architects"
+      - "DevOps Engineers"
+    budget: 3000
+    start_date: "2025-10-01"  # Must be within plan period
+    end_date: "2025-10-31"    # Must be within plan period
+    channels:
+      - "twitter"
+      - "dev-to"
+      - "hacker-news"
+      - "reddit-devops"
+    kpis:
+      impressions: 50000
+      engagement_rate: 0.03
+      click_through_rate: 0.02
+    
+    # NEW in v0.3.0: expected_kpis for planning phase
+    expected_kpis:
+      impressions: 60000
+      engagement_rate: 0.035
+      click_through_rate: 0.025
+      signups: 500
+    
+    # NEW in v0.3.0: content_calendar
+    content_calendar:
+      - date: "2025-10-01"
+        content_type: "announcement"
+        channel_id: "twitter"
+        title: "CloudDev Platform Launch Announcement"
+        status: "published"
+      
+      - date: "2025-10-07"
+        content_type: "tutorial"
+        channel_id: "dev-to"
+        title: "Deploy Your First App in 5 Minutes with CloudDev"
+        status: "published"
+      
+      - date: "2025-10-14"
+        content_type: "case_study"
+        channel_id: "dev-to"
+        title: "How Acme Corp Reduced Deploy Time by 90%"
+        status: "published"
+      
+      - date: "2025-10-21"
+        content_type: "discussion"
+        channel_id: "hacker-news"
+        title: "Show HN: CloudDev - One-click cloud deployments"
+        status: "planned"
+      
+      - date: "2025-10-28"
+        content_type: "summary"
+        channel_id: "twitter"
+        title: "October Launch Recap + What's Next"
+        status: "planned"
+    
+    status: "active"
+  
+  - id: "conversion-nov-dec"
+    name: "Nov-Dec Conversion Campaign"
+    goal: "conversion"
+    plan_id: "q4-2025-launch-plan"
+    project_id: "clouddev-platform"
+    product_ids:
+      - "clouddev-core"
+    target_audience:
+      - "Startup Early Adopters"
+    budget: 4000
+    start_date: "2025-11-01"
+    end_date: "2025-12-31"
+    channels:
+      - "google-ads"
+      - "linkedin"
+      - "email"
+    expected_kpis:
+      signups: 3000
+      free_to_paid_conversion: 0.20
+      revenue: 30000
+    status: "planned"
+
+channels:
+  - id: "twitter"
+    name: "Twitter @clouddev"
+    type: "social_media"
+    platform: "Twitter"
+    project_id: "clouddev-platform"
+    url: "https://twitter.com/clouddev"
+    audience_size: 5000
+    posting_frequency: "3x per week"
+    content_formats:
+      - "short_text"
+      - "images"
+      - "links"
+    constraints:
+      max_length: 280
+      hashtags_recommended: 3
+    tool_id: "buffer"
+  
+  - id: "dev-to"
+    name: "Dev.to Blog"
+    type: "blog"
+    platform: "Dev.to"
+    project_id: "clouddev-platform"
+    url: "https://dev.to/clouddev"
+    audience_size: 1000
+    posting_frequency: "1x per week"
+    content_formats:
+      - "long_form_article"
+      - "tutorial"
+      - "case_study"
+    constraints:
+      min_length: 800
+      code_examples_required: true
+  
+  - id: "hacker-news"
+    name: "Hacker News"
+    type: "forum"
+    platform: "Hacker News"
+    project_id: "clouddev-platform"
+    url: "https://news.ycombinator.com"
+    audience_size: 50000
+    posting_frequency: "1x per month"
+    content_formats:
+      - "discussion"
+      - "show_hn"
+    constraints:
+      authenticity_required: true
+      self_promotion_limit: "10%"
+  
+  - id: "reddit-devops"
+    name: "r/devops"
+    type: "forum"
+    platform: "Reddit"
+    project_id: "clouddev-platform"
+    url: "https://reddit.com/r/devops"
+    audience_size: 200000
+    posting_frequency: "1x per 2 weeks"
+    content_formats:
+      - "discussion"
+      - "tutorial"
+    constraints:
+      community_rules: "No direct promotion, focus on value"
+
+tools:
+  - id: "buffer"
+    name: "Buffer"
+    type: "social_media_scheduling"
+    project_id: "clouddev-platform"
+    capabilities:
+      - "schedule_posts"
+      - "analytics"
+      - "team_collaboration"
+    integration:
+      api_endpoint: "https://api.bufferapp.com/1"
+      auth_type: "oauth2"
+    rate_limits:
+      posts_per_day: 100
+    channels:
+      - "twitter"
+
+content_templates:
+  - id: "technical-blog-post"
+    name: "Technical Blog Post Template"
+    type: "article"
+    project_id: "clouddev-platform"
+    target_channels:
+      - "dev-to"
+    format: "markdown"
+    brand_guidelines:
+      - "Use technical language, no marketing jargon"
+      - "Include code examples with syntax highlighting"
+      - "End with clear call-to-action"
+    structure:
+      - "Hook (problem statement)"
+      - "Solution overview"
+      - "Step-by-step tutorial"
+      - "Code examples"
+      - "Conclusion + CTA"
+    constraints:
+      min_word_count: 800
+      max_word_count: 2000
+      code_examples_required: true
+    examples:
+      - title: "Deploy Your First App in 5 Minutes"
+        url: "https://dev.to/clouddev/deploy-in-5-minutes"
+
+milestones:
+  - id: "public-launch"
+    name: "Public Product Launch"
+    type: "launch"
+    date: "2025-10-01"
+    project_id: "clouddev-platform"
+    status: "completed"
+    description: "Official public launch of CloudDev Platform"
+    product_ids:
+      - "clouddev-core"
+    campaign_ids:
+      - "launch-awareness-oct"
+  
+  - id: "1k-users"
+    name: "1,000 User Milestone"
+    type: "growth"
+    date: "2025-11-15"
+    project_id: "clouddev-platform"
+    status: "in_progress"
+    description: "Reach 1,000 registered users"
+    campaign_ids:
+      - "launch-awareness-oct"
+      - "conversion-nov-dec"
+
+# NEW in v0.3.0: Analytics entity
+analytics:
+  - id: "analytics-oct-awareness"
+    type: "campaign"
+    entity_id: "launch-awareness-oct"
+    
+    period:
+      start_date: "2025-10-01"
+      end_date: "2025-10-31"
+    
+    # Actual metrics
+    metrics:
+      impressions: 68000
+      engagements: 2720
+      clicks: 1360
+      signups: 680
+      spend: 2800
+    
+    # Target vs Actual comparisons
+    vs_target:
+      impressions:
+        target: 50000
+        actual: 68000
+        achievement: 136
+        status: "exceeds"
+      
+      engagement_rate:
+        target: 0.03
+        actual: 0.04
+        achievement: 133
+        status: "exceeds"
+      
+      click_through_rate:
+        target: 0.02
+        actual: 0.02
+        achievement: 100
+        status: "meets"
+      
+      signups:
+        target: 500
+        actual: 680
+        achievement: 136
+        status: "exceeds"
+    
+    # AI-generated insights
+    insights:
+      - type: "success"
+        description: "Impressions exceeded target by 36%"
+        evidence: "68K impressions vs 50K target, driven by viral Hacker News post"
+        recommendation: "Replicate HN strategy for November campaign"
+      
+      - type: "success"
+        description: "Signup conversion 36% above target"
+        evidence: "680 signups vs 500 target (136% achievement)"
+        recommendation: "Maintain current landing page and onboarding flow"
+      
+      - type: "concern"
+        description: "Reddit posts underperformed"
+        evidence: "r/devops post removed for self-promotion (0 reach)"
+        recommendation: "Focus on value-first content for Reddit, avoid direct promotion"
+      
+      - type: "opportunity"
+        description: "Dev.to tutorials drive highest conversion"
+        evidence: "Tutorial posts: 50% of signups from 30% of traffic"
+        recommendation: "Double down on tutorial content in November"
+    
+    # Optimization recommendations
+    optimizations:
+      - priority: "high"
+        action: "Pause Reddit campaigns, reallocate $200 to Dev.to sponsorship"
+        expected_impact: "Better ROI, reach 10K more developers"
+        effort: "low"
+      
+      - priority: "high"
+        action: "Create 2 more tutorial articles for Dev.to"
+        expected_impact: "Increase signups by 300 (based on current conversion rate)"
+        effort: "medium"
+      
+      - priority: "medium"
+        action: "A/B test 3 new landing page headlines"
+        expected_impact: "Potentially +10% conversion rate"
+        effort: "low"
+      
+      - priority: "low"
+        action: "Experiment with LinkedIn organic posts"
+        expected_impact: "Explore B2B audience"
+        effort: "low"
+    
+    generated_at: "2025-11-01T10:00:00Z"
+  
+  - id: "analytics-q4-plan"
+    type: "plan"
+    entity_id: "q4-2025-launch-plan"
+    
+    period:
+      start_date: "2025-10-01"
+      end_date: "2025-10-31"  # Partial report (1 month of 3)
+    
+    metrics:
+      total_spend: 2800
+      total_impressions: 68000
+      total_signups: 680
+      total_revenue: 5440  # 680 * $8 average
+    
+    vs_target:
+      website_traffic:
+        target: 100000
+        actual: 68000
+        achievement: 68
+        status: "on_track"  # 1 month into 3-month plan
+      
+      qualified_signups:
+        target: 5000
+        actual: 680
+        achievement: 13.6
+        status: "on_track"  # On pace for ~2000 (40% of target)
+      
+      mrr:
+        target: 50000
+        actual: 5440
+        achievement: 10.9
+        status: "below_target"  # Need acceleration
+    
+    insights:
+      - type: "success"
+        description: "Strong start: 68% of traffic target in first month"
+        evidence: "68K visitors in Oct vs 100K total target"
+        recommendation: "On track for traffic goal"
+      
+      - type: "concern"
+        description: "MRR significantly behind pace"
+        evidence: "$5.4K MRR vs $50K target (10.9% achievement in month 1)"
+        recommendation: "Accelerate conversion campaign launch"
+      
+      - type: "opportunity"
+        description: "High signup quality: 100% onboarding completion"
+        evidence: "All 680 signups completed onboarding (vs 70% industry avg)"
+        recommendation: "Focus on conversion optimization over volume"
+    
+    optimizations:
+      - priority: "high"
+        action: "Launch Nov-Dec conversion campaign 2 weeks early"
+        expected_impact: "Accelerate MRR growth to meet Q4 target"
+        effort: "medium"
+      
+      - priority: "high"
+        action: "Add free-to-paid upgrade prompts in product"
+        expected_impact: "Increase conversion rate from 15% to 20%"
+        effort: "high"
+      
+      - priority: "medium"
+        action: "Shift 20% of budget from awareness to conversion"
+        expected_impact: "Better balance for revenue goal"
+        effort: "low"
+    
+    generated_at: "2025-11-05T10:00:00Z"
+```
