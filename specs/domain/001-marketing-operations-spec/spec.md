@@ -1010,173 +1010,371 @@ Milestone (1)
 
 ---
 
-## Domain Workflows
+## Specification Usage Workflow
 
-### Standard Marketing Operations Workflow
+### Workflow: SDM (Spec-Driven Marketing)
 
-Marketing operations typically follow this **5-phase workflow**:
+**Goal**: Guide users to create validated, actionable marketing specifications from discovery to optimization
 
-```
-Phase 1: Strategic Planning
-    ↓
-Phase 2: Campaign Design
-    ↓
-Phase 3: Content Creation
-    ↓
-Phase 4: Execution
-    ↓
-Phase 5: Analytics & Optimization
-    ↓
-(Loop back to Phase 1 for next cycle)
+**Total Steps**: 10
+
+**Workflow Type**: Spec-Driven Marketing (SDM)
+
+**Purpose**: This workflow defines HOW users create and manage marketing specifications using this domain spec. Each step maps 1:1 to a slash command in the marketing-spec-kit toolkit.
+
+---
+
+#### Step 1: Constitution
+
+- **Goal**: Establish marketing project principles and constraints
+- **User Action**: Define project-level guidelines (brand voice, budget constraints, prohibited content)
+- **Inputs Required**: Marketing domain knowledge, brand guidelines, organizational policies
+- **Outputs Created**: `memory/constitution.md` (Part II: Marketing Project Principles)
+- **Entities Involved**: `Project` (brand voice, value propositions defined)
+- **Quality Criteria**: 5-7 principles defined with clear rationale, constraints documented
+- **Command Mapping**: `/marketspec.constitution`
+- **Typical Duration**: 15-20 minutes
+
+**Example Output**:
+```markdown
+## Part II: Marketing Project Principles
+
+1. Brand Voice: Professional yet approachable, technical but accessible
+2. Audience First: All content must address primary audience pain points
+3. Data-Driven: Every claim must be backed by data or customer evidence
+4. Channel Constraints: No TikTok, focus on LinkedIn + technical blogs
+5. Budget Discipline: Campaign budgets must not exceed plan allocations
 ```
 
 ---
 
-#### Phase 1: Strategic Planning
+#### Step 2: Discover
 
-**Purpose**: Define marketing objectives, allocate budget, and establish measurable KPIs
+- **Goal**: Identify business objectives, target audience, and initial marketing strategy
+- **User Action**: Conduct discovery interview to gather marketing requirements
+- **Inputs Required**: Business goals, product information, competitive landscape
+- **Outputs Created**: Draft `MarketingPlan` entities (objectives, audience, strategies)
+- **Entities Involved**: `MarketingPlan`, `Product` (linked products)
+- **Quality Criteria**: 1-5 objectives defined (P0/P1/P2), target audience segments identified, 3-8 strategies outlined
+- **Command Mapping**: `/marketspec.discover`
+- **Typical Duration**: 30-45 minutes
 
-**Key Activities**:
-- Define business objectives (1-5 objectives, P0/P1/P2 prioritization)
-- Identify target audience segments (primary/secondary/tertiary)
-- Allocate budget across categories
-- Set measurable KPIs (1-10 metrics with targets)
-- Define marketing strategies (1-8 strategies)
-
-**Entities Created**:
-- `MarketingPlan` (status: draft → review → approved)
-
-**Typical Duration**: 1-2 weeks
-
-**Success Criteria**:
-- Clear P0 objectives defined
-- Budget allocated and approved
-- KPIs measurable and time-bound
-- Target audience well-defined
+**Example Output**:
+```yaml
+marketing_plan:
+  id: "q1-2025-product-launch"
+  objectives:
+    - description: "Increase developer awareness by 50%"
+      priority: "P0"
+  target_audience:
+    primary: "Backend developers (Python/Node.js)"
+    secondary: "DevOps engineers"
+  strategies:
+    - "Technical blog content marketing"
+    - "Developer conference sponsorships"
+    - "Open-source community engagement"
+```
 
 ---
 
-#### Phase 2: Campaign Design
+#### Step 3: Clarify
 
-**Purpose**: Design specific tactical campaigns to execute the strategic plan
+- **Goal**: Resolve ambiguities and underspecified areas in the marketing plan
+- **User Action**: Answer clarifying questions about budget, timeline, channel preferences, KPIs
+- **Inputs Required**: Draft MarketingPlan from Step 2
+- **Outputs Created**: Refined `MarketingPlan` with complete details, `checklists/clarifications.md`
+- **Entities Involved**: `MarketingPlan` (budget, dates, KPIs finalized), `Channel` (platform decisions)
+- **Quality Criteria**: All required fields populated, budget allocated, KPIs measurable, timeline feasible
+- **Command Mapping**: `/marketspec.clarify`
+- **Typical Duration**: 15-25 minutes
 
-**Key Activities**:
-- Select campaigns aligned with plan objectives
-- Choose appropriate marketing channels
-- Set campaign timelines within plan period
-- Allocate campaign budgets (sum should not exceed plan budget)
-- Define campaign-specific KPIs
+**Example Clarifications**:
+```markdown
+Q: What's the Q1 budget allocation?
+A: $50,000 total: $30k content, $15k events, $5k ads
 
-**Entities Created**:
-- `Campaign` (status: draft → planned)
-- `Channel` (as needed)
+Q: Which KPIs matter most?
+A: Primary: GitHub stars (+500), Secondary: Blog traffic (+30%)
 
-**Dependencies**:
-- Requires approved `MarketingPlan`
-- Campaign must link to parent plan via `plan_id`
+Q: Content publishing frequency?
+A: 2 technical blogs/month, 1 case study/quarter
+```
 
-**Typical Duration**: 3-7 days per campaign
+---
 
-**Success Criteria**:
-- Campaign goals match plan objectives
+#### Step 4: Strategy
+
+- **Goal**: Design detailed campaign structure and channel mix
+- **User Action**: Break down marketing plan into specific campaigns with channels and tactics
+- **Inputs Required**: Clarified MarketingPlan from Step 3
+- **Outputs Created**: `Campaign` entities (1-5 campaigns), `Channel` entities for each campaign
+- **Entities Involved**: `Campaign`, `Channel`, `ContentTemplate` (if needed)
+- **Quality Criteria**: Campaigns align with plan objectives, channel mix appropriate for audience, campaign dates within plan period
+- **Command Mapping**: `/marketspec.strategy`
+- **Typical Duration**: 25-35 minutes
+
+**Example Output**:
+```yaml
+campaign:
+  id: "q1-technical-content-campaign"
+  name: "Developer Education Series"
+  plan_id: "q1-2025-product-launch"
+  channels:
+    - platform: "technical_blog"
+      url: "https://blog.example.com"
+    - platform: "linkedin_company"
+      handle: "@example-dev"
+  goals:
+    - "Publish 6 technical tutorials"
+    - "Achieve 10k blog views"
+```
+
+---
+
+#### Step 5: Checklist
+
+- **Goal**: Validate marketing plan completeness and quality
+- **User Action**: Review generated quality checklist for the marketing plan
+- **Inputs Required**: Complete MarketingPlan with campaigns
+- **Outputs Created**: `checklists/marketing-plan-quality.md`
+- **Entities Involved**: `MarketingPlan`, `Campaign` (validation)
+- **Quality Criteria**: >80% checklist items passing, all critical items addressed
+- **Command Mapping**: `/marketspec.checklist`
+- **Typical Duration**: 10-15 minutes
+
+**Example Checklist**:
+```markdown
+Marketing Plan Quality Checklist:
+
+✅ Objectives (5/5)
+- [x] P0 objectives clearly defined
+- [x] Objectives are SMART (Specific, Measurable, Achievable, Relevant, Time-bound)
+- [x] Success metrics identified
+- [x] Baseline metrics documented
+- [x] Target metrics realistic
+
+✅ Budget (4/4)
+- [x] Total budget allocated
+- [x] Category breakdown provided
+- [x] Campaign budgets sum to total
+- [x] Buffer for unexpected costs
+
+⚠️  Campaigns (3/5)
+- [x] At least 1 campaign defined
+- [x] Campaigns link to objectives
+- [ ] All campaigns have complete channel mix
+- [ ] Content calendar populated
+- [ ] Campaign KPIs defined
+
+Score: 75% (Needs improvement)
+```
+
+---
+
+#### Step 6: Tasks
+
+- **Goal**: Break down campaigns into actionable content creation tasks
+- **User Action**: Generate task list for campaign execution (content pieces, channel setup, tool integration)
+- **Inputs Required**: Validated campaigns from Step 5
+- **Outputs Created**: `tasks.md` with concrete action items
+- **Entities Involved**: `Campaign`, `Channel`, `ContentTemplate`, `Tool`
+- **Quality Criteria**: Each campaign has 3-10 tasks, tasks are specific and actionable, owners assigned
+- **Command Mapping**: `/marketspec.tasks`
+- **Typical Duration**: 15-20 minutes
+
+**Example Output**:
+```markdown
+## Campaign Tasks: Developer Education Series
+
+### Content Creation (6 tasks)
+1. Write tutorial: "Getting Started with X" (Owner: @alice, Due: 2025-01-15)
+2. Create code examples repository (Owner: @bob, Due: 2025-01-10)
+3. Design blog header images (Owner: @carol, Due: 2025-01-12)
+...
+
+### Channel Setup (3 tasks)
+1. Configure LinkedIn posting schedule (Owner: @dave, Due: 2025-01-08)
+2. Set up blog analytics tracking (Owner: @eve, Due: 2025-01-05)
+3. Integrate MCP server for content publishing (Owner: @frank, Due: 2025-01-10)
+```
+
+---
+
+#### Step 7: Analyze
+
+- **Goal**: Check cross-entity consistency and detect potential issues
+- **User Action**: Review consistency analysis report
+- **Inputs Required**: Complete specification with all entities
+- **Outputs Created**: `analysis/consistency-report.md`
+- **Entities Involved**: All entities (cross-validation)
+- **Quality Criteria**: No critical inconsistencies, warnings addressed, all references valid
+- **Command Mapping**: `/marketspec.analyze`
+- **Typical Duration**: 10-15 minutes
+
+**Example Analysis**:
+```markdown
+## Consistency Analysis Report
+
+### ✅ Passed Checks (8)
 - Campaign dates within plan period
 - Campaign budgets sum to plan budget
-- Channels appropriate for target audience
+- All campaign.plan_id references valid
+- Channel platforms match campaign types
+- Product references exist
+- Milestone dates logical
+- Tool configurations complete
+- ContentTemplate constraints consistent
 
----
+### ⚠️  Warnings (2)
+- Campaign "Email Nurture" has no KPIs defined
+- Channel "Twitter" has no Tool integration (manual posting required)
 
-#### Phase 3: Content Creation
+### ❌ Errors (0)
 
-**Purpose**: Generate marketing content following brand guidelines
-
-**Key Activities**:
-- Apply brand voice and tone
-- Follow content templates
-- Create channel-specific content (respect constraints)
-- Schedule content calendar
-
-**Entities Used**:
-- `ContentTemplate` (for guidelines)
-- `Channel` (for platform constraints)
-- `Project` (for brand voice)
-
-**Typical Duration**: Ongoing throughout campaign
-
-**Success Criteria**:
-- Content follows brand guidelines
-- Content respects channel constraints
-- Content calendar populated
-
----
-
-#### Phase 4: Execution
-
-**Purpose**: Publish and distribute marketing content across channels
-
-**Key Activities**:
-- Publish content per schedule
-- Track engagement metrics
-- Update campaign status
-- Monitor channel performance
-
-**Entities Updated**:
-- `Campaign` (status: planned → active)
-- `Milestone` (if triggered)
-
-**Tools Used**:
-- `Tool` entities for automation (MCP preferred)
-
-**Typical Duration**: Campaign duration (varies)
-
-**Success Criteria**:
-- Content published on schedule
-- Metrics tracked and recorded
-- Campaign status updated
-
----
-
-#### Phase 5: Analytics & Optimization
-
-**Purpose**: Analyze performance and generate optimization recommendations
-
-**Key Activities**:
-- Compare actual vs target KPIs
-- Identify successes and concerns
-- Generate AI-powered insights
-- Create prioritized optimization recommendations
-
-**Entities Created**:
-- `Analytics` (for campaign or plan)
-
-**Dependencies**:
-- Requires completed or active `Campaign`
-- Actual performance data available
-
-**Typical Duration**: 1-3 days post-campaign
-
-**Success Criteria**:
-- All KPIs measured
-- Insights generated (success/concern/opportunity)
-- Optimization recommendations prioritized (high/medium/low)
-- Learnings documented for next cycle
-
----
-
-### Closed-Loop Marketing
-
-The workflow is **cyclical**:
-
-```
-Q1 Campaign (Phase 1-5)
-    ↓
-Review & Optimize (Phase 5)
-    ↓
-Q2 Campaign (Phase 1-5 with optimizations)
-    ↓
-Continuous Improvement Loop...
+**Overall Score**: 89/100 (Good)
 ```
 
-**Key Principle**: Each cycle's Analytics informs the next cycle's Strategy.
+---
+
+#### Step 8: Create
+
+- **Goal**: Generate final validated YAML specification
+- **User Action**: Generate complete marketing specification file
+- **Inputs Required**: Analyzed and validated entities from Step 7
+- **Outputs Created**: `marketing-spec.yaml` (complete specification)
+- **Entities Involved**: All 9 entities in final YAML format
+- **Quality Criteria**: Valid YAML syntax, passes all 45 validation rules, ready for execution
+- **Command Mapping**: `/marketspec.create`
+- **Typical Duration**: 5-10 minutes
+
+**Example Output**:
+```yaml
+# marketing-spec.yaml - Generated by /marketspec.create
+specification_version: "0.3.0"
+generated_date: "2025-11-17"
+
+project:
+  name: "metaspec"
+  brand_voice: "Professional yet approachable"
+  ...
+
+products:
+  - id: "metaspec-core"
+    name: "MetaSpec Framework"
+    ...
+
+marketing_plans:
+  - id: "q1-2025-product-launch"
+    ...
+
+campaigns:
+  - id: "q1-technical-content-campaign"
+    ...
+
+# [All entities included]
+```
+
+---
+
+#### Step 9: Review
+
+- **Goal**: Collect execution feedback and performance data post-campaign
+- **User Action**: Review campaign execution results and gather learnings
+- **Inputs Required**: Executed campaigns with actual performance data
+- **Outputs Created**: Updated `Campaign` (actual metrics), initial `Analytics` entity
+- **Entities Involved**: `Campaign` (status: completed), `Analytics` (performance data)
+- **Quality Criteria**: All KPIs measured, actual vs target comparison complete, execution notes documented
+- **Command Mapping**: `/marketspec.review`
+- **Typical Duration**: 20-30 minutes
+
+**Example Output**:
+```yaml
+analytics:
+  id: "q1-campaign-review"
+  entity_type: "campaign"
+  entity_id: "q1-technical-content-campaign"
+  analysis_date: "2025-03-31"
+  performance_summary:
+    - metric: "Blog views"
+      target: 10000
+      actual: 12500
+      status: "success"
+    - metric: "GitHub stars"
+      target: 500
+      actual: 380
+      status: "concern"
+  insights:
+    - type: "success"
+      description: "Technical tutorials outperformed by 25%"
+    - type: "concern"
+      description: "GitHub promotion insufficient"
+```
+
+---
+
+#### Step 10: Optimize
+
+- **Goal**: Generate prioritized optimization recommendations for next cycle
+- **User Action**: Review AI-generated optimization suggestions
+- **Inputs Required**: Analytics from Step 9, historical campaign data
+- **Outputs Created**: Complete `Analytics` with optimization recommendations
+- **Entities Involved**: `Analytics` (recommendations added), future `MarketingPlan` (informed by insights)
+- **Quality Criteria**: 3-10 recommendations generated, prioritized (high/medium/low), actionable for next cycle
+- **Command Mapping**: `/marketspec.optimize`
+- **Typical Duration**: 15-20 minutes
+
+**Example Output**:
+```yaml
+analytics:
+  # ... (from Step 9)
+  optimization_recommendations:
+    - priority: "high"
+      category: "content"
+      recommendation: "Double down on tutorial format: 25% higher engagement"
+      rationale: "Tutorial posts averaged 2,000 views vs 1,600 for other formats"
+      estimated_impact: "+15% total engagement"
+    
+    - priority: "high"
+      category: "channel"
+      recommendation: "Increase GitHub-specific promotion budget by 30%"
+      rationale: "Fell short of star target due to underfunding GitHub activities"
+      estimated_impact: "+200 stars next quarter"
+    
+    - priority: "medium"
+      category: "audience"
+      recommendation: "Expand secondary audience targeting to include frontend devs"
+      rationale: "Unexpected 20% traffic from frontend community"
+      estimated_impact: "+3,000 monthly visitors"
+```
+
+---
+
+### Workflow Summary
+
+**Complete Flow**:
+```
+constitution → discover → clarify → strategy → checklist
+    ↓           ↓          ↓          ↓           ↓
+    ↓           ↓          ↓          ↓        [quality gate]
+    ↓           ↓          ↓          ↓           ↓
+    ↓           ↓          ↓      [design]    tasks → analyze → create
+    ↓           ↓       [refine]                      ↓           ↓
+    ↓       [draft plan]                          [validate]  [generate]
+ [principles]                                         ↓           ↓
+                                                      ↓      [execute]
+                                                      ↓           ↓
+                                                  review ← optimize
+                                                      ↓           ↑
+                                                      └───────────┘
+                                                   [closed loop]
+```
+
+**Core Flow** (Required): constitution → discover → strategy → create  
+**Quality Gates**: clarify, checklist, analyze  
+**Planning**: tasks  
+**Optimization Loop**: review → optimize → [next cycle]
+
+**Closed-Loop Marketing**: Each SDM cycle's optimization recommendations inform the next cycle's discovery and strategy, creating continuous improvement.
 
 ---
 
