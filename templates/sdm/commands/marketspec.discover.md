@@ -1,17 +1,20 @@
 ---
 name: marketspec.discover
-description: Discover and define marketing needs
+description: Discover and document marketing needs
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.specify
+type: core
+category: Core Flow
+source: Adapted from metaspec.sdd.specify
 version: 0.3.0
 ---
 
-# /marketspec.discover
+# /marketspec.discover 🔴 Core
 
 **Purpose**: Discover and document marketing needs, objectives, and initial requirements.
 
-**Adapted from**: `metaspec.sds.specify`
+**Category**: Core Flow (Essential Workflow)  
+**Adapted from**: `metaspec.sdd.specify`
 
 ---
 

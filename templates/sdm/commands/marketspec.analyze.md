@@ -1,17 +1,21 @@
 ---
 name: marketspec.analyze
-description: Analyze cross-document consistency before implementation
+description: Check consistency before finalizing specification
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.analyze
+type: quality_gate
+category: Quality Gates
+source: Adapted from metaspec.sdd.analyze
 version: 0.3.0
 ---
 
-# /marketspec.analyze
+# /marketspec.analyze 🟡 Quality Gate
 
 **Purpose**: Check consistency across all planning documents before generating the final specification.
 
-**Adapted from**: `metaspec.sds.analyze`
+**Category**: Quality Gates (Recommended for QA)  
+**Timing**: BEFORE create  
+**Adapted from**: `metaspec.sdd.analyze`
 
 ---
 

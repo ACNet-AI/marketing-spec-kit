@@ -1,17 +1,21 @@
 ---
 name: marketspec.checklist
-description: Generate quality checklist for marketing specification
+description: Validate strategy completeness
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.checklist
+type: quality_gate
+category: Quality Gates
+source: Adapted from metaspec.sdd.checklist
 version: 0.3.0
 ---
 
-# /marketspec.checklist
+# /marketspec.checklist 🟡 Quality Gate
 
 **Purpose**: Generate a comprehensive quality checklist to validate the marketing specification against best practices and constitution requirements.
 
-**Adapted from**: `metaspec.sds.checklist`
+**Category**: Quality Gates (Recommended for QA)  
+**Timing**: AFTER strategy  
+**Adapted from**: `metaspec.sdd.checklist`
 
 ---
 

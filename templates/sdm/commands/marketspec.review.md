@@ -1,17 +1,21 @@
 ---
 name: marketspec.review
-description: Analyze actual campaign performance against planned objectives
+description: Analyze actual campaign performance vs. planned
 layer: sdm
 status: implemented
+type: extension
+category: Extension (Feedback Loop)
 source: Original to marketing-spec-kit
 version: 0.3.0
 ---
 
-# /marketspec.review
+# /marketspec.review 🔵 Extension
 
 **Purpose**: Analyze actual campaign performance after execution and compare against planned objectives.
 
-**New Command**: Original to marketing-spec-kit (no MetaSpec equivalent)
+**Category**: Extension (Feedback Loop)  
+**Timing**: POST-EXECUTION  
+**Note**: Original to marketing-spec-kit (no MetaSpec equivalent)
 
 ---
 

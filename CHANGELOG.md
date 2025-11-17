@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Command classification refactor**: Aligned with MetaSpec SDD patterns
+  - Core Flow (5 commands): constitution, discover, strategy, tasks, create
+  - Quality Gates (3 commands): clarify, checklist, analyze
+  - Extension (2 commands): review, optimize
+  - Promoted `constitution` and `tasks` from Optional to Core Flow
+  - Updated all documentation to reflect new classification
+
 ## [0.3.0] - 2025-11-16
 
 ### 🚨 Breaking Changes
@@ -43,10 +51,10 @@ Implemented full Spec-Driven Marketing command system with closed-loop optimizat
 - 🔗 Clear input/output chains and dependencies
 - 🎨 Marketing-friendly naming (discover, strategy, create)
 
-**Command Categories**:
-- 🔴 Required (2): discover, create
-- 🟡 Recommended (1): checklist
-- ⚪ Optional (7): constitution, clarify, strategy, tasks, analyze, review, optimize
+**Command Categories** (aligned with MetaSpec SDD):
+- 🔴 Core Flow (5): constitution, discover, strategy, tasks, create
+- 🟡 Quality Gates (3): clarify, checklist, analyze
+- 🔵 Extension (2): review, optimize
 
 **Differentiation**:
 - Based on MetaSpec SDD pattern with marketing domain adaptation

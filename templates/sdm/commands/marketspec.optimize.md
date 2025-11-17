@@ -1,17 +1,21 @@
 ---
 name: marketspec.optimize
-description: Generate optimization recommendations based on campaign review data
+description: Generate optimization recommendations for next cycle
 layer: sdm
 status: implemented
+type: extension
+category: Extension (Feedback Loop)
 source: Original to marketing-spec-kit
 version: 0.3.0
 ---
 
-# /marketspec.optimize
+# /marketspec.optimize 🔵 Extension
 
 **Purpose**: Generate AI-powered optimization recommendations based on actual campaign performance data.
 
-**New Command**: Original to marketing-spec-kit (no MetaSpec equivalent)
+**Category**: Extension (Feedback Loop)  
+**Timing**: POST-EXECUTION (after review)  
+**Note**: Original to marketing-spec-kit (no MetaSpec equivalent)
 
 ---
 

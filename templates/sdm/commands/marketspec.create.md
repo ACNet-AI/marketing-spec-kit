@@ -1,17 +1,21 @@
 ---
 name: marketspec.create
-description: Create complete marketing specification (YAML)
+description: Generate the final marketing specification YAML
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.implement
+type: core
+category: Core Flow
+source: Adapted from metaspec.sdd.implement
 version: 0.3.0
 ---
 
-# /marketspec.create
+# /marketspec.create 🔴 Core
 
 **Purpose**: Generate a complete, validated `marketing-spec.yaml` from all discovery, strategy, and task documents.
 
-**Adapted from**: `metaspec.sds.implement`
+**Category**: Core Flow (Essential Workflow)  
+**Output**: `marketing-spec.yaml` ⭐  
+**Adapted from**: `metaspec.sdd.implement`
 
 ---
 

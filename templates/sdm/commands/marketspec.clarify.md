@@ -1,17 +1,21 @@
 ---
 name: marketspec.clarify
-description: Clarify marketing objectives and resolve ambiguities
+description: Clarify ambiguities and details before strategy
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.clarify
+type: quality_gate
+category: Quality Gates
+source: Adapted from metaspec.sdd.clarify
 version: 0.3.0
 ---
 
-# /marketspec.clarify
+# /marketspec.clarify 🟡 Quality Gate
 
 **Purpose**: Clarify ambiguities, resolve unanswered questions, and refine requirements from the discovery phase.
 
-**Adapted from**: `metaspec.sds.clarify`
+**Category**: Quality Gates (Recommended for QA)  
+**Timing**: BEFORE strategy  
+**Adapted from**: `metaspec.sdd.clarify`
 
 ---
 

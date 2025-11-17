@@ -16,7 +16,7 @@ Complete marketing planning and optimization loop example.
 
 ## 📋 Campaign #1: Planning Phase (8 Steps)
 
-### 1. Define Marketing Principles (Optional)
+### 1. Define Marketing Principles 🔴 Core
 
 ```bash
 /marketspec.constitution
@@ -70,7 +70,7 @@ Complete marketing planning and optimization loop example.
 
 ---
 
-### 2. Discover Marketing Needs (Required)
+### 2. Discover Marketing Needs 🔴 Core
 
 ```bash
 /marketspec.discover "Grow MetaSpec developer user base in Q1 2025"
@@ -117,7 +117,7 @@ AI: Based on your answers, I've identified 3 key marketing needs:
 
 ---
 
-### 3. Clarify Objectives (Quality Gate)
+### 3. Clarify Objectives 🟡 Quality Gate
 
 ```bash
 /marketspec.clarify
@@ -161,7 +161,7 @@ Grow MetaSpec GitHub repository from 50 to 500 stars by 2025-03-31
 
 ---
 
-### 4. Plan Marketing Strategy (Recommended)
+### 4. Plan Marketing Strategy 🔴 Core
 
 ```bash
 /marketspec.strategy
@@ -219,7 +219,7 @@ strategy:
 
 ---
 
-### 5. Quality Checklist (Recommended)
+### 5. Quality Checklist 🟡 Quality Gate
 
 ```bash
 /marketspec.checklist
@@ -270,7 +270,7 @@ strategy:
 
 ---
 
-### 6. Break Down Tasks (Recommended)
+### 6. Break Down Tasks 🔴 Core
 
 ```bash
 /marketspec.tasks
@@ -389,7 +389,7 @@ strategy:
 
 ---
 
-### 7. Analyze Consistency (Quality Gate)
+### 7. Analyze Consistency 🟡 Quality Gate
 
 ```bash
 /marketspec.analyze
@@ -460,7 +460,7 @@ strategy:
 
 ---
 
-### 8. Create Marketing Specification (Required)
+### 8. Create Marketing Specification 🔴 Core
 
 ```bash
 /marketspec.create
@@ -706,7 +706,7 @@ tasks:
 
 ## 📊 Campaign #1: Review Phase (Post-Execution)
 
-### 9. Review Actual Results
+### 9. Review Actual Results 🔵 Extension
 
 ```bash
 /marketspec.review
@@ -887,7 +887,7 @@ tasks:
 
 ## 🎯 Campaign #2: Optimization Phase
 
-### 10. Optimize for Next Campaign
+### 10. Optimize for Next Campaign 🔵 Extension
 
 ```bash
 /marketspec.optimize

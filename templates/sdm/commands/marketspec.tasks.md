@@ -1,17 +1,20 @@
 ---
 name: marketspec.tasks
-description: Break down marketing strategy into actionable tasks
+description: Break down into actionable implementation tasks
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.tasks
+type: core
+category: Core Flow
+source: Adapted from metaspec.sdd.tasks
 version: 0.3.0
 ---
 
-# /marketspec.tasks
+# /marketspec.tasks 🔴 Core
 
 **Purpose**: Break down the marketing strategy into concrete, actionable tasks with priorities, dependencies, and assignments.
 
-**Adapted from**: `metaspec.sds.tasks`
+**Category**: Core Flow (Essential Workflow)  
+**Adapted from**: `metaspec.sdd.tasks`
 
 ---
 

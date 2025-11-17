@@ -1,17 +1,20 @@
 ---
 name: marketspec.constitution
-description: Define marketing execution principles
+description: Establish marketing principles for the project
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.constitution
+type: core
+category: Core Flow
+source: Adapted from metaspec.sdd.constitution
 version: 0.3.0
 ---
 
-# /marketspec.constitution
+# /marketspec.constitution 🔴 Core
 
-**Purpose**: Define core principles and constraints for marketing execution and specification creation.
+**Purpose**: Establish marketing principles for the project
 
-**Adapted from**: `metaspec.sds.constitution`
+**Category**: Core Flow (Essential Workflow)  
+**Adapted from**: `metaspec.sdd.constitution`
 
 ---
 

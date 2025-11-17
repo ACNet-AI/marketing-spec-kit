@@ -1,17 +1,20 @@
 ---
 name: marketspec.strategy
-description: Plan marketing strategy and approach
+description: Plan marketing approach and architecture
 layer: sdm
 status: implemented
-source: Adapted from metaspec.sds.plan
+type: core
+category: Core Flow
+source: Adapted from metaspec.sdd.plan
 version: 0.3.0
 ---
 
-# /marketspec.strategy
+# /marketspec.strategy 🔴 Core
 
 **Purpose**: Develop a comprehensive marketing strategy based on clarified requirements.
 
-**Adapted from**: `metaspec.sds.plan`
+**Category**: Core Flow (Essential Workflow)  
+**Adapted from**: `metaspec.sdd.plan`
 
 ---
 
