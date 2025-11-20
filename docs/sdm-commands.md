@@ -658,23 +658,23 @@ operations/
 
 ### 1. Distributed Directory Structure (Final Architecture)
 
-**specs/** (战略规范 - Markdown)
+**specs/** (Strategy Specifications - Markdown)
 - Human-readable specifications
 - Strategy, planning, reports
 
-**config/** (活动配置 - YAML)
+**config/** (Campaign Configuration - YAML)
 - Campaign configurations
 - Adjustable parameters
 
-**templates/** (内容模板 - Markdown/Text)
+**templates/** (Content Templates - Markdown/Text)
 - Content templates
 - Reusable formats
 
-**data/** (收集的数据 - JSON)
+**data/** (Collected Data - JSON)
 - Runtime metrics
 - Performance data
 
-**src/** (执行代码 - TypeScript)
+**src/** (Executable Code - Python)
 - Executable campaign code
 - MCP tool wrappers
 
@@ -829,11 +829,11 @@ src/ (TypeScript)
 
 **Final (2024-11-20)**:
 ```
-specs/ (Markdown - 战略规范)
-config/ (YAML - 活动配置)
-templates/ (Markdown/Text - 内容模板)
-data/ (JSON - 收集的数据)
-src/ (TypeScript - 执行代码)
+specs/ (Markdown - Strategy Specifications)
+config/ (YAML - Campaign Configuration)
+templates/ (Markdown/Text - Content Templates)
+data/ (JSON - Collected Data)
+src/ (Python - Executable Code)
 ```
 
 ### Key Rationale

@@ -39,25 +39,25 @@ This is the **implementation command** that generates:
 ## Directory Structure
 
 ```
-specs/                              ← WHAT (战略规范 - Markdown)
+specs/                              ← WHAT (Strategy Specifications - Markdown)
 └── 001-q1-github-stars/
     ├── spec.md
     ├── plan.md
     └── tasks.md
 
-config/                             ← 活动配置 (YAML - 可调参数)
+config/                             ← Campaign Configuration (YAML - Adjustable Parameters)
 └── 001-q1-campaign.yaml            ← Campaign config ⭐
 
-templates/                          ← 内容模板 (Markdown/Text)
+templates/                          ← Content Templates (Markdown/Text)
 └── 001-q1/
     ├── tweet-template.md           ← Twitter template
     └── blog-post-template.md       ← Blog template
 
-data/                               ← 收集的数据 (JSON - 运行时)
+data/                               ← Collected Data (JSON - Runtime)
 └── 001-q1/
     └── (created during execution)
 
-src/                                ← HOW (执行代码 - Python)
+src/                                ← HOW (Executable Code - Python)
 ├── campaigns/
 │   └── 001_q1_campaign.py          ← Main execution script ⭐
 └── shared/
