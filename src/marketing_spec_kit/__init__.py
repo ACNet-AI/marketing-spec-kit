@@ -13,34 +13,40 @@ with 10 workflow commands and comprehensive validation (9 entities, 45 rules).
 __version__ = "0.3.0"
 
 # Entity models (will be implemented in models.py)
+# Exceptions (will be implemented in exceptions.py)
+from marketing_spec_kit.exceptions import (
+    MarketingSpecError,
+    ParseError,
+    ValidationError,
+)
 from marketing_spec_kit.models import (
+    Analytics,
+    AnalyticsType,
     # Enums
     BrandVoice,
-    CampaignGoal,
-    ChannelType,
-    PlanStatus,
-    AnalyticsType,
-    InsightType,
-    OptimizationPriority,
-    # Nested Models
-    PlanPeriod,
-    PlanBudget,
-    TargetAudience,
-    Strategy,
-    PlanKPI,
-    PlanApproval,
-    # Entities
-    Project,
-    Product,
-    MarketingPlan,
     Campaign,
+    CampaignGoal,
     Channel,
-    Tool,
+    ChannelType,
     ContentTemplate,
-    Milestone,
-    Analytics,
+    InsightType,
+    MarketingPlan,
     # Root spec
     MarketingSpec,
+    Milestone,
+    OptimizationPriority,
+    PlanApproval,
+    PlanBudget,
+    PlanKPI,
+    # Nested Models
+    PlanPeriod,
+    PlanStatus,
+    Product,
+    # Entities
+    Project,
+    Strategy,
+    TargetAudience,
+    Tool,
 )
 
 # Parser (will be implemented in parser.py)
@@ -48,13 +54,6 @@ from marketing_spec_kit.parser import MarketingSpecParser
 
 # Validator (will be implemented in validator.py)
 from marketing_spec_kit.validator import MarketingSpecValidator, ValidationResult
-
-# Exceptions (will be implemented in exceptions.py)
-from marketing_spec_kit.exceptions import (
-    MarketingSpecError,
-    ParseError,
-    ValidationError,
-)
 
 __all__ = [
     # Version

@@ -123,11 +123,11 @@ class MarketingProjectGenerator:
         # Step 5: Determine which commands would be deployed
         commands_source = Path(__file__).parent.parent.parent / "templates" / "sdm" / "commands"
         command_files = list(commands_source.glob("*.md")) if commands_source.exists() else []
-        
+
         # Step 6: Deploy slash commands (unless dry_run)
         if not dry_run:
             self._deploy_slash_commands(output_dir)
-        
+
         # Step 7: Write files (unless dry_run)
         if not dry_run:
             self._write_files(output_dir, rendered_files, force)
@@ -137,7 +137,7 @@ class MarketingProjectGenerator:
             list(rendered_files.keys()) + 
             [f".marketingspeckit/commands/{cmd.name}" for cmd in command_files]
         )
-        
+
         return {
             "project_name": project_name,
             "output_dir": str(output_dir),
@@ -239,23 +239,23 @@ class MarketingProjectGenerator:
         """
         # Get toolkit's command directory
         commands_source = Path(__file__).parent.parent.parent / "templates" / "sdm" / "commands"
-        
+
         if not commands_source.exists():
             return []  # No commands to deploy
-        
+
         # Create target directory
         commands_target = output_dir / ".marketingspeckit" / "commands"
         commands_target.mkdir(parents=True, exist_ok=True)
-        
+
         # Copy all command files
         deployed = []
         for cmd_file in commands_source.glob("*.md"):
             target_file = commands_target / cmd_file.name
             shutil.copy2(cmd_file, target_file)
             deployed.append(cmd_file)
-        
+
         return deployed
-    
+
     def _write_files(
         self,
         output_dir: Path,

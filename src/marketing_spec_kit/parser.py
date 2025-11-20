@@ -60,12 +60,12 @@ class MarketingSpecParser:
         try:
             # Step 1: Load data from source → dict
             data = self._load_data(source, format)
-            
+
             # Step 2: Validate and parse dict → MarketingSpec (Pydantic validation)
             spec = self._parse_spec(data)
-            
+
             return spec
-            
+
         except ParseError:
             raise  # Re-raise our custom errors
         except ValidationError:
@@ -76,7 +76,7 @@ class MarketingSpecParser:
                 message=f"Unexpected parsing error: {e}",
                 fix="Check file format and syntax",
             ) from e
-    
+
     def _load_data(
         self,
         source: Union[str, Path, dict],
@@ -97,7 +97,7 @@ class MarketingSpecParser:
         # If already dict, return directly
         if isinstance(source, dict):
             return source
-        
+
         # Detect format from file extension
         if format == "auto":
             if isinstance(source, (str, Path)):
@@ -116,7 +116,7 @@ class MarketingSpecParser:
                     format = "yaml"
             else:
                 format = "yaml"
-        
+
         # Load based on format
         if format == "yaml":
             return self._load_yaml(source)
@@ -128,7 +128,7 @@ class MarketingSpecParser:
                 message=f"Unsupported format: {format}",
                 fix="Use 'yaml', 'json', or 'dict' format",
             )
-    
+
     def _load_yaml(self, source: Union[str, Path]) -> dict:
         """Load YAML from file or string
         
@@ -153,30 +153,30 @@ class MarketingSpecParser:
                 # Treat as YAML string
                 Loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
                 data = yaml.load(str(source), Loader=Loader)
-            
+
             if not isinstance(data, dict):
                 raise ParseError(
                     code="MKT-VAL-001",
                     message=f"Expected dict, got {type(data).__name__}",
                     fix="Ensure YAML root is a mapping (key-value pairs)",
                 )
-            
+
             return data
-            
+
         except yaml.YAMLError as e:
             error_msg = str(e)
             line = None
             if hasattr(e, "problem_mark"):
                 line = e.problem_mark.line + 1
                 error_msg = f"Line {line}: {e.problem}"
-            
+
             raise ParseError(
                 code="MKT-VAL-001",
                 message=f"Invalid YAML syntax: {error_msg}",
                 fix="Check YAML syntax, ensure proper indentation and no tabs",
                 line=line,
             ) from e
-    
+
     def _load_json(self, source: Union[str, Path]) -> dict:
         """Load JSON from file or string
         
@@ -198,16 +198,16 @@ class MarketingSpecParser:
             else:
                 # Treat as JSON string
                 data = json.loads(str(source))
-            
+
             if not isinstance(data, dict):
                 raise ParseError(
                     code="MKT-VAL-001",
                     message=f"Expected dict, got {type(data).__name__}",
                     fix="Ensure JSON root is an object {{...}}",
                 )
-            
+
             return data
-            
+
         except json.JSONDecodeError as e:
             raise ParseError(
                 code="MKT-VAL-001",
@@ -215,7 +215,7 @@ class MarketingSpecParser:
                 fix="Check JSON syntax, ensure proper quoting and commas",
                 line=e.lineno,
             ) from e
-    
+
     def _parse_spec(self, data: dict) -> MarketingSpec:
         """Parse dict into MarketingSpec using Pydantic validation
         
@@ -231,17 +231,17 @@ class MarketingSpecParser:
         try:
             spec = MarketingSpec(**data)
             return spec
-            
+
         except PydanticValidationError as e:
             # Extract first error for clear messaging
             errors = e.errors()
             first_error = errors[0]
-            
+
             # Determine error code and create helpful message
             error_type = first_error["type"]
             field_path = ".".join(str(loc) for loc in first_error["loc"])
             error_msg = first_error["msg"]
-            
+
             if error_type == "missing":
                 code = "MKT-VAL-002"
                 message = f"Missing required field: '{field_path}'"
@@ -250,12 +250,12 @@ class MarketingSpecParser:
                 code = "MKT-VAL-003"
                 message = f"Invalid value for '{field_path}': {error_msg}"
                 fix = f"Check the value and type for '{field_path}'"
-            
+
             # Extract entity name if possible
             entity = ""
             if first_error["loc"]:
                 entity = str(first_error["loc"][0])
-            
+
             raise ValidationError(
                 code=code,
                 message=message,

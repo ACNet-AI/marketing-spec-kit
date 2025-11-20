@@ -44,15 +44,15 @@ class ValidationResult(BaseModel):
     info: List[ValidationIssue] = Field(default_factory=list)
     rules_checked: int = Field(0, description="Total rules checked")
     rules_passed: int = Field(0, description="Rules that passed")
-    
+
     @property
     def error_count(self) -> int:
         return len(self.errors)
-    
+
     @property
     def warning_count(self) -> int:
         return len(self.warnings)
-    
+
     @property
     def success_rate(self) -> float:
         """Percentage of rules passed"""
@@ -103,34 +103,34 @@ class MarketingSpecValidator:
         # Reset state
         self.result = ValidationResult(valid=True)
         self._collect_ids(spec)
-        
+
         # Validate each entity type
         self._validate_project(spec.project)
-        
+
         for product in spec.products:
             self._validate_product(product)
-        
+
         for plan in spec.plans:
             self._validate_plan(plan)
-        
+
         for campaign in spec.campaigns:
             self._validate_campaign(campaign)
-        
+
         for channel in spec.channels:
             self._validate_channel(channel)
-        
+
         for tool in spec.tools:
             self._validate_tool(tool)
-        
+
         for template in spec.content_templates:
             self._validate_content_template(template)
-        
+
         for milestone in spec.milestones:
             self._validate_milestone(milestone)
-        
+
         for analytics in spec.analytics:
             self._validate_analytics(analytics)
-        
+
         # Final result
         self.result.valid = len(self.result.errors) == 0
         return self.result
@@ -156,13 +156,13 @@ class MarketingSpecValidator:
 
     def _validate_project(self, project):
         """Validate Project entity (VR-P01 to VR-P06)"""
-        
+
         # VR-P01: name unique (workspace-level) - Skip (requires external context)
         # VR-P02: tagline ≤ 100 (Pydantic handles)
         # VR-P03: website HTTPS (Pydantic handles)
         # VR-P04: target_audience ≥ 1 (Pydantic handles)
         # VR-P05: brand_voice enum (Pydantic handles)
-        
+
         # VR-P06: social_handles format validation
         if project.social_handles:
             self._check_rule("VR-P06")
@@ -193,11 +193,11 @@ class MarketingSpecValidator:
 
     def _validate_product(self, product):
         """Validate Product entity (VR-PR01 to VR-PR05)"""
-        
+
         # VR-PR01: id unique (checked via set membership in _collect_ids)
         # VR-PR02: project_id exists (cannot validate without multiple projects)
         # VR-PR03: description ≤ 500 (Pydantic handles)
-        
+
         # VR-PR04: key_features 3-5 items (warning)
         self._check_rule("VR-PR04")
         feature_count = len(product.key_features)
@@ -220,7 +220,7 @@ class MarketingSpecValidator:
                 "Focus on top 3-5 features for clarity",
             )
         self._pass_rule()
-        
+
         # VR-PR05: launch_date not in future (for launched products)
         if product.launch_date:
             self._check_rule("VR-PR05")
@@ -252,7 +252,7 @@ class MarketingSpecValidator:
 
     def _validate_plan(self, plan):
         """Validate MarketingPlan entity (PLAN-01 to PLAN-05)"""
-        
+
         # PLAN-01: objectives must be 1-5 non-empty strings (Pydantic handles count)
         self.result.rules_checked += 1
         if plan.objectives:
@@ -269,11 +269,11 @@ class MarketingSpecValidator:
                 )
             else:
                 self.result.rules_passed += 1
-        
+
         # PLAN-02: period.duration_weeks must be 4-52 (Pydantic handles)
         self.result.rules_checked += 1
         self.result.rules_passed += 1  # Handled by Pydantic Field(ge=4, le=52)
-        
+
         # PLAN-03: budget.allocation sum must equal budget.total
         self.result.rules_checked += 1
         if plan.budget and plan.budget.allocation:
@@ -291,7 +291,7 @@ class MarketingSpecValidator:
                 )
             else:
                 self.result.rules_passed += 1
-        
+
         # PLAN-04: status APPROVED/ACTIVE requires approval field
         self.result.rules_checked += 1
         from marketing_spec_kit.models import PlanStatus
@@ -310,7 +310,7 @@ class MarketingSpecValidator:
                 self.result.rules_passed += 1
         else:
             self.result.rules_passed += 1
-        
+
         # PLAN-05: strategies count must be 1-8 (Pydantic handles)
         self.result.rules_checked += 1
         self.result.rules_passed += 1  # Handled by Pydantic Field(min_items=1, max_items=8)
@@ -321,10 +321,10 @@ class MarketingSpecValidator:
 
     def _validate_campaign(self, campaign):
         """Validate Campaign entity (VR-C01 to VR-C09)"""
-        
+
         # VR-C01: id unique (checked via set membership)
         # VR-C02: project_id exists (cannot validate without multiple projects)
-        
+
         # VR-C03: product_ids all exist
         if campaign.product_ids:
             self._check_rule("VR-C03")
@@ -339,9 +339,9 @@ class MarketingSpecValidator:
                         f"Add Product with id='{pid}' or remove from product_ids",
                     )
             self._pass_rule()
-        
+
         # VR-C04: budget > 0 (Pydantic handles with gt=0)
-        
+
         # VR-C05: start_date < end_date
         self._check_rule("VR-C05")
         try:
@@ -366,7 +366,7 @@ class MarketingSpecValidator:
                 f"Invalid date format: {e}",
                 "Use ISO 8601 format: YYYY-MM-DD",
             )
-        
+
         # VR-C06: start_date not in past (warning)
         self._check_rule("VR-C06")
         try:
@@ -383,7 +383,7 @@ class MarketingSpecValidator:
             self._pass_rule()
         except ValueError:
             pass  # Already handled in VR-C05
-        
+
         # VR-C07: channels all exist
         self._check_rule("VR-C07")
         for ch_id in campaign.channels:
@@ -397,7 +397,7 @@ class MarketingSpecValidator:
                     f"Add Channel with id='{ch_id}' or remove from channels",
                 )
         self._pass_rule()
-        
+
         # VR-C08: target_ctr 0-1
         if campaign.kpis and "target_ctr" in campaign.kpis:
             self._check_rule("VR-C08")
@@ -412,7 +412,7 @@ class MarketingSpecValidator:
                     "Use decimal format: 0.05 for 5% CTR",
                 )
             self._pass_rule()
-        
+
         # VR-C09: target_roas ≥ 3 (warning)
         if campaign.kpis and "target_roas" in campaign.kpis:
             self._check_rule("VR-C09")
@@ -427,7 +427,7 @@ class MarketingSpecValidator:
                     "Consider increasing budget efficiency or raising target ROAS",
                 )
             self._pass_rule()
-        
+
         # CAMP-08: plan_id must reference existing MarketingPlan (NEW in v2.0.0)
         self.result.rules_checked += 1
         if campaign.plan_id not in self._plan_ids:
@@ -442,7 +442,7 @@ class MarketingSpecValidator:
             )
         else:
             self.result.rules_passed += 1
-        
+
         # CAMP-09 & CAMP-10: Campaign dates must be within plan's period (NEW in v2.0.0)
         if campaign.plan_id in self._plan_ids:
             plan = next((p for p in self._plans if p.id == campaign.plan_id), None)
@@ -452,7 +452,7 @@ class MarketingSpecValidator:
                 campaign_start = campaign.start_date
                 plan_start = plan.period.start_date
                 plan_end = plan.period.end_date
-                
+
                 if campaign_start < plan_start or campaign_start > plan_end:
                     self._add_issue(
                         "CAMP-09",
@@ -465,11 +465,11 @@ class MarketingSpecValidator:
                     )
                 else:
                     self.result.rules_passed += 1
-                
+
                 # CAMP-10: end_date within plan period and >= start_date
                 self.result.rules_checked += 1
                 campaign_end = campaign.end_date
-                
+
                 if campaign_end < plan_start or campaign_end > plan_end:
                     self._add_issue(
                         "CAMP-10",
@@ -492,13 +492,13 @@ class MarketingSpecValidator:
                     )
                 else:
                     self.result.rules_passed += 1
-                
+
                 # CAMP-11: Budget check (warning) (NEW in v2.0.0)
                 self.result.rules_checked += 1
                 plan_total_budget = plan.budget.total
                 campaigns_in_plan = [c for c in self._campaigns if c.plan_id == plan.id]
                 total_campaign_budgets = sum(c.budget for c in campaigns_in_plan)
-                
+
                 if total_campaign_budgets > plan_total_budget * 1.05:  # Allow 5% over
                     self._add_issue(
                         "CAMP-11",
@@ -519,10 +519,10 @@ class MarketingSpecValidator:
 
     def _validate_channel(self, channel):
         """Validate Channel entity (VR-CH01 to VR-CH06)"""
-        
+
         # VR-CH01: id unique (checked via set)
         # VR-CH02: type enum (Pydantic handles)
-        
+
         # VR-CH03: platform naming convention
         self._check_rule("VR-CH03")
         if not re.match(r"^[a-z0-9-]+$", channel.platform):
@@ -535,7 +535,7 @@ class MarketingSpecValidator:
                 f"Use '{channel.platform.lower().replace(' ', '-')}' instead",
             )
         self._pass_rule()
-        
+
         # VR-CH04: tool_id exists
         if channel.tool_id:
             self._check_rule("VR-CH04")
@@ -549,9 +549,9 @@ class MarketingSpecValidator:
                     f"Add Tool with id='{channel.tool_id}' or remove tool_id",
                 )
             self._pass_rule()
-        
+
         # VR-CH05: content_types ≥ 1 (Pydantic handles)
-        
+
         # VR-CH06: max_text_length > 0
         if channel.constraints and "max_text_length" in channel.constraints:
             self._check_rule("VR-CH06")
@@ -573,9 +573,9 @@ class MarketingSpecValidator:
 
     def _validate_tool(self, tool):
         """Validate Tool entity (VR-T01 to VR-T06)"""
-        
+
         # VR-T01: id unique (checked via set)
-        
+
         # VR-T02: If type=mcp, mcp_config required
         self._check_rule("VR-T02")
         if tool.type == "mcp" and not tool.mcp_config:
@@ -588,7 +588,7 @@ class MarketingSpecValidator:
                 "Add mcp_config with server details",
             )
         self._pass_rule()
-        
+
         # VR-T03: If type=rest_api, api_config required
         self._check_rule("VR-T03")
         if tool.type == "rest_api" and not tool.api_config:
@@ -601,9 +601,9 @@ class MarketingSpecValidator:
                 "Add api_config with base_url and authentication",
             )
         self._pass_rule()
-        
+
         # VR-T04: capabilities ≥ 1 (Pydantic handles)
-        
+
         # VR-T05: base_url HTTPS
         if tool.api_config and "base_url" in tool.api_config:
             self._check_rule("VR-T05")
@@ -618,7 +618,7 @@ class MarketingSpecValidator:
                     "Use 'https://' instead of 'http://'",
                 )
             self._pass_rule()
-        
+
         # VR-T06: channel_ids exist
         if tool.channel_ids:
             self._check_rule("VR-T06")
@@ -640,11 +640,11 @@ class MarketingSpecValidator:
 
     def _validate_content_template(self, template):
         """Validate ContentTemplate entity (VR-CT01 to VR-CT05)"""
-        
+
         # VR-CT01: id unique (checked via set)
         # VR-CT02: project_id exists (cannot validate)
         # VR-CT03: style_guidelines ≥ 1 (Pydantic handles)
-        
+
         # VR-CT04: min_length < max_length
         if template.constraints:
             constraints = template.constraints
@@ -662,7 +662,7 @@ class MarketingSpecValidator:
                         "Adjust length constraints so min < max",
                     )
                 self._pass_rule()
-        
+
         # VR-CT05: tone aligns with brand_voice (warning)
         # (Requires project context - skip for now)
 
@@ -672,10 +672,10 @@ class MarketingSpecValidator:
 
     def _validate_milestone(self, milestone):
         """Validate Milestone entity (VR-M01 to VR-M05)"""
-        
+
         # VR-M01: id unique (checked via set)
         # VR-M02: project_id exists (cannot validate)
-        
+
         # VR-M03: product_ids exist
         if milestone.product_ids:
             self._check_rule("VR-M03")
@@ -690,7 +690,7 @@ class MarketingSpecValidator:
                         f"Add Product with id='{pid}' or remove from product_ids",
                     )
             self._pass_rule()
-        
+
         # VR-M04: campaign_ids exist
         if milestone.campaign_ids:
             self._check_rule("VR-M04")
@@ -705,7 +705,7 @@ class MarketingSpecValidator:
                         f"Add Campaign with id='{cid}' or remove from campaign_ids",
                     )
             self._pass_rule()
-        
+
         # VR-M05: date not > 1 year in future (warning)
         self._check_rule("VR-M05")
         try:
@@ -737,11 +737,11 @@ class MarketingSpecValidator:
 
     def _validate_analytics(self, analytics):
         """Validate Analytics entity (ANLY-01)"""
-        
+
         # ANLY-01: entity_id must reference existing Campaign or Plan
         self.result.rules_checked += 1
         from marketing_spec_kit.models import AnalyticsType
-        
+
         if analytics.type == AnalyticsType.CAMPAIGN:
             if analytics.entity_id not in self._campaign_ids:
                 self._add_issue(

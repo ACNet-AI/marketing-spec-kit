@@ -16,9 +16,13 @@ from rich.panel import Panel
 from rich.table import Table
 
 from marketing_spec_kit import __version__
+from marketing_spec_kit.exceptions import (
+    MarketingSpecError,
+    ParseError,
+    ValidationError,
+)
 from marketing_spec_kit.parser import MarketingSpecParser
 from marketing_spec_kit.validator import MarketingSpecValidator
-from marketing_spec_kit.exceptions import MarketingSpecError, ParseError, ValidationError
 
 app = typer.Typer(
     name="marketing_spec_kit",
@@ -43,7 +47,7 @@ def info():
         title="📦 Toolkit Info",
         border_style="cyan",
     ))
-    
+
     console.print("\n[bold]Available Commands:[/bold]")
     console.print("  [cyan]init[/cyan] <project-dir>  Initialize a new marketing project with complete structure")
     console.print("  [cyan]validate[/cyan] <filename>  Validate an existing specification")
@@ -92,16 +96,16 @@ def init(
         marketing_spec_kit init my-marketing-project --dry-run
     """
     from marketing_spec_kit.generator import MarketingProjectGenerator
-    
+
     try:
         output_dir = Path.cwd() / project_name
         generator = MarketingProjectGenerator()
-        
+
         if not dry_run:
             console.print("[cyan]→[/cyan] Creating project structure...")
         else:
             console.print("[cyan]→[/cyan] Dry run - would create...")
-        
+
         result = generator.generate_project(
             project_name=project_name,
             output_dir=output_dir,
@@ -109,14 +113,14 @@ def init(
             force=force,
             dry_run=dry_run,
         )
-        
+
         # Display created files
         console.print()
         for file_path in result['files']:
             console.print(f"  [green]✓[/green] {file_path}")
-        
+
         console.print(f"\n[cyan]→[/cyan] Total: {result['file_count']} files")
-        
+
         if not dry_run:
             console.print("\n[green]✓[/green] Marketing project created successfully!")
             console.print("\n[bold]Next steps:[/bold]")
@@ -127,7 +131,7 @@ def init(
             console.print("     Example: [dim]\"Create a Q1 email campaign specification\"[/dim]")
             console.print("  5. AI will generate [cyan]specs/001-xxx/spec.yaml[/cyan]")
             console.print("  6. Validate: [cyan]marketing_spec_kit validate specs/001-xxx/spec.yaml[/cyan]")
-        
+
     except FileExistsError as e:
         console.print(f"[red]✗[/red] {e}")
         raise typer.Exit(1)
@@ -191,7 +195,7 @@ def validate(
         if format not in ["text", "json"]:
             console.print(f"[red]✗[/red] Invalid format: {format} (use 'text' or 'json')")
             raise typer.Exit(1)
-        
+
         # Check if file exists
         spec_path = Path(filename)
         if not spec_path.exists():
@@ -203,13 +207,13 @@ def validate(
         else:
             console.print(f"[red]✗[/red] File '{filename}' not found")
             raise typer.Exit(2)
-        
+
         # Parse specification
         if not quiet and format == "text":
             console.print(f"[cyan]→[/cyan] Parsing '{filename}'...")
-        
+
         parser = MarketingSpecParser()
-        
+
         try:
             spec = parser.parse(spec_path)
             if not quiet and format == "text":
@@ -237,14 +241,14 @@ def validate(
                 if hasattr(e, 'line') and e.line:
                     console.print(f"  [dim]Line {e.line}[/dim]")
             raise typer.Exit(2)
-        
+
         # Validate specification
         if not quiet and format == "text":
             console.print("[cyan]→[/cyan] Validating specification...")
-        
+
         validator = MarketingSpecValidator()
         result = validator.validate(spec)
-        
+
         # Display results based on format
         if format == "json":
             _display_validation_result_json(result, filename)
@@ -258,7 +262,7 @@ def validate(
             # Normal text output
             console.print()
         _display_validation_result(result, verbose)
-        
+
         # Exit code
         if not result.valid:
             if not quiet and format == "text":
@@ -272,7 +276,7 @@ def validate(
             if not quiet and format == "text":
                 console.print("\n[green bold]✓ Validation successful![/green bold]")
             raise typer.Exit(0)
-        
+
     except typer.Exit:
         # Re-raise typer.Exit without catching
         raise
@@ -293,27 +297,27 @@ def validate(
 
 def _display_validation_result(result, verbose: bool = False):
     """Display validation results with rich formatting"""
-    
+
     # Summary panel
     summary_lines = [
         f"Rules Checked: [cyan]{result.rules_checked}[/cyan]",
         f"Rules Passed: [green]{result.rules_passed}[/green]",
         f"Success Rate: [{'green' if result.success_rate >= 90 else 'yellow'}]{result.success_rate:.1f}%[/]",
     ]
-    
+
     if result.error_count > 0:
         summary_lines.append(f"Errors: [red]{result.error_count}[/red]")
     if result.warning_count > 0:
         summary_lines.append(f"Warnings: [yellow]{result.warning_count}[/yellow]")
     if verbose and len(result.info) > 0:
         summary_lines.append(f"Info: [blue]{len(result.info)}[/blue]")
-    
+
     console.print(Panel(
         "\n".join(summary_lines),
         title="📊 Validation Summary",
         border_style="cyan" if result.valid else "red",
     ))
-    
+
     # Errors table
     if result.error_count > 0:
         console.print()
@@ -323,7 +327,7 @@ def _display_validation_result(result, verbose: bool = False):
         errors_table.add_column("Field", style="yellow")
         errors_table.add_column("Message", style="white")
         errors_table.add_column("Fix", style="green")
-        
+
         for err in result.errors:
             errors_table.add_row(
                 err.code,
@@ -332,9 +336,9 @@ def _display_validation_result(result, verbose: bool = False):
                 err.message,
                 err.fix,
             )
-        
+
         console.print(errors_table)
-    
+
     # Warnings table
     if result.warning_count > 0:
         console.print()
@@ -343,7 +347,7 @@ def _display_validation_result(result, verbose: bool = False):
         warnings_table.add_column("Entity", style="cyan")
         warnings_table.add_column("Message", style="white")
         warnings_table.add_column("Suggestion", style="green dim")
-        
+
         for warn in result.warnings:
             warnings_table.add_row(
                 warn.code,
@@ -351,9 +355,9 @@ def _display_validation_result(result, verbose: bool = False):
                 warn.message,
                 warn.fix,
             )
-        
+
         console.print(warnings_table)
-    
+
     # Info (verbose only)
     if verbose and len(result.info) > 0:
         console.print()
@@ -361,21 +365,21 @@ def _display_validation_result(result, verbose: bool = False):
         info_table.add_column("Code", style="blue bold")
         info_table.add_column("Entity", style="cyan")
         info_table.add_column("Message", style="white")
-        
+
         for info in result.info:
             info_table.add_row(
                 info.code,
                 f"{info.entity_type}\n[dim]{info.entity_id}[/dim]" if info.entity_id else info.entity_type,
                 info.message,
             )
-        
+
         console.print(info_table)
 
 
 def _display_validation_result_json(result, filename: str):
     """Display validation results in JSON format"""
     import json
-    
+
     output = {
         "file": filename,
         "valid": result.valid,
@@ -389,7 +393,7 @@ def _display_validation_result_json(result, filename: str):
         "errors": [],
         "warnings": [],
     }
-    
+
     # Add errors
     for err in result.errors:
         output["errors"].append({
@@ -400,7 +404,7 @@ def _display_validation_result_json(result, filename: str):
             "message": err.message,
             "fix": err.fix,
         })
-    
+
     # Add warnings
     for warn in result.warnings:
         output["warnings"].append({
@@ -410,7 +414,7 @@ def _display_validation_result_json(result, filename: str):
             "message": warn.message,
             "fix": warn.fix,
         })
-    
+
     # Print JSON
     print(json.dumps(output, indent=2))
 
