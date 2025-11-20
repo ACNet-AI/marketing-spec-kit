@@ -9,8 +9,8 @@ marketing-spec-kit provides a single command layer for marketing execution.
 ```
 templates/
 └── sdm/                    # Spec-Driven Marketing
-    ├── commands/           # 8 SDM commands
-    └── templates/          # YAML output templates
+    ├── commands/           # 10 SDM commands + README
+    └── templates/          # (Deprecated - no longer used)
 ```
 
 ---
@@ -18,93 +18,92 @@ templates/
 ## 🚀 SDM Layer (Spec-Driven Marketing)
 
 ### Purpose
-Execute marketing activities by creating structured YAML specifications.
+Execute marketing activities through specification-driven development and code generation.
 
-### Commands (8)
+### Commands (10)
 
-| Command | Purpose | Adapted From |
-|---------|---------|--------------|
-| `/marketspec.constitution` | Define marketing execution principles | metaspec.sds.constitution |
-| `/marketspec.discover` | Discover marketing needs | metaspec.sds.specify |
-| `/marketspec.clarify` | Clarify marketing objectives | metaspec.sds.clarify |
-| `/marketspec.strategy` | Plan marketing strategy | metaspec.sds.plan |
-| `/marketspec.tasks` | Break down marketing tasks | metaspec.sds.tasks |
-| `/marketspec.create` | Create marketing specification | metaspec.sds.implement |
-| `/marketspec.checklist` | Generate quality checklist | metaspec.sds.checklist |
-| `/marketspec.analyze` | Analyze specification consistency | metaspec.sds.analyze |
+| Command | Category | Purpose |
+|---------|----------|---------|
+| `/marketspec.constitution` | Core Flow | Define marketing principles |
+| `/marketspec.specify` | Core Flow | Define marketing requirements |
+| `/marketspec.clarify` | Core Flow | Clarify objectives and resolve ambiguities |
+| `/marketspec.plan` | Core Flow | Plan marketing strategy |
+| `/marketspec.checklist` | Core Flow | Generate quality standards |
+| `/marketspec.tasks` | Core Flow | Generate implementation tasks |
+| `/marketspec.analyze` | Core Flow | Check consistency & coverage |
+| `/marketspec.implement` | Core Flow | Generate code + configs ⭐ |
+| `/marketspec.review` | Extension | Analyze campaign results |
+| `/marketspec.optimize` | Extension | Generate optimization recommendations |
 
-**Status**: 🚧 Commands are placeholder stubs, to be implemented.
+**Status**: ✅ Commands fully implemented (v0.4.0)
 
 ### Quick Start Example
 
 ```bash
 # Complete workflow
-/marketspec.discover "Market MetaSpec to developers"
-/marketspec.strategy
-/marketspec.create
-→ Output: marketing-spec.yaml
+/marketspec.specify "Q1 Growth Campaign"
+/marketspec.plan
+/marketspec.tasks
+/marketspec.implement
+→ Output: src/campaigns/001-q1.ts + config/001-q1.yaml + templates/001-q1/
 ```
 
 ---
 
-## 🔧 Advanced: Extending the Specification
+## 🔧 Advanced: Extending MCP Tools
 
 ### When do you need to extend?
 
-The default specification includes 9 entities:
-- Project, Product, MarketingPlan, Campaign, Channel, Tool, ContentTemplate, Milestone, Analytics
+The default implementation generates code for common tools like GitHub, Twitter, Analytics.
 
-If you need domain-specific entities (e.g., FlashSale for e-commerce), you need to extend.
+If you need domain-specific tools (e.g., Shopify for e-commerce, HubSpot for B2B), you can extend.
 
 ### How to extend?
 
-**Use MetaSpec's SDS commands** (already available):
+**Define custom MCP tool wrappers** in `src/shared/mcp-tools/`:
 
-```bash
-# Step 1: Define extension
-/metaspec.sds.specify "Add E-commerce promotion entities"
+```typescript
+// src/shared/mcp-tools/shopify.ts
+export async function getOrders(params: { since: string }) {
+  const client = await getMCPClient('shopify');
+  return await client.call('get_orders', params);
+}
 
-# Step 2: Implement
-/metaspec.sds.implement
-
-# Step 3: Validate
-/metaspec.sds.checklist
+export async function trackAbandonedCarts() {
+  // Implementation
+}
 ```
 
 ### Extension Examples
 
 #### E-commerce Extension
-Add entities: `FlashSale`, `Promotion`, `Coupon`, `AbandonedCart`
+Custom tools: `shopify.ts`, `stripe.ts`, `klaviyo.ts`
 
-```yaml
-FlashSale:
-  extends: Campaign
-  fields:
-    - discount_percentage: float (10-90)
-    - duration_hours: int (1-48)
-    - max_quantity: int
+```typescript
+// Track flash sale performance
+const sales = await shopify.getOrders({ 
+  since: campaign.start_date 
+});
 ```
 
 #### B2B Extension
-Add entities: `TargetAccount`, `LeadNurturing`, `Webinar`, `ABM`
+Custom tools: `hubspot.ts`, `salesforce.ts`, `linkedin.ts`
 
-```yaml
-TargetAccount:
-  fields:
-    - company_name: string
-    - industry: string
-    - engagement_score: int (0-100)
+```typescript
+// Track lead engagement
+const leads = await hubspot.getLeads({ 
+  score: { min: 80 } 
+});
 ```
 
 #### SaaS Extension
-Add entities: `FreeTrial`, `Onboarding`, `FeatureLaunch`, `Upsell`
+Custom tools: `mixpanel.ts`, `segment.ts`, `intercom.ts`
 
-```yaml
-FreeTrial:
-  extends: Campaign
-  fields:
-    - trial_days: int (7-30)
-    - conversion_target: float
+```typescript
+// Track trial conversions
+const conversions = await mixpanel.getConversions({ 
+  event: 'trial_to_paid' 
+});
 ```
 
 ---

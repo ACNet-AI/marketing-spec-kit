@@ -1,11 +1,11 @@
 ---
 name: marketspec.tasks
-description: Break down into actionable implementation tasks
+description: Break down plan into actionable implementation tasks
 layer: sdm
 status: implemented
 type: core
 category: Core Flow
-source: Adapted from metaspec.sdd.tasks
+source: Adapted from metaspec.sds.tasks
 version: 0.3.0
 ---
 
@@ -49,8 +49,8 @@ This task breakdown serves as the execution roadmap for the marketing team.
 
 ## Prerequisites
 
-- **Required**: Strategy document from `/marketspec.strategy`
-- **Recommended**: Discovery and clarification documents
+- **Required**: Marketing plan from `/marketspec.plan`
+- **Recommended**: Clarification document from `/marketspec.clarify`
 - **Optional**: Constitution for alignment check
 
 ---
@@ -59,7 +59,7 @@ This task breakdown serves as the execution roadmap for the marketing team.
 
 ### Step 1: Load Strategy Document
 
-Read the strategy document from `specs/strategy/[project-name]-strategy.md`:
+Read the plan document from `specs/{sequence}-{name}/plan.md`:
 
 **Extract key information**:
 - Campaign structure and timelines
@@ -625,29 +625,22 @@ Create comprehensive task breakdown document:
 
 ## Output
 
-**Primary Output**: `specs/tasks/[project-name]-tasks.md`
+**Primary Output**: `specs/{sequence}-{name}/tasks.md`
 
-**Optional Outputs**:
-- `specs/tasks/[project-name]-tasks.yaml` - Structured data
-- `specs/tasks/[project-name]-tasks.csv` - For tools
-- `specs/tasks/task-templates.yaml` - Reusable templates
-
-**Structure**:
+**Example Structure**:
 ```
 specs/
-├── strategy/
-│   └── [project-name]-strategy.md
-└── tasks/
-    ├── [project-name]-tasks.md       # Main document
-    ├── [project-name]-tasks.yaml     # Structured data
-    └── task-templates.yaml           # Templates
+└── 001-q1-campaign-strategy/
+    ├── spec.md                 ← Draft specification
+    ├── plan.md                 ← Marketing plan
+    └── tasks.md                ← Task breakdown (from this command) ⭐
 ```
 
 ---
 
 ## Error Handling
 
-- If strategy incomplete, prompt to complete `/marketspec.strategy` first
+- If plan incomplete, prompt to complete `/marketspec.plan` first
 - If effort estimates exceed team capacity, suggest reducing scope or extending timeline
 - If circular dependencies detected, help resolve conflicts
 - If critical path too long, suggest parallelization
@@ -660,11 +653,11 @@ specs/
 ```
 User: /marketspec.tasks
 
-AI: I'll help you break down the marketing strategy into actionable tasks. Let me load your strategy document...
+AI: I'll help you break down the marketing plan into actionable tasks. Let me load your plan document...
 
-📄 Loaded: specs/strategy/metaspec-strategy.md
+📄 Loaded: specs/001-q1-campaign/plan.md
 
-**Strategy Summary**:
+**Plan Summary**:
 - 2 Campaigns: Developer Onboarding, Power User Stories
 - 4 Channels: Blog, Twitter, Dev.to, GitHub
 - 11 weeks duration
@@ -714,7 +707,7 @@ AI: Great! Continuing with all tasks...
 
 AI: Perfect! I've created a comprehensive task breakdown:
 
-📄 **Task Document**: specs/tasks/metaspec-tasks.md
+📄 **Task Document**: specs/001-q1-campaign/tasks.md
 
 **Summary**:
 ✅ **45 total tasks** across 6 categories
@@ -743,17 +736,12 @@ setup-001 → content-001 → dist-001 → engage-001 (4 days)
 
 ⚠️ **Note**: Social Media Manager at full capacity. Consider reducing engagement frequency or adding support if issues arise.
 
-**Export Options**:
-1. Markdown (created): specs/tasks/metaspec-tasks.md
-2. YAML: Want structured data export?
-3. CSV: For project management tool import?
-
 **Next Steps**:
 1. Review task breakdown
-2. Assign tasks in project tool
-3. Generate final specification → `/marketspec.create`
+2. Run analysis → `/marketspec.analyze`
+3. Generate final specification → `/marketspec.implement`
 
-Ready to generate the final marketing specification?
+Ready to analyze consistency?
 ```
 
 ---
@@ -774,18 +762,20 @@ Ready to generate the final marketing specification?
 ## Integration with Other Commands
 
 Feeds into:
-- `/marketspec.create` - Uses tasks to generate complete specification
+- `/marketspec.analyze` - Consistency analysis
+- `/marketspec.implement` - Final specification generation
 
 References:
-- `/marketspec.strategy` - Source of campaigns and channels
-- `/marketspec.discover` - Original objectives for validation
+- `/marketspec.plan` - Source of campaigns and channels
+- `/marketspec.specify` - Original objectives for validation
 - `/marketspec.constitution` - Workflow constraints
 
 ---
 
 ## See Also
 
-- `/marketspec.strategy` - Previous step
-- `/marketspec.create` - Next step (generate complete YAML)
-- Project management guides in `docs/` directory
+- `/marketspec.plan` - Previous step
+- `/marketspec.analyze` - Next step (consistency analysis)
+- `/marketspec.implement` - Final specification generation
 - Task examples in `examples/` directory
+- MetaSpec SDS Tasks: `.metaspec/commands/metaspec.sds.tasks.md`

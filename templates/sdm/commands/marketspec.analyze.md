@@ -1,11 +1,11 @@
 ---
 name: marketspec.analyze
-description: Check consistency before finalizing specification
+description: Check consistency across specification documents
 layer: sdm
 status: implemented
 type: quality_gate
 category: Quality Gates
-source: Adapted from metaspec.sdd.analyze
+source: Adapted from metaspec.sds.analyze
 version: 0.3.0
 ---
 
@@ -50,8 +50,8 @@ This is a **Quality Gate** - run before `/marketspec.create` to catch issues ear
 
 ## Prerequisites
 
-- **Required**: Discovery from `/marketspec.discover`
-- **Required**: Strategy from `/marketspec.strategy`
+- **Required**: Draft specification from `/marketspec.specify`
+- **Required**: Marketing plan from `/marketspec.plan`
 - **Required**: Tasks from `/marketspec.tasks`
 - **Recommended**: Clarifications from `/marketspec.clarify`
 - **Optional**: Constitution from `/marketspec.constitution`
@@ -67,13 +67,13 @@ Read all available documents:
 ```yaml
 documents_to_load:
   required:
-    - specs/discovery/[name]-discovery.md
-    - specs/strategy/[name]-strategy.md
-    - specs/tasks/[name]-tasks.md
+    - specs/{sequence}-{name}/spec.md         # Draft specification
+    - specs/{sequence}-{name}/plan.md         # Marketing plan
+    - specs/{sequence}-{name}/tasks.md        # Task breakdown
   
   optional:
-    - specs/clarifications/[name]-clarification.md
-    - memory/marketing-constitution.md
+    - specs/{sequence}-{name}/clarifications.md
+    - memory/constitution.md
 ```
 
 Extract key data:
@@ -521,17 +521,16 @@ Estimated fix time: 30 minutes
 
 ## Output
 
-**Primary Output**: `consistency-report.md`
+**Primary Output**: `specs/{sequence}-{name}/analysis.md`
 
-**Structure**:
+**Example Structure**:
 ```
-project-root/
-├── specs/
-│   ├── discovery/
-│   ├── clarifications/
-│   ├── strategy/
-│   └── tasks/
-└── consistency-report.md          # Analysis report (PRIMARY)
+specs/
+└── 001-q1-campaign-strategy/
+    ├── spec.md                 ← Draft specification
+    ├── plan.md                 ← Marketing plan
+    ├── tasks.md                ← Task breakdown
+    └── analysis.md             ← Consistency analysis (from this command) ⭐
 ```
 
 ---
@@ -540,20 +539,20 @@ project-root/
 
 **Missing Required Document**:
 ```
-❌ Error: Required document not found: specs/strategy/[name]-strategy.md
-→ Run /marketspec.strategy first
+❌ Error: Required document not found: specs/{sequence}-{name}/plan.md
+→ Run /marketspec.plan first
 ```
 
 **Parse Error**:
 ```
-❌ Error: Cannot parse budget from strategy document
-→ Check YAML/Markdown syntax in strategy document
+❌ Error: Cannot parse budget from plan document
+→ Check Markdown syntax in plan document
 ```
 
 **Too Many Issues**:
 ```
 ⚠️ Warning: 15 consistency issues found (threshold: 10)
-→ Recommend fixing critical issues before proceeding to create
+→ Recommend fixing critical issues before proceeding to implement
 ```
 
 ---
@@ -566,10 +565,10 @@ User: /marketspec.analyze
 AI: I'll analyze consistency across your planning documents. Loading documents...
 
 📄 **Documents Loaded**:
-✅ Discovery: specs/discovery/metaspec-discovery.md
-✅ Clarifications: specs/clarifications/metaspec-clarification-2025-11-16.md
-✅ Strategy: specs/strategy/metaspec-strategy.md
-✅ Tasks: specs/tasks/metaspec-tasks.md
+✅ Draft Spec: specs/001-q1-campaign/spec.md
+✅ Clarifications: specs/001-q1-campaign/clarifications.md
+✅ Plan: specs/001-q1-campaign/plan.md
+✅ Tasks: specs/001-q1-campaign/tasks.md
 
 ---
 
@@ -604,7 +603,7 @@ AI: I'll analyze consistency across your planning documents. Loading documents..
 
 ✅ **Readiness**: Ready to proceed with minor fixes
 
-📄 **Full Report**: consistency-report.md
+📄 **Full Report**: specs/001-q1-campaign/analysis.md
 
 **Recommended Actions**:
 1. Add github-discussions channel OR remove reference (5 min)
@@ -615,7 +614,7 @@ Total fix time: ~20 minutes
 
 Would you like me to:
 - Show detailed fix suggestions?
-- Proceed to /marketspec.create anyway?
+- Proceed to /marketspec.implement anyway?
 - Wait for fixes and re-analyze?
 ```
 
@@ -624,7 +623,7 @@ Would you like me to:
 ## Notes
 
 - **Purpose**: Quality gate, not optimization tool
-- **Focus**: Consistency and completeness, not strategy quality
+- **Focus**: Consistency and completeness, not plan quality
 - **Quick**: Should run in < 1 minute
 - **Actionable**: Every issue has a clear fix recommendation
 - **Threshold**: < 5 critical issues = ready to proceed
@@ -634,19 +633,19 @@ Would you like me to:
 
 ## Integration with Other Commands
 
-**Position**: Quality Gate (BEFORE create)
+**Position**: Quality Gate (BEFORE implement)
 
 Feeds into:
-- `/marketspec.create` - Should only run after passing this check
+- `/marketspec.implement` - Should only run after passing this check
 
 References:
-- `/marketspec.discover` - Source of objectives and requirements
+- `/marketspec.specify` - Source of objectives and requirements
 - `/marketspec.clarify` - Refined requirements
-- `/marketspec.strategy` - Campaign and channel definitions
+- `/marketspec.plan` - Campaign and channel definitions
 - `/marketspec.tasks` - Task breakdown
 
 **Next Commands**:
-- If pass (> 80%): `/marketspec.create`
+- If pass (> 80%): `/marketspec.implement`
 - If fail (< 80%): Fix issues and re-run
 
 ---
@@ -654,6 +653,7 @@ References:
 ## See Also
 
 - `/marketspec.tasks` - Previous step
-- `/marketspec.create` - Next step
-- `/marketspec.optimize` - For deep analysis and optimization (run after create or after campaign)
+- `/marketspec.implement` - Next step (final specification)
+- `/marketspec.checklist` - Quality validation (companion command)
 - Consistency examples in `examples/` directory
+- MetaSpec SDS Analyze: `.metaspec/commands/metaspec.sds.analyze.md`

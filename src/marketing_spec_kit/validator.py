@@ -16,7 +16,7 @@ Performance Target: Validate <250ms for typical specs
 
 import re
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Set
+from typing import Any, List, Set
 
 from pydantic import BaseModel, Field
 
@@ -507,7 +507,7 @@ class MarketingSpecValidator:
                         campaign.id,
                         "budget",
                         f"Total campaign budgets (${total_campaign_budgets:.2f}) exceed plan budget (${plan_total_budget:.2f})",
-                        f"Consider reducing campaign budgets or increasing plan budget",
+                        "Consider reducing campaign budgets or increasing plan budget",
                     )
                     self.result.rules_passed += 1
                 else:
@@ -615,7 +615,7 @@ class MarketingSpecValidator:
                     tool.id,
                     "api_config.base_url",
                     f"API base_url must use HTTPS (got: {base_url})",
-                    f"Use 'https://' instead of 'http://'",
+                    "Use 'https://' instead of 'http://'",
                 )
             self._pass_rule()
         

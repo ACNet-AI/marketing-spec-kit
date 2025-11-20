@@ -1,35 +1,35 @@
 ---
 name: marketspec.review
-description: Analyze actual campaign performance vs. planned
+description: Analyze campaign execution results and compare against targets
 layer: sdm
 status: implemented
 type: extension
-category: Extension (Feedback Loop)
-source: Original to marketing-spec-kit
+category: Extension (Post-Campaign Analysis)
+source: Marketing-specific extension
 version: 0.3.0
 ---
 
 # /marketspec.review 🔵 Extension
 
-**Purpose**: Analyze actual campaign performance after execution and compare against planned objectives.
+**Purpose**: Execute post-campaign review by analyzing actual results vs expected targets.
 
-**Category**: Extension (Feedback Loop)  
-**Timing**: POST-EXECUTION  
-**Note**: Original to marketing-spec-kit (no MetaSpec equivalent)
+**Category**: Extension (Post-Campaign Analysis)  
+**Output**: `specs/{sequence}-{name}/review.md` ⭐  
+**Note**: Marketing-specific extension (no MetaSpec equivalent)
 
 ---
 
 ## Purpose
 
-After campaign execution, this command helps you:
-- Compare actual results vs planned objectives
-- Analyze KPI achievement rates
-- Review budget execution
-- Identify success factors
-- Document lessons learned
-- Prepare insights for optimization
+This command **executes campaign performance analysis**:
+- Collects actual data from tracking tools
+- Compares actual results against target KPIs
+- Analyzes channel performance
+- Identifies what worked and what didn't
+- Documents lessons learned
+- Generates comprehensive review report
 
-This is an **Extension Command** - run after campaign execution to enable data-driven optimization.
+This produces a **review report** documenting campaign performance and learnings.
 
 ---
 
@@ -37,904 +37,805 @@ This is an **Extension Command** - run after campaign execution to enable data-d
 
 ```
 /marketspec.review
-/marketspec.review --data-source analytics.json
-/marketspec.review --period "2025-01-15 to 2025-03-31"
+/marketspec.review --interim              # Mid-campaign review
+/marketspec.review --data-source [path]   # Specify custom data location
 ```
 
 **Examples**:
 ```
-/marketspec.review
-/marketspec.review --data-source google-analytics-export.json
-/marketspec.review --period "Q1 2025"
+/marketspec.review                                          # Full post-campaign review
+/marketspec.review --interim                               # Mid-campaign checkpoint
+/marketspec.review --data-source data/001/      # Custom data path
 ```
 
 ---
 
 ## Prerequisites
 
-- **Required**: Original spec `marketing-spec.yaml`
-- **Required**: Campaign completed or in progress
-- **Recommended**: Analytics data (GA, social media, email metrics)
-- **Recommended**: Actual spend data
-- **Optional**: Team feedback
+- **Required**: Campaign specification from `/marketspec.specify`
+- **Required**: Campaign configuration from `/marketspec.implement`
+- **Required**: Actual performance data (collected during campaign)
+- **Optional**: Campaign plan for context
 
 ---
 
 ## Execution Steps
 
-### Step 1: Load Original Plan
+### Step 1: Load Campaign Targets
 
-Read the original specification:
+**Read expected targets** from specifications:
 
 ```yaml
-original_plan:
-  name: "metaspec-developer-onboarding"
-  version: "1.0.0"
-  
-  objectives:
-    - name: "GitHub Stars"
-      baseline: 50
-      target: 500
-      timeline: "11 weeks"
-    
-    - name: "Email Subscribers"
+# From specs/{sequence}-{name}/spec.md
+expected_targets:
+  kpis:
+    - name: github_stars
       baseline: 100
-      target: 1000
-      timeline: "11 weeks"
+      target: 500
+      expected_lift: 400
     
-    - name: "Website Traffic"
-      baseline: 500
-      target: 50000
-      timeline: "11 weeks"
+    - name: email_subscribers
+      baseline: 200
+      target: 1000
+      expected_lift: 800
+    
+    - name: website_sessions
+      baseline: 800
+      target: 5000
+      expected_lift: 4200
   
   budget:
     total: 10000
-    breakdown:
+    allocation:
       content_creation: 4000
       paid_promotion: 3000
       tools: 1500
-      community: 1000
-      contingency: 500
+      contingency: 1500
   
   timeline:
     start: "2025-01-15"
     end: "2025-03-31"
-    duration: "11 weeks"
+    duration_weeks: 11
   
-  campaigns: 2
-  channels: 5
-  content_pieces: 12
+  channels:
+    - name: blog
+      budget: 2000
+      role: primary
+    - name: twitter
+      budget: 1000
+      role: primary
+    - name: dev_to
+      budget: 500
+      role: secondary
+    - name: reddit
+      budget: 500
+      role: secondary
 ```
-
-### Step 2: Collect Actual Performance Data
-
-**Interactive Prompts**:
-
-```
-📊 Let's review your campaign performance!
-
-I've loaded your original plan: "metaspec-developer-onboarding"
-Period: 2025-01-15 to 2025-03-31 (11 weeks)
 
 ---
 
-**KPI Performance**
+### Step 2: Collect Actual Data
 
-1️⃣ GitHub Stars
-   Planned: 50 → 500 (+450)
-   Actual: ?
-   
-   > Please provide actual GitHub stars at end of campaign: _____
+**Option A: From tracking tools (automated)**
 
-2️⃣ Email Subscribers
-   Planned: 100 → 1000 (+900)
-   Actual: ?
-   
-   > Please provide actual email subscribers: _____
+If tracking is automated in the generated code `src/campaigns/{sequence}-{name}.ts`:
 
-3️⃣ Website Traffic (visits)
-   Planned: 500 → 50,000 (+49,500)
-   Actual: ?
-   
-   > Please provide total website visits: _____
+```typescript
+// Tracking logic embedded in campaign code
+const stars = await github.getStarCount({ repo: config.kpis.github_stars.repo });
+
+# For each KPI, call the configured tool
+kpis:
+  github_stars:
+    tool: github-api
+    action: get_repo_stars(repo="owner/repo", date_range="2025-01-15:2025-03-31")
+    result: 450
+  
+  email_subscribers:
+    tool: email-platform-api
+    action: get_subscribers(list_id="main-list", date_range="2025-01-15:2025-03-31")
+    result: 1200
+  
+  website_sessions:
+    tool: google-analytics
+    action: get_sessions(property_id="GA4-XXXXX", date_range="2025-01-15:2025-03-31")
+    result: 4500
+```
+
+**Option B: From data files (manual collection)**
+
+If data was collected in `data/{sequence}-{name}/`:
+
+```json
+// data/001-q1-campaign/github-stars.json
+{
+  "campaign_id": "001-q1-campaign",
+  "metric": "github_stars",
+  "collection_date": "2025-03-31",
+  "baseline": 100,
+  "target": 500,
+  "actual": 450,
+  "daily_data": [
+    {"date": "2025-01-15", "value": 105},
+    {"date": "2025-01-16", "value": 112},
+    ...
+    {"date": "2025-03-31", "value": 450}
+  ]
+}
+```
+
+**Option C: Ask user for data (manual input)**
+
+If no automated tracking or data files:
+
+```
+📊 Data Collection
+
+Please provide actual results for each KPI:
+
+1. GitHub Stars:
+   Baseline: 100
+   Target: 500
+   Actual: [User inputs: 450]
+
+2. Email Subscribers:
+   Baseline: 200
+   Target: 1000
+   Actual: [User inputs: 1200]
+
+3. Website Sessions:
+   Baseline: 800
+   Target: 5000
+   Actual: [User inputs: 4500]
+
+Budget spent:
+Total budget: $10,000
+Actual spent: [User inputs: $9,800]
+
+Budget breakdown:
+- Content creation: [User inputs: $3,800]
+- Paid promotion: [User inputs: $3,200]
+- Tools: [User inputs: $1,400]
+- Contingency used: [User inputs: $1,400]
+```
 
 ---
 
-**Budget Execution**
+### Step 3: Calculate KPI Achievement
 
-Planned Total: $10,000
-Actual Spent: ?
-
-> Please provide total actual spend: _____
-
-Or provide breakdown:
-- Content Creation (planned: $4,000): _____
-- Paid Promotion (planned: $3,000): _____
-- Tools (planned: $1,500): _____
-- Community (planned: $1,000): _____
-- Other: _____
-
----
-
-**Data Sources** (optional)
-
-Do you have analytics exports?
-- [ ] Google Analytics JSON
-- [ ] Social media reports
-- [ ] Email marketing data
-- [ ] Other
-
-> Upload or paste data here: _____
-```
-
-**Example Input**:
-
-```yaml
-actual_performance:
-  kpis:
-    github_stars:
-      actual: 420
-      planned: 500
-      
-    email_subscribers:
-      actual: 850
-      planned: 1000
-      
-    website_traffic:
-      actual: 45000
-      planned: 50000
-  
-  budget:
-    total_spent: 9500
-    planned: 10000
-    breakdown:
-      content_creation: 3800
-      paid_promotion: 3200
-      tools: 1500
-      community: 800
-      contingency: 200
-  
-  timeline:
-    actual_start: "2025-01-15"
-    actual_end: "2025-03-31"
-    completed_on_time: true
-```
-
-### Step 3: Calculate Achievement Rates
-
-Compare actual vs planned:
+For each KPI, calculate achievement rate:
 
 ```yaml
 achievement_analysis:
-  kpis:
-    - name: "GitHub Stars"
-      baseline: 50
-      target: 500
-      planned_growth: 450
-      actual: 420
-      actual_growth: 370
-      achievement_rate: 82.2%  # (370/450)
-      status: "⚠️ Below target"
-      delta: -80 stars
-      
-    - name: "Email Subscribers"
-      baseline: 100
-      target: 1000
-      planned_growth: 900
-      actual: 850
-      actual_growth: 750
-      achievement_rate: 83.3%  # (750/900)
-      status: "⚠️ Below target"
-      delta: -150 subscribers
-      
-    - name: "Website Traffic"
-      baseline: 500
-      target: 50000
-      planned_growth: 49500
-      actual: 45000
-      actual_growth: 44500
-      achievement_rate: 89.9%  # (44500/49500)
-      status: "⚠️ Below target"
-      delta: -5000 visits
+  github_stars:
+    baseline: 100
+    target: 500
+    actual: 450
+    expected_lift: 400 (500-100)
+    actual_lift: 350 (450-100)
+    achievement_rate: 87.5% (350/400)
+    status: "⚠️ Below Target"
+    gap: -50 stars
+    
+  email_subscribers:
+    baseline: 200
+    target: 1000
+    actual: 1200
+    expected_lift: 800 (1000-200)
+    actual_lift: 1000 (1200-200)
+    achievement_rate: 125% (1000/800)
+    status: "✅ Exceeded Target"
+    surplus: +200 subscribers
   
-  overall_kpi_achievement: 85.1%  # Average
-  
-  budget:
-    planned: 10000
-    spent: 9500
-    utilization: 95%
-    status: "✅ Under budget"
-    saved: 500
-  
-  timeline:
-    planned_duration: "11 weeks"
-    actual_duration: "11 weeks"
-    status: "✅ On time"
+  website_sessions:
+    baseline: 800
+    target: 5000
+    actual: 4500
+    expected_lift: 4200 (5000-800)
+    actual_lift: 3700 (4500-800)
+    achievement_rate: 88% (3700/4200)
+    status: "⚠️ Below Target"
+    gap: -500 sessions
+
+overall_achievement: 100% (33.3% weight per KPI)
+- github_stars: 87.5% × 33.3% = 29.2%
+- email_subscribers: 125% × 33.3% = 41.7%
+- website_sessions: 88% × 33.3% = 29.3%
+- Total: 100.2%
 ```
 
-### Step 4: Channel Performance Analysis
+---
 
-Analyze which channels performed best:
+### Step 4: Analyze Budget Performance
+
+```yaml
+budget_analysis:
+  planned_vs_actual:
+    total:
+      planned: 10000
+      actual: 9800
+      variance: -200 (-2%)
+      status: "✅ Under Budget"
+    
+    content_creation:
+      planned: 4000
+      actual: 3800
+      variance: -200 (-5%)
+      reason: "Efficient content production"
+    
+    paid_promotion:
+      planned: 3000
+      actual: 3200
+      variance: +200 (+6.7%)
+      reason: "Increased Twitter ad spend for better performance"
+    
+    tools:
+      planned: 1500
+      actual: 1400
+      variance: -100 (-6.7%)
+      reason: "Chose lower-cost alternatives"
+    
+    contingency:
+      planned: 1500
+      actual_used: 1400
+      reason: "Covered promotion overspend"
+  
+  cost_efficiency:
+    cost_per_star: 28 (9800 / 350 new stars)
+    cost_per_subscriber: 9.8 (9800 / 1000 new subscribers)
+    cost_per_session: 2.65 (9800 / 3700 new sessions)
+    
+    roi_calculation:
+      investment: 9800
+      estimated_value:
+        - 350 stars × $50 (value per star) = $17,500
+        - 1000 subscribers × $10 (value per sub) = $10,000
+        - Total estimated value: $27,500
+      roi: 181% ((27500-9800)/9800)
+```
+
+---
+
+### Step 5: Analyze Channel Performance
+
+If channel-level data is available:
 
 ```yaml
 channel_analysis:
-  - channel: "dev-blog"
-    metrics:
-      traffic: 15000 visits
-      conversions: 200 email signups
-      conversion_rate: 1.33%
-      budget: 1500
-      cost_per_conversion: 7.5
-      status: "✅ Strong performer"
-      roi_score: 8/10
+  blog:
+    budget: 2000
+    actual_spend: 1900
+    posts_published: 22
+    avg_views_per_post: 450
+    total_views: 9900
+    conversions_attributed: 180 (email signups)
+    cost_per_conversion: 10.56 (1900/180)
+    performance_score: 8/10
+    status: "✅ High Performer"
     
-  - channel: "dev-twitter"
-    metrics:
-      impressions: 500000
-      engagements: 5000
-      engagement_rate: 1%
-      github_referrals: 150
-      budget: 1200
-      cost_per_github_star: 8
-      status: "✅ Good performer"
-      roi_score: 7/10
+  twitter:
+    budget: 1000
+    actual_spend: 1200 (overspent for better ROI)
+    posts: 231
+    impressions: 150000
+    engagements: 4500
+    engagement_rate: 3%
+    conversions_attributed: 120 (GitHub stars)
+    cost_per_conversion: 10 (1200/120)
+    performance_score: 9/10
+    status: "✅ Top Performer"
+    reason: "Exceeded expectations, justified overspend"
     
-  - channel: "dev-to"
-    metrics:
-      views: 25000
-      reactions: 800
-      github_referrals: 100
-      budget: 800
-      cost_per_github_star: 8
-      status: "✅ Efficient"
-      roi_score: 8/10
+  dev_to:
+    budget: 500
+    actual_spend: 450
+    posts: 11
+    views: 8800
+    reactions: 340
+    conversions_attributed: 80 (GitHub stars)
+    cost_per_conversion: 5.63 (450/80)
+    performance_score: 7/10
+    status: "✅ Good Performer"
     
-  - channel: "reddit-programming"
-    metrics:
-      posts: 12
-      upvotes: 450
-      traffic: 8000
-      github_referrals: 80
-      budget: 500
-      cost_per_github_star: 6.25
-      status: "✅ Best ROI"
-      roi_score: 9/10
-    
-  - channel: "linkedin-tech"
-    metrics:
-      impressions: 50000
-      clicks: 500
-      click_rate: 1%
-      conversions: 50
-      budget: 1000
-      cost_per_conversion: 20
-      status: "⚠️ Underperformed"
-      roi_score: 4/10
-  
-  top_performers:
-    - "reddit-programming" (best ROI)
-    - "dev-to" (efficient)
-    - "dev-blog" (strong conversions)
-  
-  underperformers:
-    - "linkedin-tech" (high cost, low conversion)
+  reddit:
+    budget: 500
+    actual_spend: 450
+    posts: 22
+    upvotes: 180
+    comments: 45
+    conversions_attributed: 20 (GitHub stars)
+    cost_per_conversion: 22.5 (450/20)
+    performance_score: 4/10
+    status: "⚠️ Underperformer"
+    reason: "Lower-than-expected engagement"
+
+channel_ranking:
+  1. Twitter (9/10) - Top performer, high engagement
+  2. Blog (8/10) - Consistent traffic driver
+  3. Dev.to (7/10) - Good efficiency
+  4. Reddit (4/10) - Needs improvement
 ```
 
-### Step 5: Content Performance Analysis
-
-Identify which content worked best:
-
-```yaml
-content_analysis:
-  top_performing:
-    - title: "Building Your First MetaSpec - Tutorial"
-      type: "Tutorial"
-      channel: "dev-blog"
-      views: 5000
-      github_referrals: 80
-      shares: 150
-      performance_score: 9/10
-      success_factors:
-        - "Practical hands-on approach"
-        - "Clear step-by-step instructions"
-        - "Solved real developer pain point"
-    
-    - title: "How We Automated Our Spec Process with MetaSpec"
-      type: "Case Study"
-      channel: "dev-to"
-      views: 8000
-      reactions: 300
-      github_referrals: 60
-      performance_score: 8/10
-      success_factors:
-        - "Real-world use case"
-        - "Quantified results"
-        - "Relatable developer workflow"
-    
-    - title: "MetaSpec vs Manual Documentation: A Comparison"
-      type: "Comparison"
-      channel: "reddit-programming"
-      upvotes: 200
-      comments: 45
-      traffic: 3000
-      performance_score: 8/10
-      success_factors:
-        - "Addressed common skepticism"
-        - "Data-driven comparison"
-        - "Sparked discussion"
-  
-  underperforming:
-    - title: "MetaSpec 2.0 Release Notes"
-      type: "Announcement"
-      channel: "linkedin-tech"
-      views: 500
-      engagements: 10
-      performance_score: 3/10
-      issues:
-        - "Too technical for LinkedIn audience"
-        - "No clear value proposition"
-        - "Poor timing (posted during holidays)"
-  
-  content_insights:
-    - "Tutorials and case studies outperformed announcements 3:1"
-    - "Dev.to and Reddit audiences prefer deep technical content"
-    - "LinkedIn requires more business-focused messaging"
-    - "Step-by-step guides generated 2x more GitHub referrals"
-```
+---
 
 ### Step 6: Identify Success Factors
 
-What worked well:
+Analyze what contributed to success:
 
 ```yaml
 success_factors:
-  strategy:
-    - factor: "Developer-first content approach"
+  what_worked_well:
+    - factor: "Email landing page design"
       impact: "High"
-      evidence: "Tutorial posts got 2x engagement vs promotional"
-      replicable: true
+      evidence: "125% achievement on email subscribers"
+      replicability: "Yes - reuse design template"
       
-    - factor: "Community-driven distribution"
+    - factor: "Twitter posting frequency (3x/day)"
       impact: "High"
-      evidence: "Reddit and Dev.to drove 60% of GitHub traffic"
-      replicable: true
+      evidence: "9/10 performance score, high engagement"
+      replicability: "Yes - maintain frequency"
       
-    - factor: "Consistent posting schedule"
+    - factor: "Tutorial-style blog content"
       impact: "Medium"
-      evidence: "Weeks with 3+ posts averaged 30% higher traffic"
-      replicable: true
-  
-  content:
-    - factor: "Hands-on tutorials with code examples"
-      impact: "High"
-      evidence: "Highest GitHub referral rate (5%)"
-      replicable: true
+      evidence: "Tutorial posts had 2x views vs announcements"
+      replicability: "Yes - increase tutorial ratio"
       
-    - factor: "Real-world case studies"
-      impact: "High"
-      evidence: "Highest email conversion rate (2.5%)"
-      replicable: true
-  
-  channels:
-    - factor: "Reddit timing (Tuesday/Wednesday morning)"
+    - factor: "Dev.to cross-posting"
       impact: "Medium"
-      evidence: "3x more upvotes vs other days"
-      replicable: true
+      evidence: "Best cost-per-conversion at $5.63"
+      replicability: "Yes - continue strategy"
+  
+  what_didnt_work:
+    - issue: "Reddit community engagement"
+      impact: "Medium"
+      evidence: "Only 20 conversions, high cost-per-conversion"
+      root_cause: "Wrong subreddits or timing"
+      learning: "Need better subreddit targeting"
       
-    - factor: "Dev.to series format"
-      impact: "Medium"
-      evidence: "Follow-through rate 40% higher"
-      replicable: true
+    - issue: "GitHub Stars target"
+      impact: "Low"
+      evidence: "Missed by 50 stars (10%)"
+      root_cause: "Target may have been too aggressive"
+      learning: "Set more realistic baselines"
   
-  execution:
-    - factor: "Rapid response to comments"
-      impact: "High"
-      evidence: "Posts with <1hr response time got 2x engagement"
-      replicable: true
+  surprises:
+    - finding: "Email subscribers far exceeded expectations"
+      impact: "Positive"
+      explanation: "Landing page conversion rate was 8% vs expected 4%"
+      action: "Analyze landing page design for replication"
+      
+    - finding: "Twitter ads ROI higher than expected"
+      impact: "Positive"
+      explanation: "Developer audience highly responsive on Twitter"
+      action: "Increase Twitter budget in next campaign"
 ```
+
+---
 
 ### Step 7: Document Lessons Learned
 
-What didn't work and why:
-
 ```yaml
 lessons_learned:
-  challenges:
-    - challenge: "LinkedIn underperformed expectations"
-      planned_roi: 6/10
-      actual_roi: 4/10
-      root_causes:
-        - "Audience mismatch: Too technical for decision-makers"
-        - "Content format: Long-form didn't fit platform"
-        - "Timing: Posted during slow periods"
-      lesson: "LinkedIn needs business-value messaging, not technical deep dives"
-      action_for_next_time: "Create separate content track for LinkedIn focused on ROI/efficiency"
+  high_value_learnings:
+    - lesson: "Landing page simplicity drives conversions"
+      context: "Simple, single-CTA landing page converted at 8%"
+      application: "Use minimal design for all landing pages"
+      confidence: "High"
       
-    - challenge: "Email conversion slower than expected"
-      planned: 1000
-      actual: 850
-      root_causes:
-        - "No dedicated lead magnet"
-        - "Email signup CTA buried in posts"
-        - "No email nurture sequence"
-      lesson: "Email growth needs dedicated tactics, not just passive signups"
-      action_for_next_time: "Create lead magnet, optimize CTAs, build nurture sequence"
+    - lesson: "Twitter Tuesday 10am posts perform 30% better"
+      context: "Analyzed 231 tweets, Tuesday morning had highest engagement"
+      application: "Schedule important announcements for Tuesday 10am"
+      confidence: "High"
       
-    - challenge: "GitHub stars growth plateaued in week 8"
-      weeks_1_7_avg: 45/week
-      weeks_8_11_avg: 20/week
-      root_causes:
-        - "Content fatigue: Same format repeated"
-        - "No re-engagement campaigns"
-        - "Low community engagement"
-      lesson: "Growth requires variety and ongoing engagement, not just content volume"
-      action_for_next_time: "Plan content variety, add community engagement tactics"
+    - lesson: "Tutorial content outperforms announcements 2:1"
+      context: "Blog tutorial posts had 2x average views"
+      application: "Shift content mix to 70% tutorials, 30% announcements"
+      confidence: "Medium"
   
-  surprises:
-    - surprise: "Reddit performed 2x better than expected"
-      impact: "Positive"
-      insight: "Technical communities highly receptive to well-explained tools"
+  channel_learnings:
+    twitter:
+      - "3 posts/day is optimal (tested vs 2/day and 4/day)"
+      - "Images with code snippets get 50% more engagement"
+      - "Questions in tweets drive 3x more replies"
+    
+    blog:
+      - "2000-word deep-dive articles perform best"
+      - "Code examples are essential (posts without get 40% fewer views)"
+      - "Tuesday/Thursday publishing is optimal"
+    
+    reddit:
+      - "r/programming is too broad, need niche subreddits"
+      - "Avoid weekends (50% lower engagement)"
+      - "Community contribution before self-promotion is critical"
+  
+  audience_insights:
+    - insight: "Senior developers prefer deep technical content"
+      evidence: "Advanced topics got 60% more saves/bookmarks"
+      application: "Create 'Advanced' content series"
       
-    - surprise: "Tutorial content outperformed case studies"
-      impact: "Positive"
-      insight: "Developers want hands-on learning over success stories"
-      
-    - surprise: "Weekend traffic was negligible"
-      impact: "Neutral"
-      insight: "Developer marketing is B2B workday-driven, not 24/7"
+    - insight: "Beginners drive most email signups"
+      evidence: "70% of subscribers came from 'Getting Started' content"
+      application: "Maintain beginner-friendly entry points"
 ```
 
-### Step 8: Calculate ROI and Efficiency
+---
 
-Overall campaign effectiveness:
+### Step 8: Generate Review Report
 
-```yaml
-roi_analysis:
-  investment:
-    budget: 9500
-    team_hours: 220
-    team_cost_estimate: 11000  # At $50/hr average
-    total_investment: 20500
-  
-  returns:
-    github_stars:
-      achieved: 370
-      value_per_star: 50  # Estimated based on open-source project value
-      estimated_value: 18500
-    
-    email_subscribers:
-      achieved: 750
-      value_per_subscriber: 15  # Estimated LTV
-      estimated_value: 11250
-    
-    website_traffic:
-      achieved: 44500
-      value_per_visit: 0.50  # Engagement value
-      estimated_value: 22250
-    
-    total_estimated_value: 52000
-  
-  roi_calculation:
-    total_investment: 20500
-    total_value: 52000
-    net_value: 31500
-    roi_percentage: 154%
-    status: "✅ Positive ROI"
-  
-  efficiency_metrics:
-    cost_per_github_star: 25.68  # 9500/370
-    cost_per_email_subscriber: 12.67  # 9500/750
-    cost_per_1000_visits: 213.48  # 9500/(44500/1000)
-    
-    budget_efficiency: 95%  # Spent vs planned
-    goal_efficiency: 85.1%  # Achievement vs target
-    
-    overall_efficiency_score: 8.2/10
-```
-
-### Step 9: Generate Campaign Review Report
-
-Create comprehensive review document:
+**Output**: `specs/{sequence}-{name}/review.md`
 
 ```markdown
-# Campaign Review Report
+# Campaign Review: Q1 2025 Developer Outreach Campaign
 
-**Campaign**: MetaSpec Developer Onboarding  
-**Period**: 2025-01-15 to 2025-03-31 (11 weeks)  
-**Status**: Completed On Time  
-**Generated**: 2025-04-05
+**Campaign ID**: 001-q1-campaign  
+**Review Date**: 2025-04-05  
+**Campaign Period**: 2025-01-15 to 2025-03-31 (11 weeks)  
+**Status**: ✅ Completed
 
 ---
 
 ## Executive Summary
 
-Campaign achieved **85.1% of planned objectives** with **95% budget utilization** and **154% ROI**.
+**Overall Performance**: **100.2%** of target achieved
 
-**Key Results**:
-- ⚠️ GitHub Stars: 420 (84% of target)
-- ⚠️ Email Subscribers: 850 (85% of target)
-- ⚠️ Website Traffic: 45K (90% of target)
-- ✅ Budget: $9,500 spent (saved $500)
-- ✅ Timeline: Completed on schedule
+The Q1 campaign exceeded overall targets, driven by exceptional email subscriber growth (+125%) that offset shortfalls in GitHub Stars (-12.5%) and website sessions (-12%). Twitter emerged as the top-performing channel with a 9/10 score, while Reddit underperformed (4/10) and requires strategy adjustment.
 
-**Overall Grade**: B+ (Strong performance with room for improvement)
+**Key Wins**:
+- ✅ 1,200 email subscribers (vs 1,000 target)
+- ✅ Came in under budget ($9,800 vs $10,000)
+- ✅ 181% ROI
+
+**Areas for Improvement**:
+- ⚠️ GitHub Stars: 450 vs 500 target (-10%)
+- ⚠️ Reddit channel needs better targeting
+
+**Grade**: **A-** (100% achievement, high efficiency, actionable learnings)
 
 ---
 
 ## KPI Achievement
 
-| Objective | Baseline | Target | Actual | Achievement | Status |
-|-----------|----------|--------|--------|-------------|--------|
-| GitHub Stars | 50 | 500 | 420 | 82.2% | ⚠️ Below |
-| Email Subscribers | 100 | 1,000 | 850 | 83.3% | ⚠️ Below |
-| Website Traffic | 500 | 50,000 | 45,000 | 89.9% | ⚠️ Below |
+| KPI | Baseline | Target | Actual | Lift | Achievement | Status |
+|-----|----------|--------|--------|------|-------------|--------|
+| GitHub Stars | 100 | 500 | 450 | +350 | 87.5% | ⚠️ Below Target |
+| Email Subscribers | 200 | 1,000 | 1,200 | +1,000 | 125% | ✅ Exceeded |
+| Website Sessions | 800 | 5,000 | 4,500 | +3,700 | 88% | ⚠️ Below Target |
 
-**Average Achievement**: 85.1%
+**Overall Achievement**: **100.2%** (weighted average)
 
-**Analysis**: All KPIs moved in the right direction but fell short of ambitious targets. Most growth happened in first 7 weeks, with plateau in final 4 weeks.
+### GitHub Stars Analysis
+- **Gap**: -50 stars (-10% below target)
+- **Trend**: Steady growth throughout campaign, no plateau
+- **Root Cause**: Target may have been aggressive given baseline
+- **Contributors**: Twitter (120), Dev.to (80), Blog (180), Reddit (20), Other (50)
+- **Recommendation**: Maintain strategy, consider target calibration
+
+### Email Subscribers Analysis
+- **Surplus**: +200 subscribers (+20% above target)
+- **Trend**: Strong growth, especially in weeks 3-6
+- **Root Cause**: Landing page conversion rate 8% vs expected 4%
+- **Success Factor**: Simple, clear value proposition + single CTA
+- **Recommendation**: Replicate landing page design
+
+### Website Sessions Analysis
+- **Gap**: -500 sessions (-10% below target)
+- **Trend**: Consistent growth, no drop-off
+- **Root Cause**: Reddit underperformance reduced traffic
+- **Recommendation**: Improve Reddit strategy or reallocate budget
 
 ---
 
 ## Budget Performance
 
-**Total Budget**: $10,000  
-**Total Spent**: $9,500 (95%)  
-**Saved**: $500
+| Category | Planned | Actual | Variance | % Var | Status |
+|----------|---------|--------|----------|-------|--------|
+| **Total** | **$10,000** | **$9,800** | **-$200** | **-2%** | **✅** |
+| Content Creation | $4,000 | $3,800 | -$200 | -5% | ✅ Efficient |
+| Paid Promotion | $3,000 | $3,200 | +$200 | +6.7% | ⚠️ Over (justified) |
+| Tools | $1,500 | $1,400 | -$100 | -6.7% | ✅ Under |
+| Contingency Used | $1,500 | $1,400 | -$100 | -6.7% | ✅ Covered overages |
 
-| Category | Planned | Actual | Variance |
-|----------|---------|--------|----------|
-| Content Creation | $4,000 | $3,800 | -$200 (5%) |
-| Paid Promotion | $3,000 | $3,200 | +$200 (7%) |
-| Tools | $1,500 | $1,500 | $0 (0%) |
-| Community | $1,000 | $800 | -$200 (20%) |
-| Contingency | $500 | $200 | -$300 (60%) |
+**Overall**: ✅ Under budget by $200 (2%)
 
-**Analysis**: Budget well-managed. Slight overspend on paid promotion compensated by underspend on community and contingency.
+**Cost Efficiency**:
+- Cost per GitHub Star: **$28** ($9,800 / 350 new stars)
+- Cost per Email Subscriber: **$9.80** ($9,800 / 1,000 new subscribers)
+- Cost per Website Session: **$2.65** ($9,800 / 3,700 new sessions)
+
+**ROI**: **181%**
+- Investment: $9,800
+- Estimated value: $27,500 (350 stars × $50 + 1,000 subs × $10)
+- ROI: (27,500 - 9,800) / 9,800 = 181%
 
 ---
 
 ## Channel Performance
 
-### Top Performers (Keep & Expand)
+| Channel | Budget | Actual | Posts | Conversions | Cost/Conv | Score | Status |
+|---------|--------|--------|-------|-------------|-----------|-------|--------|
+| Twitter | $1,000 | $1,200 | 231 | 120 | $10.00 | 9/10 | ✅ Top |
+| Blog | $2,000 | $1,900 | 22 | 180 | $10.56 | 8/10 | ✅ High |
+| Dev.to | $500 | $450 | 11 | 80 | $5.63 | 7/10 | ✅ Good |
+| Reddit | $500 | $450 | 22 | 20 | $22.50 | 4/10 | ⚠️ Low |
 
-1. **Reddit (r/programming)** - ROI: 9/10
-   - Best cost-per-star: $6.25
-   - 80 GitHub referrals from 12 posts
-   - Success factor: Technical depth resonated
+### Channel Rankings
 
-2. **Dev.to** - ROI: 8/10
-   - 25K views, 100 GitHub referrals
-   - Strong developer community engagement
-   - Series format worked well
+#### 1. Twitter (9/10) - Top Performer ⭐
+- **Performance**: Exceeded all expectations
+- **Highlights**:
+  - 150K impressions, 3% engagement rate
+  - 120 GitHub star conversions
+  - Justified $200 budget increase
+- **What Worked**:
+  - 3 posts/day frequency optimal
+  - Tuesday 10am posts performed 30% better
+  - Images with code snippets drove engagement
+- **Recommendation**: **Increase budget by 30% next campaign**
 
-3. **Developer Blog** - ROI: 8/10
-   - Highest email conversion: 1.33%
-   - 200 subscribers from 15K visits
-   - Owned channel, sustainable long-term
+#### 2. Blog (8/10) - Consistent Performer ✅
+- **Performance**: Steady traffic driver
+- **Highlights**:
+  - 22 posts, 9,900 total views
+  - 180 email signups attributed
+  - Tutorial posts outperformed 2:1
+- **What Worked**:
+  - 2000-word deep-dive format
+  - Code examples essential
+  - Tuesday/Thursday publishing optimal
+- **Recommendation**: **Maintain strategy, increase tutorial ratio**
 
-### Underperformers (Optimize or Cut)
+#### 3. Dev.to (7/10) - Efficient Performer ✅
+- **Performance**: Best cost-per-conversion ($5.63)
+- **Highlights**:
+  - 11 posts (cross-posted from blog)
+  - 8,800 views, 340 reactions
+  - 80 GitHub star conversions
+- **What Worked**:
+  - Cross-posting strategy efficient
+  - Dev.to audience highly relevant
+- **Recommendation**: **Continue strategy, consider increasing to 2 posts/week**
 
-1. **LinkedIn** - ROI: 4/10
-   - Highest cost-per-conversion: $20
-   - Wrong audience fit
-   - **Recommendation**: Pivot to business-value messaging or reduce investment
+#### 4. Reddit (4/10) - Underperformer ⚠️
+- **Performance**: Below expectations
+- **Highlights**:
+  - 22 posts, 180 upvotes
+  - Only 20 conversions (worst cost-per-conversion)
+- **What Didn't Work**:
+  - Wrong subreddit targeting (r/programming too broad)
+  - Weekend posts got 50% lower engagement
+  - Insufficient community participation before promotion
+- **Recommendation**: **Pivot strategy or reallocate 50% budget to Twitter**
 
 ---
 
-## Content Insights
+## Content Effectiveness
 
-### What Worked ✅
+### Top 5 Performing Content
 
-- **Tutorials**: 2x engagement vs announcements
-- **Case studies**: Highest email conversion (2.5%)
-- **Hands-on code examples**: 5% GitHub referral rate
-- **Consistent 3x/week posting**: 30% higher traffic
+| Title | Type | Channel | Views | Conversions | Score |
+|-------|------|---------|-------|-------------|-------|
+| "Quick Start in 5 Min" | Tutorial | Blog | 1,850 | 45 | 10/10 |
+| "How We Built X" | Case Study | Blog | 1,620 | 38 | 9/10 |
+| "Top 10 Tips" | List | Twitter Thread | 12K impr | 32 | 9/10 |
+| "Common Mistakes" | Tutorial | Dev.to | 1,200 | 28 | 8/10 |
+| "Getting Started Video" | Video | Blog | 980 | 22 | 8/10 |
+
+### Content Type Analysis
+
+| Type | Count | Avg Views | Avg Conversions | Performance |
+|------|-------|-----------|-----------------|-------------|
+| Tutorial | 12 | 950 | 25 | ✅ High (2x avg) |
+| Case Study | 5 | 720 | 18 | ✅ Good |
+| Announcement | 8 | 380 | 8 | ⚠️ Low |
+| List/Tips | 6 | 850 | 22 | ✅ Good |
+
+**Key Insight**: Tutorial content outperforms announcements 2:1.  
+**Recommendation**: Shift content mix to 70% tutorials, 20% lists, 10% announcements.
+
+---
+
+## Success Factors
+
+### What Worked Well ✅
+
+1. **Landing Page Simplicity**
+   - **Impact**: High
+   - **Evidence**: 8% conversion rate (vs expected 4%)
+   - **Replicability**: ✅ Yes - use minimal design for all pages
+   
+2. **Twitter 3x/Day Posting**
+   - **Impact**: High
+   - **Evidence**: 9/10 channel score, 150K impressions
+   - **Replicability**: ✅ Yes - maintain frequency
+   
+3. **Tutorial-First Content**
+   - **Impact**: Medium-High
+   - **Evidence**: Tutorials got 2x views vs announcements
+   - **Replicability**: ✅ Yes - increase tutorial ratio to 70%
+   
+4. **Dev.to Cross-Posting**
+   - **Impact**: Medium
+   - **Evidence**: Best cost-per-conversion ($5.63)
+   - **Replicability**: ✅ Yes - continue and potentially expand
 
 ### What Didn't Work ❌
 
-- **Product announcements**: Low engagement
-- **LinkedIn technical content**: Audience mismatch
-- **Weekend posting**: Negligible traffic
-- **Repetitive formats**: Growth plateau after week 7
+1. **Reddit Broad Targeting**
+   - **Impact**: Medium
+   - **Root Cause**: Used r/programming (too generic)
+   - **Learning**: Need niche subreddits (e.g., r/python, r/opensource)
+   - **Fix**: Research niche communities, participate before promoting
+   
+2. **Weekend Social Posts**
+   - **Impact**: Low
+   - **Root Cause**: Developer audience less active on weekends
+   - **Learning**: Weekend posts got 50% fewer engagements
+   - **Fix**: Front-load posting to weekdays
 
-### Content Performance Summary
+### Surprises 💡
 
-| Content Type | Count | Avg Views | GitHub Referrals | Performance |
-|--------------|-------|-----------|------------------|-------------|
-| Tutorials | 5 | 4,000 | 250 (50/ea) | ✅ Excellent |
-| Case Studies | 4 | 6,000 | 150 (37.5/ea) | ✅ Strong |
-| Comparisons | 2 | 3,500 | 80 (40/ea) | ✅ Good |
-| Announcements | 3 | 800 | 20 (6.7/ea) | ❌ Poor |
-
----
-
-## Success Factors (Replicate These)
-
-1. **Developer-first content** → 2x engagement
-2. **Community-driven distribution** → 60% of traffic
-3. **Rapid comment response** (<1hr) → 2x engagement
-4. **Tuesday/Wednesday Reddit posting** → 3x upvotes
-5. **Hands-on tutorials** → Highest conversion
-6. **Dev.to series format** → 40% higher follow-through
+1. **Email Performance Surge** (Positive)
+   - **Finding**: 125% achievement (200 above target)
+   - **Explanation**: Landing page design resonated strongly
+   - **Action**: Analyze design elements for replication
+   
+2. **Twitter Ad ROI** (Positive)
+   - **Finding**: Twitter justified budget overspend
+   - **Explanation**: Developer audience highly engaged on Twitter
+   - **Action**: Allocate more budget to Twitter in next campaign
+   
+3. **GitHub Stars Plateau** (Neutral)
+   - **Finding**: Steady growth but missed target by 10%
+   - **Explanation**: Target may have been aggressive
+   - **Action**: Recalibrate baseline expectations
 
 ---
 
 ## Lessons Learned
 
-### What We'll Do Differently Next Time
+### High-Value Learnings
 
-1. **Email Growth**
-   - Problem: No dedicated lead magnet
-   - Solution: Create downloadable guide or template
-   - Expected impact: +30% email growth
+1. **"Landing page simplicity drives conversions"**
+   - Context: Single CTA, minimal design → 8% conversion
+   - Application: Use for all future landing pages
+   - Confidence: High
 
-2. **LinkedIn Strategy**
-   - Problem: Too technical for audience
-   - Solution: Business-value focused content
-   - Expected impact: 2x LinkedIn ROI
+2. **"Twitter Tuesday 10am optimal"**
+   - Context: Analyzed 231 tweets, Tuesday 10am posts +30% engagement
+   - Application: Schedule announcements for this time
+   - Confidence: High
 
-3. **Content Variety**
-   - Problem: Format repetition caused plateau
-   - Solution: Mix formats (video, interactive, guest posts)
-   - Expected impact: Sustain growth through week 11
+3. **"Tutorial content is king"**
+   - Context: Tutorials outperformed 2:1
+   - Application: 70% tutorial, 20% tips, 10% announcements
+   - Confidence: Medium-High
 
-4. **Community Engagement**
-   - Problem: One-way content distribution
-   - Solution: Active participation in discussions
-   - Expected impact: +20% GitHub stars
+### Channel-Specific Learnings
 
----
+**Twitter**:
+- 3 posts/day is optimal (tested 2, 3, 4/day)
+- Images with code snippets: +50% engagement
+- Questions in tweets: 3x more replies
 
-## ROI Analysis
+**Blog**:
+- 2000-word deep-dives perform best
+- Code examples essential (-40% views without)
+- Tuesday/Thursday publishing optimal
 
-**Total Investment**: $20,500
-- Budget: $9,500
-- Team time: $11,000 (220 hrs @ $50/hr)
+**Reddit**:
+- r/programming too broad, need niche communities
+- Weekends: -50% engagement
+- Contribute before promoting (community-first)
 
-**Estimated Value Generated**: $52,000
-- GitHub stars value: $18,500
-- Email subscriber value: $11,250
-- Website traffic value: $22,250
+### Audience Insights
 
-**Net ROI**: 154% ($31,500 net value)
+1. **Senior developers prefer depth**
+   - Evidence: Advanced topics got 60% more saves
+   - Action: Create "Advanced" content series
 
-**Efficiency Score**: 8.2/10
+2. **Beginners drive email signups**
+   - Evidence: 70% from "Getting Started" content
+   - Action: Maintain beginner entry points
 
 ---
 
 ## Timeline Analysis
 
-**Execution**: ✅ Completed on time (11 weeks)
+| Week | GitHub Stars | Email Subs | Sessions | Notes |
+|------|--------------|------------|----------|-------|
+| Week 1 | +15 | +50 | +250 | Slow start (expected) |
+| Week 2 | +28 | +85 | +320 | Momentum building |
+| Week 3 | +42 | +150 | +450 | Strong growth |
+| Week 4 | +38 | +130 | +400 | Sustained |
+| Week 5 | +45 | +140 | +480 | Peak performance |
+| Week 6-11 | +182 | +445 | +1800 | Steady growth |
 
-**Growth Pattern**:
-- Weeks 1-4: Slow ramp-up (avg 25 stars/week)
-- Weeks 5-7: Peak growth (avg 60 stars/week)
-- Weeks 8-11: Plateau (avg 20 stars/week)
-
-**Insight**: Need sustained engagement tactics to prevent mid-campaign plateau.
+**Observations**:
+- Weeks 3-5 showed strongest growth (momentum period)
+- No significant plateau or drop-off
+- Consistent growth indicates healthy campaign
 
 ---
 
 ## Team Performance
 
-**Roles**:
-- Content Writer: 80 hrs (efficient)
-- Social Media Manager: 220 hrs (as planned)
-- Designer: 88 hrs (on target)
-- Marketing Lead: 110 hrs (on target)
-
-**Efficiency**: ✅ Team capacity well-utilized
+| Role | Responsibilities | Performance | Notes |
+|------|------------------|-------------|-------|
+| Campaign Lead | Strategy, monitoring | ✅ Excellent | Quick pivots on Twitter budget |
+| Content Creator | Blog, technical | ✅ Excellent | High-quality tutorials |
+| Social Manager | Twitter, Reddit | ⚠️ Good | Twitter great, Reddit needs work |
+| Analyst | Data, reports | ✅ Excellent | Timely insights enabled optimizations |
 
 ---
 
-## Recommendations for Next Campaign
-
-Based on this review, here's what to do next:
+## Recommendations
 
 ### Immediate Actions (Next 2 Weeks)
-1. Create email lead magnet based on top-performing tutorial
-2. Optimize email signup CTAs on blog
-3. Build 5-email nurture sequence
+
+1. **Analyze landing page design elements**
+   - Extract replicable components
+   - Create template for future campaigns
+   
+2. **Document Twitter best practices**
+   - Codify learnings (timing, format, frequency)
+   - Train team on successful patterns
 
 ### Strategic Changes (Next Campaign)
-1. Double down on Reddit, Dev.to, and Blog
-2. Reduce LinkedIn investment by 50% or pivot strategy
-3. Add content variety to prevent fatigue
-4. Introduce community engagement tactics
-5. Plan re-engagement campaigns for weeks 8-11
+
+1. **Increase Twitter budget by 30%** ($1,000 → $1,300)
+   - Justified by 9/10 performance
+   - Highest engagement channel
+   
+2. **Decrease Reddit budget by 50%** ($500 → $250)
+   - Or pivot to niche subreddit strategy
+   - Current approach not working
+   
+3. **Shift content mix to 70% tutorials**
+   - From current 55%
+   - Clear performance advantage
+   
+4. **Maintain blog and Dev.to strategies**
+   - Both performing well
+   - No major changes needed
 
 ### Budget Adjustments
-- Reddit: +$500 (increase from $500 to $1,000)
-- Dev.to: +$300 (increase from $800 to $1,100)
-- LinkedIn: -$500 (decrease from $1,000 to $500)
-- Email tools: +$200 (for lead magnet and automation)
+
+**Proposed next campaign budget**: $10,000
+
+| Category | Current | Proposed | Change | Rationale |
+|----------|---------|----------|--------|-----------|
+| Content | $4,000 | $4,200 | +5% | More tutorial production |
+| Twitter | $1,000 | $1,300 | +30% | Top performer |
+| Blog | $2,000 | $2,000 | 0% | Maintain |
+| Dev.to | $500 | $700 | +40% | Great efficiency |
+| Reddit | $500 | $250 | -50% | Underperformer |
+| Tools | $1,500 | $1,550 | +3% | Additional tracking |
+| Contingency | $1,500 | $0 | (Built into allocations) |
 
 ---
 
-## Next Steps
+## Appendices
 
-1. **Share report** with team for feedback
-2. **Run /marketspec.optimize** to get AI-powered recommendations
-3. **Plan Q2 campaign** incorporating these lessons
-4. **Archive this campaign** for future reference
+### A. Data Sources
 
----
+- GitHub API: Stars data (data/001-q1-campaign/github-stars.json)
+- Email Platform: Subscriber data (data/001-q1-campaign/email-subs.json)
+- Google Analytics: Traffic data (data/001-q1-campaign/traffic.json)
+- Manual tracking: Budget spend (data/001-q1-campaign/budget.csv)
 
-**Report prepared by**: Marketing AI Assistant  
-**Data sources**: Campaign tracking, Analytics, Team input  
-**Confidence level**: High (based on actual data)
-```
+### B. Detailed Channel Metrics
 
-**Output Location**: `campaign-review.md`
+[See data/001-q1-campaign/channel-detail.csv]
 
----
+### C. Content Performance Matrix
 
-## Success Criteria
+[See data/001-q1-campaign/content-matrix.xlsx]
 
-- ✅ Original plan loaded and parsed
-- ✅ Actual performance data collected
-- ✅ Achievement rates calculated for all KPIs
-- ✅ Channel performance analyzed
-- ✅ Content effectiveness evaluated
-- ✅ Success factors identified
-- ✅ Lessons learned documented
-- ✅ ROI calculated
-- ✅ Actionable recommendations provided
+### D. Weekly Progression Charts
+
+[Charts exported to data/001-q1-campaign/charts/]
 
 ---
 
-## Output
-
-**Primary Output**: `campaign-review.md`
-
-**Structure**:
-```
-project-root/
-├── marketing-spec.yaml           # Original plan
-└── campaign-review.md            # Review report (NEW)
-```
-
----
-
-## Error Handling
-
-**Missing Original Spec**:
-```
-❌ Error: Cannot find marketing-spec.yaml
-→ This command requires the original specification to compare against
-→ Run /marketspec.create first or provide spec file location
-```
-
-**Incomplete Data**:
-```
-⚠️ Warning: Some metrics not provided
-→ Review will be partial without complete data
-→ Provide at minimum: KPIs, budget spent, timeline
-```
-
-**Campaign Not Started**:
-```
-❌ Error: Campaign start date is in the future (2025-11-15)
-→ This command should only run after campaign execution begins
-→ For pre-launch analysis, use /marketspec.analyze instead
-```
-
----
-
-## Example Interaction
-
-```
-User: /marketspec.review
-
-AI: I'll help you review your campaign performance!
-
-📄 **Original Plan Found**: metaspec-developer-onboarding
-📅 **Campaign Period**: 2025-01-15 to 2025-03-31 (11 weeks)
-🎯 **Planned Objectives**: 3 KPIs
-
----
-
-Let's collect your actual performance data:
-
-**1. GitHub Stars**
-   - Baseline: 50
-   - Target: 500
-   - Actual: ?
-   
-   > Please provide your actual GitHub stars: 420
-
-**2. Email Subscribers**
-   - Baseline: 100
-   - Target: 1,000
-   - Actual: ?
-   
-   > Please provide actual subscribers: 850
-
-**3. Website Traffic**
-   - Baseline: 500
-   - Target: 50,000
-   - Actual: ?
-   
-   > Please provide total visits: 45000
-
-**4. Budget**
-   - Planned: $10,000
-   - Actual spent: ?
-   
-   > Please provide actual spend: 9500
-
----
-
-✅ **Data collected!** Analyzing performance...
-
-**Achievement Summary**:
-- GitHub Stars: 420 (82% of target) ⚠️
-- Email Subscribers: 850 (83% of target) ⚠️
-- Website Traffic: 45,000 (90% of target) ⚠️
-- Budget: $9,500 (95% utilized) ✅
-
-**Overall Achievement**: 85.1%
-**ROI**: 154% (Excellent!)
-**Grade**: B+ (Strong performance)
-
----
-
-**Top Performers**:
-✅ Reddit - Best ROI (9/10)
-✅ Dev.to - Strong engagement (8/10)
-✅ Developer Blog - High conversions (8/10)
-
-**Needs Improvement**:
-⚠️ LinkedIn - Underperformed (4/10)
-
-**Key Insight**: Tutorial content outperformed announcements 3:1
-
----
-
-📄 **Full Report Generated**: campaign-review.md
-
-**Recommended Next Step**: Run `/marketspec.optimize` to get AI-powered recommendations for your next campaign based on this data.
-
-Would you like me to:
-- Show detailed channel analysis?
-- Export report to different format?
-- Proceed to /marketspec.optimize?
-```
-
----
-
-## Notes
-
-- **Timing**: Run during or after campaign execution
-- **Data Sources**: Combines plan + actuals + analytics
-- **Focus**: What happened and why
-- **Objective**: Document for learning and improvement
-- **Output**: Feeds into `/marketspec.optimize` for recommendations
-
----
-
-## Integration with Other Commands
-
-**Position**: Extension (AFTER campaign execution)
-
-References:
-- `/marketspec.create` - Original specification
-- Original campaign documents (discovery, strategy, tasks)
-
-Feeds into:
-- `/marketspec.optimize` - Uses review data for optimization recommendations
-
-**Typical Sequence**:
-```
-create → [Execute Campaign] → review → optimize → [Next Campaign]
-```
-
----
-
-## See Also
-
-- `/marketspec.create` - Original specification
-- `/marketspec.optimize` - Next step for optimization recommendations
-- `/marketspec.analyze` - For pre-launch consistency checking
-- Campaign tracking examples in `examples/` directory
-
+**Review Completed**: 2025-04-05  
+**Next Action**: Run `/marketspec.optimize` to generate improvement recommendations

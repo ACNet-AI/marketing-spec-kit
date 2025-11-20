@@ -2,7 +2,7 @@
 
 **Specification Toolkit for Marketing Operations** - Transform marketing chaos into structured, AI-driven workflows.
 
-[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)](./CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.9+-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](./LICENSE)
 
@@ -17,11 +17,19 @@ A **Spec-Driven Toolkit** that enables marketing teams to:
 ✅ **Execute** with 10 SDM workflow commands for guided specification creation  
 ✅ **Analyze** performance with AI-generated insights and optimization recommendations  
 
-**v0.3.0** introduces a complete **10-command SDM (Spec-Driven Marketing) workflow** system with closed-loop optimization:
+**v0.4.0** introduces a **distributed directory structure** with **10 SDM commands** for specification-driven marketing operations:
 
 ```
-Strategic Planning → Campaign Design → Content Creation → Execution → Analytics & Optimization
+specs/      ← WHAT to achieve (Strategy specifications - Markdown)
+config/     ← Configurable parameters (YAML)
+templates/  ← Content templates (Markdown/Text)
+data/       ← Collected metrics (JSON)
+src/        ← HOW to execute (Executable code - TypeScript) ⭐
 ```
+
+**Complete workflow**: `Specify → Plan → Tasks → Implement → [Execute Code] → Review → Optimize`
+
+**Architecture inspired by**: [Anthropic's Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)
 
 ---
 
@@ -37,81 +45,123 @@ pip install marketing-spec-kit
 uv pip install marketing-spec-kit
 ```
 
-### Create Your First Marketing Plan
+### Create Your First Marketing Project
 
 ```bash
-# Initialize a new specification
-marketing_spec_kit init my-marketing-spec.yaml
+# Initialize a new project with AI-driven workflow
+marketing_spec_kit init my-marketing-project
+cd my-marketing-project
 
-# Validate the specification
-marketing_spec_kit validate my-marketing-spec.yaml
+# The generator creates:
+# ✅ memory/constitution.md       - Marketing principles
+# ✅ specs/README.md               - Workflow guidance
+# ✅ .marketingspeckit/commands/  - 10 SDM commands for AI
+# Note: config/, templates/, data/, src/ created by /marketspec.implement
+
+# Follow the AI-driven workflow
+# Talk to AI: "Create a Q1 campaign using /marketspec.specify"
+# AI generates:
+#   specs/001-q1/spec.md      (Markdown specifications)
+#   config/001-q1.yaml        (configuration - via /marketspec.implement)
+#   templates/001-q1/         (content templates - via /marketspec.implement)
+#   src/campaigns/001-q1.ts   (executable code - via /marketspec.implement)
 ```
 
 ### Use SDM (Spec-Driven Marketing) Commands
 
-**New in v0.3.0**: Complete 10-command workflow system with closed-loop optimization!
+**New in v0.4.0**: Distributed architecture with 10 commands (8 Core + 2 Extension)!
 
 ```bash
-# Quick workflow (3 steps) - Simple campaign
-/marketspec.discover "Grow user base in Q1 2025"
-/marketspec.strategy
-/marketspec.create
-→ Output: marketing-spec.yaml
+# Phase 1: Define WHAT (Specifications in specs/)
+/marketspec.constitution              # → memory/constitution.md
+/marketspec.specify "Q1 Growth"       # → specs/001-q1/spec.md
+/marketspec.clarify                   # → specs/001-q1/clarifications.md
+/marketspec.plan                      # → specs/001-q1/plan.md
+/marketspec.checklist                 # → specs/001-q1/checklist.md
+/marketspec.tasks                     # → specs/001-q1/tasks.md
+/marketspec.analyze                   # → specs/001-q1/analysis.md
 
-# Standard workflow (8 steps) - Recommended for quality
-/marketspec.constitution
-/marketspec.discover "Grow user base in Q1 2025"
-/marketspec.clarify
-/marketspec.strategy
-/marketspec.checklist
-/marketspec.tasks
-/marketspec.analyze
-/marketspec.create
-→ Output: marketing-spec.yaml + quality reports
+# Phase 2: Build HOW + DATA ⭐
+/marketspec.implement                 # Generates:
+                                      # → src/campaigns/001-q1.ts (executable code)
+                                      # → src/shared/mcp-tools/*.ts (MCP wrappers)
+                                      # → config/001-q1.yaml (configuration)
+                                      # → templates/001-q1/ (content templates)
 
-# Complete workflow (10 steps) - With feedback loop
-# Phase 1: Specification (Core + Quality Gates)
-/marketspec.constitution
-/marketspec.discover "Q1 2025 Growth"
-/marketspec.clarify
-/marketspec.strategy
-/marketspec.checklist
-/marketspec.tasks
-/marketspec.analyze
-/marketspec.create
+# Phase 3: Execute Campaign (Run Generated Code)
+npm install                           # Install dependencies
+ts-node src/campaigns/001-q1.ts       # Execute the campaign code
+# → Code calls MCP tools (github-api, twitter-api, etc.)
+# → Data collected in data/001-q1/
 
-# Phase 2: Execution (AI Agent + MCP Tools)
-# [AI Agent reads marketing-spec.yaml and executes campaign]
-
-# Phase 3: Optimization (Feedback Loop)
-/marketspec.review         # Analyze actual vs planned
-/marketspec.optimize       # Generate optimization recommendations
+# Phase 4: Review & Optimize (Analysis in specs/)
+/marketspec.review                    # → specs/001-q1/review.md
+/marketspec.optimize                  # → specs/001-q1/optimize.md
 ```
+
+**Key Insight**: 
+- `specs/` = WHAT (Strategy specifications - Markdown)
+- `config/` = Adjustable parameters (YAML)
+- `templates/` = Content templates (Markdown/Text)
+- `data/` = Collected metrics (JSON)
+- `src/` = HOW (Executable code - TypeScript) ⭐
 
 **See [SDM Workflow Example](./examples/sdm-workflow-example.md) for complete walkthrough!**
 
 ---
 
-## 📋 Core Entities (9)
+## 📋 Directory Structure
 
-marketing-spec-kit v0.3.0 manages 9 marketing entities:
+marketing-spec-kit v0.4.0 uses a distributed directory structure:
 
-| Entity | Purpose | Fields | New in v0.2.0 |
-|--------|---------|--------|---------------|
-| **Project** | Brand identity and core values | 9 | |
-| **Product** | Feature offerings and positioning | 8 | |
-| **MarketingPlan** | Strategic marketing plan | 14 | ✅ |
-| **Campaign** | Time-bound marketing activities | 15 | ✨ Updated |
-| **Channel** | Distribution platforms | 9 | |
-| **Tool** | Integration automation | 7 | |
-| **ContentTemplate** | Brand guidelines and constraints | 9 | |
-| **Milestone** | Timeline markers and events | 9 | |
-| **Analytics** | Performance analytics report | 9 | ✅ |
+### `specs/` - Strategy Specifications (Markdown)
 
-**New in v0.2.0**:
-- **MarketingPlan**: Strategic planning with objectives, budget, KPIs
-- **Analytics**: AI-powered performance analysis and optimization
-- **Campaign.plan_id**: Now REQUIRED (links campaigns to plans)
+**Purpose**: Define WHAT to achieve
+
+| Document | Purpose | Generated By |
+|----------|---------|--------------|
+| `spec.md` | Requirements and objectives | `/marketspec.specify` |
+| `clarifications.md` | Resolved ambiguities | `/marketspec.clarify` |
+| `plan.md` | Marketing strategy | `/marketspec.plan` |
+| `checklist.md` | Quality standards | `/marketspec.checklist` |
+| `tasks.md` | Task breakdown | `/marketspec.tasks` |
+| `analysis.md` | Consistency report | `/marketspec.analyze` |
+| `review.md` | Performance report | `/marketspec.review` |
+| `optimize.md` | Optimization recommendations | `/marketspec.optimize` |
+
+### `config/` - Campaign Configurations (YAML)
+
+**Purpose**: Configurable campaign parameters
+
+| File | Purpose | Generated By |
+|------|---------|--------------|
+| `{seq}-{name}.yaml` | Campaign configuration | `/marketspec.implement` |
+
+### `templates/` - Content Templates (Markdown/Text)
+
+**Purpose**: Reusable content templates
+
+| Directory | Purpose | Generated By |
+|-----------|---------|--------------|
+| `{seq}-{name}/` | Campaign-specific templates | `/marketspec.implement` |
+
+### `data/` - Collected Metrics (JSON)
+
+**Purpose**: Runtime collected metrics
+
+| Directory | Purpose | Generated By |
+|-----------|---------|--------------|
+| `{seq}-{name}/` | Campaign data | Code execution |
+
+### `src/` - Executable Code (TypeScript) ⭐
+
+**Purpose**: Define HOW to execute (code calling MCP tools)
+
+| Directory | Purpose | Generated By |
+|-----------|---------|--------------|
+| `campaigns/*.ts` | Campaign execution scripts | `/marketspec.implement` |
+| `shared/mcp-tools/*.ts` | MCP tool wrappers | `/marketspec.implement` |
+| `shared/utils.ts` | Helper functions | `/marketspec.implement` |
 
 ---
 
@@ -119,95 +169,166 @@ marketing-spec-kit v0.3.0 manages 9 marketing entities:
 
 | Command | Description |
 |---------|-------------|
-| `init <file>` | Create a new marketing specification from template |
-| `validate <file>` | Validate specification against 45 rules |
+| `init <project-dir>` | Create a new marketing project (generates `memory/`, `specs/`, `.marketingspeckit/`) |
+| `validate <file>` | Validate YAML files in `config/` against business rules (optional) |
 | `info` | Show toolkit version and statistics |
+
+**Note**: Most work is done through SDM commands (via AI), not CLI.
 
 ---
 
 ## 🎯 SDM Command System (10)
 
-**New in v0.3.0**: Complete Spec-Driven Marketing workflow with closed-loop optimization!
+**New in v0.4.0**: Distributed architecture (8 Core + 2 Extension commands)
 
-### Core Flow (5) - Essential Workflow
+### Core Commands (8) - Aligned with MetaSpec
 
-| # | Command | Purpose | Type | Output |
-|---|---------|---------|------|--------|
-| 1 | `/marketspec.constitution` | Establish marketing principles | 🔴 Core | `marketing-constitution.md` |
-| 2 | `/marketspec.discover` | Discover marketing needs | 🔴 Core | `*-discovery.md` |
-| 4 | `/marketspec.strategy` | Plan marketing strategy | 🔴 Core | `*-strategy.md` |
-| 6 | `/marketspec.tasks` | Break down implementation tasks | 🔴 Core | `*-tasks.md` |
-| 8 | `/marketspec.create` | Generate specification YAML | 🔴 Core | `marketing-spec.yaml` ⭐ |
+| # | Command | Purpose | Output Layer | Output File |
+|---|---------|---------|--------------|-------------|
+| 1 | `/marketspec.constitution` | Define marketing principles | `memory/` | `constitution.md` |
+| 2 | `/marketspec.specify` | Define marketing requirements | `specs/` | `{seq}-{name}/spec.md` |
+| 3 | `/marketspec.clarify` | Clarify objectives | `specs/` | `{seq}-{name}/clarifications.md` |
+| 4 | `/marketspec.plan` | Plan marketing strategy | `specs/` | `{seq}-{name}/plan.md` |
+| 5 | `/marketspec.checklist` | Generate quality standards | `specs/` | `{seq}-{name}/checklist.md` |
+| 6 | `/marketspec.tasks` | Break down tasks | `specs/` | `{seq}-{name}/tasks.md` |
+| 7 | `/marketspec.analyze` | Check consistency & coverage | `specs/` | `{seq}-{name}/analysis.md` |
+| 8 | `/marketspec.implement` | **Generate code + configs** ⭐ | `src/` + `config/` + `templates/` | `campaigns/{seq}-{name}.ts` + config + templates |
 
-### Quality Gates (3) - Recommended for Quality Assurance
+### Extension Commands (2) - Marketing-Specific
 
-| # | Command | Purpose | Type | Output |
-|---|---------|---------|------|--------|
-| 3 | `/marketspec.clarify` | Clarify ambiguities and details | 🟡 Quality Gate | `*-clarification.md` |
-| 5 | `/marketspec.checklist` | Validate completeness | 🟡 Quality Gate | `*-checklist.md` |
-| 7 | `/marketspec.analyze` | Check consistency | 🟡 Quality Gate | `consistency-report.md` |
+| # | Command | Purpose | Output Layer | Output File |
+|---|---------|---------|--------------|-------------|
+| 9 | `/marketspec.review` | Analyze campaign results | `specs/` | `{seq}-{name}/review.md` |
+| 10 | `/marketspec.optimize` | Generate optimization recommendations | `specs/` | `{seq}-{name}/optimize.md` |
 
-### Extension (2) - Feedback Loop
+### Distributed Directory Structure
 
-| # | Command | Purpose | Type | Output |
-|---|---------|---------|------|--------|
-| 9 | `/marketspec.review` | Analyze actual vs. planned | 🔵 Extension | `campaign-review.md` |
-| 10 | `/marketspec.optimize` | Generate optimization recommendations | 🔵 Extension | `optimization-plan.md` |
+**`specs/` (Markdown)**: Human-readable specifications and reports
+- WHAT to achieve (specifications, plans)
+- Quality standards (checklists, analysis)
+- Performance reports (review, optimize)
+
+**`config/` (YAML)**: Campaign configurations
+- Adjustable parameters
+- KPIs, budgets, schedules
+
+**`templates/` (Markdown/Text)**: Content templates
+- Reusable content templates
+- Channel-specific formats
+
+**`data/` (JSON)**: Collected metrics
+- Runtime data collection
+- Performance tracking
+
+**`src/` (TypeScript)**: Executable code ⭐
+- Campaign scripts (`campaigns/*.ts`)
+- MCP tool wrappers (`shared/mcp-tools/*.ts`)
+- Helper functions (`shared/utils.ts`)
 
 ### Workflow Patterns
 
-**Quick** (3 steps - Core only):
+**Standard Workflow** (8 steps):
 ```
-discover → strategy → create
+specify → clarify → plan → checklist → tasks → analyze → implement → [execute]
 ```
-Use when: Simple campaign, tight deadline
 
-**Standard** (8 steps - Core + Quality Gates):
+**With Post-Campaign Analysis** (10 steps):
 ```
-constitution → discover → clarify → strategy → 
-checklist → tasks → analyze → create
+specify → ... → implement → [execute campaign] → review → optimize
 ```
-Use when: Standard project, quality matters (Recommended)
 
-**Complete** (10 steps - With Feedback Loop):
+**Quick Start** (4 steps - minimal viable):
 ```
-constitution → discover → clarify → strategy → 
-checklist → tasks → analyze → create →
-[AI Agent executes] → review → optimize
+specify → plan → tasks → implement
 ```
-Use when: Complex campaign, continuous improvement needed
 
 ---
 
-### 🤖 Spec-Driven Marketing Architecture
+### 🤖 Distributed Architecture
 
-**SDM's Role**: Create and manage marketing specifications (YAML files)
+**SDM's Role**: Clear separation of concerns with distributed directories
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  Phase 1: Specification Creation (SDM Commands 1-8)         │
-│  → Output: marketing-spec.yaml                              │
-└─────────────────────┬───────────────────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────────────────────┐
-│  Phase 2: Execution (AI Agent + MCP Tools)                  │
-│  → AI Agent reads specification                             │
-│  → Generates content per Campaign + ContentTemplate         │
-│  → Publishes to Channels using MCP tools/APIs               │
-│  → Tracks Analytics and collects data                       │
-└─────────────────────┬───────────────────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────────────────────┐
-│  Phase 3: Analysis & Optimization (SDM Commands 9-10)       │
-│  → Compares planned vs. actual results                      │
-│  → Generates optimization recommendations                    │
-│  → Feeds into next cycle's planning                         │
-└─────────────────────────────────────────────────────────────┘
-        ↓
-    [Continuous Improvement Loop]
+┌───────────────────────────────────────────────────────────────┐
+│  Phase 1: Define WHAT (Commands 1-7 → specs/)                │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ /marketspec.specify   → specs/001-q1/spec.md            │ │
+│  │ /marketspec.clarify   → specs/001-q1/clarifications.md  │ │
+│  │ /marketspec.plan      → specs/001-q1/plan.md            │ │
+│  │ /marketspec.checklist → specs/001-q1/checklist.md       │ │
+│  │ /marketspec.tasks     → specs/001-q1/tasks.md           │ │
+│  │ /marketspec.analyze   → specs/001-q1/analysis.md        │ │
+│  └─────────────────────────────────────────────────────────┘ │
+└──────────────────────────────┬────────────────────────────────┘
+                               ↓
+┌───────────────────────────────────────────────────────────────┐
+│  Phase 2: Build HOW + DATA (Command 8) ⭐                     │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ /marketspec.implement                                   │ │
+│  │   → src/campaigns/001-q1.ts (executable code) ⭐        │ │
+│  │   → src/shared/mcp-tools/*.ts (MCP wrappers)            │ │
+│  │   → config/001-q1.yaml (configuration)                  │ │
+│  │   → templates/001-q1/ (content templates)               │ │
+│  └─────────────────────────────────────────────────────────┘ │
+└──────────────────────────────┬────────────────────────────────┘
+                               ↓
+┌───────────────────────────────────────────────────────────────┐
+│  Phase 3: Execute Campaign (Run Generated Code)               │
+│   $ npm install                                               │
+│   $ ts-node src/campaigns/001-q1.ts                           │
+│                                                                │
+│   Code execution:                                             │
+│   • Loads config from config/                                 │
+│   • Renders templates from templates/                         │
+│   • Calls MCP tools (github-api, twitter-api, etc)            │
+│   • Saves data to data/001-q1/                                │
+└──────────────────────────────┬────────────────────────────────┘
+                               ↓
+┌───────────────────────────────────────────────────────────────┐
+│  Phase 4: Review & Optimize (Commands 9-10 → specs/)          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ /marketspec.review   → specs/001-q1/review.md           │ │
+│  │ /marketspec.optimize → specs/001-q1/optimize.md         │ │
+│  └─────────────────────────────────────────────────────────┘ │
+└──────────────────────────────┬────────────────────────────────┘
+                               ↓
+                    [Feed into next campaign]
 ```
 
-**Key Insight**: SDM defines **WHAT** (specification), AI Agents execute **HOW** (using MCP tools), SDM analyzes **RESULTS** (review & optimize).
+**Key Insight**: 
+- **specs/** = WHAT to achieve (Strategy specifications - Markdown)
+- **config/** = Adjustable parameters (YAML)
+- **templates/** = Content templates (Markdown/Text)
+- **data/** = Collected metrics (JSON)
+- **src/** = HOW to execute (Executable code - TypeScript) ⭐
+
+**Alignment with MetaSpec**: `specs/` → `src/`  
+**Extended for marketing**: + `config/` + `templates/` + `data/`
+
+### Why Generate Code (Not Just YAML)?
+
+**Inspired by**: [Anthropic's Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)
+
+**Code execution provides major advantages**:
+
+| Benefit | Description | Impact |
+|---------|-------------|--------|
+| **Progressive Disclosure** | Load tool definitions on-demand, not upfront | **98% token savings** |
+| **Context Efficiency** | Filter data in execution environment, not LLM context | Faster, cheaper |
+| **Control Flow** | Use code loops/conditions instead of chaining tool calls | Lower latency |
+| **Privacy** | Sensitive data stays in execution environment | Better security |
+| **Testable** | Standard testing frameworks (Jest, pytest) | Higher quality |
+| **Version Control** | Git tracks code changes | Better collaboration |
+
+**Example - Progressive Disclosure**:
+```typescript
+// Load only GitHub tools (not all 1000 tools)
+import * as github from './mcp-tools/github';
+
+// Get stars (data filtered in execution, not LLM)
+const stars = await github.getStarCount({ repo: 'owner/repo' });
+console.log(`Stars: ${stars}`);  // Only count logged, not full response
+```
 
 ### Documentation
 
@@ -218,150 +339,177 @@ Use when: Complex campaign, continuous improvement needed
 
 ---
 
-## ✅ Validation Rules (45)
+## ✅ Validation (Optional)
 
-marketing-spec-kit enforces 45 business rules across all entities:
+marketing-spec-kit can validate YAML files in `config/` directory:
 
-| Entity | Rules | Key Validations |
-|--------|-------|----------------|
-| Project | 6 | Brand voice, website HTTPS, target audience |
-| Product | 5 | Pricing, launch date, feature list |
-| **MarketingPlan** | **10** | **Budget balance, approval, objectives, date ranges, KPIs** **[NEW]** |
-| Campaign | 11 | Budget, dates, channels, **plan linkage (REQUIRED)** **[UPDATED]** |
-| Channel | 6 | Platform, constraints, tool integration |
-| Tool | 6 | Credentials, rate limits, integration |
-| ContentTemplate | 5 | Brand compliance, format, examples |
-| Milestone | 5 | Date validity, product/campaign links |
-| **Analytics** | **5** | **Entity reference, metrics, insights, data integrity** **[NEW]** |
+```bash
+# Validate campaign configurations (optional)
+marketing_spec_kit validate config/001-q1-campaign.yaml
+```
 
-**Performance**: Validation completes in <250ms for typical specifications.
+**Note**: Validation is optional in v0.4.0's distributed architecture:
+- **`specs/` (Markdown)**: No formal validation (human-reviewed)
+- **`config/` (YAML)**: Can be validated against business rules
+- **`src/` (TypeScript)**: Use TypeScript compiler and linters
+
+Validation rules cover entities like Campaign, Channel, Tool, ContentTemplate, etc.
 
 ---
 
-## 📊 Example Specification
+## 📊 Example Project Structure
 
-```yaml
-# my-marketing-spec.yaml
-project:
-  name: "AwesomeApp"
-  tagline: "Ship faster with AI"
-  brand_voice: "Technical"
-  website: "https://awesomeapp.com"
-  target_audience:
-    - "Developers"
-    - "DevOps Engineers"
-  value_propositions:
-    - "10x faster deployment"
-    - "AI-powered automation"
-
-plans:
-  - id: "q4-2025-growth"
-    name: "Q4 2025 Growth Plan"
-    project_id: "awesomeapp"
-    period:
-      start_date: "2025-10-01"
-      end_date: "2025-12-31"
-      duration_weeks: 13
-    objectives:
-      - "Increase brand awareness by 50%"
-      - "Drive 10,000 new signups"
-      - "Achieve $100K revenue"
-    budget:
-      total: 5000
-      currency: "USD"
-      allocation:
-        content_creation: 2000
-        paid_promotion: 2500
-        tools: 300
-        contingency: 200
-    kpis:
-      - name: "Brand Awareness"
-        target: 50000
-        unit: "impressions"
-        measurement: "Social media + website"
-        priority: "P0"
-    status: "draft"
-    created_at: "2025-11-15T10:00:00Z"
-    updated_at: "2025-11-15T10:00:00Z"
-
-campaigns:
-  - id: "q4-awareness-launch"
-    name: "Product Launch Campaign"
-    goal: "awareness"
-    plan_id: "q4-2025-growth"  # REQUIRED in v0.2.0
-    project_id: "awesomeapp"
-    target_audience: ["Developers"]
-    budget: 2000
-    start_date: "2025-10-01"
-    end_date: "2025-10-21"
-    channels: ["twitter", "dev-to", "reddit"]
-    expected_kpis:
-      impressions: 30000
-      engagement_rate: 0.03
-    status: "draft"
-```
-
-See [`examples/`](./examples/) for complete examples.
-
----
-
-## 🏗️ Project Structure
+After running `/marketspec.implement`, your project looks like:
 
 ```
-marketing-spec-kit/
-├── README.md                   # This file
-├── CHANGELOG.md                # Version history
-├── AGENTS.md                   # AI Agent guide (v0.3.0 SDM workflow)
-├── pyproject.toml              # Python project config
-├── LICENSE                     # MIT License
-│
-├── .metaspec/                  # MetaSpec commands (speckit development)
-│   ├── commands/               # 19 MetaSpec SDS/SDD commands
-│   └── README.md               # MetaSpec usage guide
-│
+my-marketing-project/
 ├── memory/
-│   └── constitution.md         # Core principles (v0.3.0)
+│   └── constitution.md                    # Marketing principles
 │
 ├── specs/
-│   ├── domain/
-│   │   └── 001-marketing-operations-spec/
-│   │       ├── spec.md         # Domain specification (v0.3.0)
-│   │       ├── analysis/       # Quality analysis reports
-│   │       │   ├── full-analysis.md
-│   │       │   └── quick-analysis.md
-│   │       └── checklists/     # Quality checklists
-│   │           └── comprehensive-quality.md
-│   └── toolkit/
-│       └── 001-marketing-spec-kit-implementation/
-│           ├── spec.md         # Toolkit specification (v0.3.0)
-│           ├── plan.md         # Implementation plan
-│           ├── tasks.md        # Task breakdown
-│           ├── analysis/       # Quality analysis reports
-│           └── checklists/     # Quality checklists
+│   └── 001-q1-campaign/
+│       ├── spec.md                        # Requirements (WHAT)
+│       ├── clarifications.md              # Resolved questions
+│       ├── plan.md                        # Strategy architecture
+│       ├── checklist.md                   # Quality standards
+│       ├── tasks.md                       # Task breakdown
+│       ├── analysis.md                    # Consistency report
+│       ├── review.md                      # Performance report (after execution)
+│       └── optimize.md                    # Optimization recommendations
 │
-├── examples/
-│   ├── complete-example.yaml           # Complete v0.3.0 example
-│   ├── metaspec-marketing.yaml         # MetaSpec format example
-│   ├── metaspec-marketing-plan.md      # Plan documentation
-│   └── sdm-workflow-example.md         # SDM workflow walkthrough
+├── config/
+│   └── 001-q1-campaign.yaml               # Campaign configuration
 │
 ├── templates/
-│   ├── entity_templates/       # Init templates (minimal/default/full)
-│   └── sdm/
-│       ├── README.md           # SDM system documentation
-│       └── commands/           # 10 SDM workflow commands
+│   └── 001-q1/
+│       ├── blog-post-template.md          # Blog template
+│       └── tweet-template.md              # Twitter template
 │
+├── data/
+│   └── 001-q1/
+│       ├── github-stars.json              # Collected data
+│       └── traffic.json
+│
+└── src/
+    ├── campaigns/
+    │   └── 001-q1-campaign.ts             # Main execution script (HOW)
+    └── shared/
+        ├── mcp-tools/
+        │   ├── github.ts
+        │   └── twitter.ts
+        ├── config-loader.ts
+        └── utils.ts
+```
+
+**Example `config/001-q1-campaign.yaml`**:
+```yaml
+campaign:
+  id: "001-q1-campaign"
+  name: "Q1 Growth Campaign"
+  spec_ref: "specs/001-q1-campaign/spec.md"
+  
+kpis:
+  github_stars:
+    target: 500
+    baseline: 100
+    repo: "owner/repo"
+    tool: "github-api"
+
+channels:
+  twitter:
+    frequency: "3 posts/day"
+    budget: 1000
+    template: "templates/001-q1/tweet-template.md"
+
+budget:
+  total: 5000
+  content: 2000
+  paid_promotion: 3000
+```
+
+**Example `src/campaigns/001-q1-campaign.ts`**:
+```typescript
+import * as github from '../shared/mcp-tools/github';
+import { loadConfig, saveData } from '../shared/utils';
+
+async function execute() {
+  const config = await loadConfig('config/001-q1-campaign.yaml');
+  const stars = await github.getStarCount({ repo: config.kpis.github_stars.repo });
+  await saveData('data/001-q1/github-stars.json', { stars });
+}
+```
+
+See [`examples/`](./examples/) for complete examples, especially [`examples/q1-github-stars-campaign/`](./examples/q1-github-stars-campaign/) for a full working project.
+
+---
+
+## 🏗️ Toolkit Structure
+
+```
+marketing-spec-kit/                      # The toolkit itself
+├── README.md                           # This file
+├── CHANGELOG.md                        # Version history
+├── AGENTS.md                           # AI Agent guide
 ├── docs/
-│   └── internal/               # Internal documentation (gitignored)
-│       └── architecture-decisions-2025-11-16.md
+│   └── sdm-commands.md                # SDM commands documentation
+│
+├── templates/
+│   └── sdm/
+│       └── commands/                  # 10 SDM command definitions
+│           ├── marketspec.constitution.md
+│           ├── marketspec.specify.md
+│           ├── marketspec.clarify.md
+│           ├── marketspec.plan.md
+│           ├── marketspec.checklist.md
+│           ├── marketspec.tasks.md
+│           ├── marketspec.analyze.md
+│           ├── marketspec.implement.md  ⭐ (generates src/ + config/ + templates/)
+│           ├── marketspec.review.md
+│           └── marketspec.optimize.md
 │
 └── src/marketing_spec_kit/
-    ├── __init__.py             # Package exports (v0.3.0)
-    ├── models.py               # 9 entities + 11 nested models
-    ├── parser.py               # YAML/JSON parser
-    ├── validator.py            # 45 validation rules
-    ├── cli.py                  # CLI commands (init, validate, info)
-    └── exceptions.py           # Custom exceptions
+    ├── generator.py            # Project initialization
+    ├── cli.py                  # CLI (init, validate, info)
+    └── validator.py            # YAML validation (optional)
+```
+
+## 📁 User Project Structure (After `init`)
+
+```
+my-marketing-project/                    # Created by `marketing_spec_kit init`
+├── memory/
+│   └── constitution.md                 # Marketing principles
+│
+├── specs/                              # Specifications (Markdown)
+│   └── {seq}-{name}/
+│       ├── spec.md                     # Requirements
+│       ├── plan.md                     # Strategy
+│       ├── tasks.md                    # Task breakdown
+│       ├── analysis.md                 # Consistency check
+│       ├── review.md                   # Performance report
+│       └── optimize.md                 # Recommendations
+│
+├── config/                             # Configurations (YAML) - created by /marketspec.implement
+│   └── {seq}-{name}.yaml               ← Campaign configuration
+│
+├── templates/                          # Content templates - created by /marketspec.implement
+│   └── {seq}-{name}/
+│       ├── tweet-template.md
+│       └── blog-post-template.md
+│
+├── data/                               # Collected metrics (JSON) - created by code execution
+│   └── {seq}-{name}/
+│       ├── github-stars.json
+│       └── traffic.json
+│
+├── src/                                # Executable code - created by /marketspec.implement
+│   ├── campaigns/
+│   │   └── {seq}-{name}.ts            ← Main execution script
+│   └── shared/
+│       └── mcp-tools/*.ts
+│
+└── .marketingspeckit/
+    └── commands/                       # 10 SDM commands (copied from toolkit)
 ```
 
 ---
@@ -392,19 +540,19 @@ See [`.metaspec/README.md`](./.metaspec/README.md) for development guide.
 ## 🔍 Use Cases
 
 ### For Marketing Teams
-- ✅ Standardize marketing operations across campaigns
-- ✅ Ensure brand consistency with validated templates
-- ✅ Track performance with built-in analytics
+- ✅ Define strategy in human-readable Markdown (`specs/`)
+- ✅ Generate executable code and configs (`src/`, `config/`, `templates/`)
+- ✅ Track performance with post-campaign analysis (`review`, `optimize`)
 
 ### For AI Agents
-- ✅ Structured access to marketing context via 22 Slash Commands
-- ✅ Generate on-brand content with brand guidelines
-- ✅ Automate campaign execution and scheduling
+- ✅ Guide campaign planning with 10 SDM commands
+- ✅ Generate executable TypeScript code automatically
+- ✅ Analyze performance and suggest optimizations
 
 ### For Developers
-- ✅ Integrate marketing data into apps via validated specs
-- ✅ Build marketing automation tools on top of spec-kit
-- ✅ Extend with custom entities and validation rules
+- ✅ Validate campaign configuration YAML files (optional)
+- ✅ Extend with custom MCP tools for data collection
+- ✅ Build on distributed directory architecture
 
 ---
 
@@ -424,8 +572,9 @@ Built with:
 
 ---
 
-**Generated by**: MetaSpec 0.6.2  
-**Version**: 2.0.0  
-**Release Date**: 2025-11-15  
+**Generated by**: MetaSpec 0.9.5  
+**Version**: 0.4.0  
+**Last Updated**: 2025-11-20  
+**Architecture**: Distributed directories (specs/ + config/ + templates/ + data/ + src/)  
 
 For questions or issues, please [open an issue](https://github.com/yourusername/marketing-spec-kit/issues).

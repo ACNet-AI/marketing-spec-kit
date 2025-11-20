@@ -1,13 +1,18 @@
-New SDM Command System (8 commands)
-====================================
+Marketing Spec Kit - SDM Command System
+=========================================
 
-1. marketspec.constitution - Define marketing execution principles
-2. marketspec.discover - Discover marketing needs
-3. marketspec.clarify - Clarify marketing objectives  
-4. marketspec.strategy - Plan marketing strategy
-5. marketspec.tasks - Break down marketing tasks
-6. marketspec.create - Create marketing specification (YAML)
-7. marketspec.checklist - Generate quality checklist
-8. marketspec.analyze - Analyze specification consistency
+Core Commands (8) - Aligned with MetaSpec SDS/SDD:
+1. marketspec.constitution  - Define marketing principles
+2. marketspec.specify       - Define marketing requirements
+3. marketspec.clarify       - Clarify marketing objectives
+4. marketspec.plan          - Plan marketing strategy
+5. marketspec.checklist     - Generate quality checklist
+6. marketspec.tasks         - Break down marketing tasks
+7. marketspec.analyze       - Analyze specification consistency
+8. marketspec.implement     - Write final specification document
 
-Based on MetaSpec structure, customized for marketing domain.
+Extension Commands (2) - Marketing-Specific Feedback Loop:
+9. marketspec.review        - Define review process specification
+10. marketspec.optimize     - Define optimization methodology
+
+Based on MetaSpec v0.9.5 structure with marketing domain extensions.

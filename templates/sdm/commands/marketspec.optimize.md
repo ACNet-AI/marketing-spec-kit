@@ -1,36 +1,35 @@
 ---
 name: marketspec.optimize
-description: Generate optimization recommendations for next cycle
+description: Generate optimization recommendations based on campaign review
 layer: sdm
 status: implemented
 type: extension
-category: Extension (Feedback Loop)
-source: Original to marketing-spec-kit
+category: Extension (Post-Campaign Optimization)
+source: Marketing-specific extension
 version: 0.3.0
 ---
 
 # /marketspec.optimize 🔵 Extension
 
-**Purpose**: Generate AI-powered optimization recommendations based on actual campaign performance data.
+**Purpose**: Generate actionable optimization recommendations based on campaign review results.
 
-**Category**: Extension (Feedback Loop)  
-**Timing**: POST-EXECUTION (after review)  
-**Note**: Original to marketing-spec-kit (no MetaSpec equivalent)
+**Category**: Extension (Post-Campaign Optimization)  
+**Output**: `specs/{sequence}-{name}/optimize.md` ⭐  
+**Note**: Marketing-specific extension (no MetaSpec equivalent)
 
 ---
 
 ## Purpose
 
-After reviewing campaign performance, this command helps you:
-- Identify optimization opportunities
-- Generate data-driven recommendations
-- Suggest budget reallocation
-- Propose channel mix adjustments
-- Refine KPI targets
-- Create actionable next steps
-- Package learnings for next campaign
+This command **generates optimization guidance**:
+- Analyzes review findings
+- Identifies optimization opportunities
+- Generates specific recommendations
+- Prioritizes improvements by impact
+- Provides implementation guidance
+- Estimates expected improvements
 
-This is an **Extension Command** - run after `/marketspec.review` to close the optimization loop.
+This produces an **optimization report** with actionable recommendations for future campaigns.
 
 ---
 
@@ -38,20 +37,15 @@ This is an **Extension Command** - run after `/marketspec.review` to close the o
 
 ```
 /marketspec.optimize
-/marketspec.optimize --focus budget
-/marketspec.optimize --scenario aggressive
+/marketspec.optimize --focus [area]       # Focus on specific area
+/marketspec.optimize --priority [level]   # Filter by priority
 ```
-
-**Options**:
-- `--focus`: Specific area (budget, channels, content, kpis, all)
-- `--scenario`: Optimization scenario (conservative, balanced, aggressive)
-- `--next-budget`: Budget for next campaign (for reallocation suggestions)
 
 **Examples**:
 ```
-/marketspec.optimize
-/marketspec.optimize --focus channels --scenario aggressive
-/marketspec.optimize --next-budget 15000
+/marketspec.optimize                           # Full optimization analysis
+/marketspec.optimize --focus channels         # Focus on channel optimization
+/marketspec.optimize --priority high          # Only high-priority items
 ```
 
 ---
@@ -59,1147 +53,1045 @@ This is an **Extension Command** - run after `/marketspec.review` to close the o
 ## Prerequisites
 
 - **Required**: Campaign review from `/marketspec.review`
-- **Required**: Original spec `marketing-spec.yaml`
-- **Recommended**: Historical campaign data (if available)
-- **Optional**: Business constraints or priorities
+- **Optional**: Campaign specification for context
+- **Optional**: Campaign plan for context
 
 ---
 
 ## Execution Steps
 
-### Step 1: Load Review Data
+### Step 1: Load Review Results
 
-Read the campaign review report:
+Read `specs/{sequence}-{name}/review.md` and extract:
 
 ```yaml
-review_data:
-  campaign: "metaspec-developer-onboarding"
-  period: "2025-01-15 to 2025-03-31"
+review_insights:
+  kpi_performance:
+    github_stars:
+      achievement: 87.5%
+      status: "Below target"
+      gap: -50
+    
+    email_subscribers:
+      achievement: 125%
+      status: "Exceeded target"
+      surplus: +200
+    
+    website_sessions:
+      achievement: 88%
+      status: "Below target"
+      gap: -500
   
-  achievement:
-    overall: 85.1%
-    kpis:
-      github_stars: 82.2%
-      email_subscribers: 83.3%
-      website_traffic: 89.9%
+  channel_performance:
+    twitter:
+      score: 9/10
+      status: "Top performer"
+      cost_per_conversion: 10.00
+    
+    blog:
+      score: 8/10
+      status: "High performer"
+      cost_per_conversion: 10.56
+    
+    dev_to:
+      score: 7/10
+      status: "Good performer"
+      cost_per_conversion: 5.63
+    
+    reddit:
+      score: 4/10
+      status: "Underperformer"
+      cost_per_conversion: 22.50
   
-  budget:
-    planned: 10000
-    spent: 9500
-    efficiency: 95%
+  success_factors:
+    - "Landing page simplicity drove 8% conversion"
+    - "Twitter 3x/day posting optimal"
+    - "Tutorial content outperformed 2:1"
+    - "Dev.to most cost-efficient"
   
-  roi: 154%
-  grade: "B+"
-  
-  top_channels:
-    - name: "reddit"
-      roi: 9
-      cost_per_star: 6.25
-    - name: "dev-to"
-      roi: 8
-      cost_per_star: 8
-    - name: "dev-blog"
-      roi: 8
-      cost_per_conversion: 7.5
-  
-  underperforming_channels:
-    - name: "linkedin"
-      roi: 4
-      cost_per_conversion: 20
-  
-  top_content:
-    - type: "tutorial"
-      performance: 9
-      github_referral_rate: 5%
-    - type: "case_study"
-      performance: 8
-      email_conversion_rate: 2.5%
-  
-  lessons:
-    - "Email growth needs dedicated lead magnet"
-    - "LinkedIn requires business-value messaging"
-    - "Content variety prevents plateau"
-    - "Community engagement sustains growth"
+  issues:
+    - "Reddit underperformed significantly"
+    - "Weekend posts got 50% fewer engagements"
+    - "Announcement content underperformed"
 ```
+
+---
 
 ### Step 2: Identify Optimization Opportunities
 
-Analyze data for improvement areas:
+Categorize opportunities by type:
 
 ```yaml
-optimization_opportunities:
-  high_impact:
-    - opportunity: "Reallocate budget from LinkedIn to Reddit"
-      current_state: "LinkedIn $1,000 (ROI 4), Reddit $500 (ROI 9)"
-      potential_impact: "+50-80 GitHub stars"
+opportunities:
+  # Type 1: Scale What Works
+  scale_successes:
+    - opportunity: "Increase Twitter budget"
+      rationale: "Top performer (9/10), high ROI"
+      current: "$1,000 budget"
+      proposed: "$1,300 budget (+30%)"
+      expected_impact: "+36 GitHub stars"
       confidence: "High"
-      effort: "Low"
-      priority: 1
-      
-    - opportunity: "Create email lead magnet"
-      current_state: "No dedicated lead magnet, 850 subscribers"
-      potential_impact: "+200-300 email subscribers"
+      priority: "P0"
+    
+    - opportunity: "Expand Dev.to presence"
+      rationale: "Best cost-per-conversion ($5.63)"
+      current: "1 post/week"
+      proposed: "2 posts/week"
+      expected_impact: "+40 conversions"
+      confidence: "Medium-High"
+      priority: "P1"
+    
+    - opportunity: "Replicate landing page design"
+      rationale: "8% conversion vs 4% expected"
+      current: "Single campaign use"
+      proposed: "Template for all campaigns"
+      expected_impact: "+50-100 email subs per campaign"
       confidence: "High"
-      effort: "Medium"
-      priority: 2
-      
-    - opportunity: "Introduce content variety after week 7"
-      current_state: "Growth plateau in weeks 8-11"
-      potential_impact: "Sustain 60 stars/week through week 11"
-      confidence: "Medium"
-      effort: "Medium"
-      priority: 3
+      priority: "P0"
   
-  medium_impact:
-    - opportunity: "Add community engagement tactics"
-      potential_impact: "+15-20% GitHub stars"
+  # Type 2: Fix What's Broken
+  fix_underperformers:
+    - opportunity: "Pivot Reddit strategy"
+      rationale: "4/10 score, worst cost-per-conversion"
+      current: "Broad subreddits, minimal engagement"
+      proposed: "Niche subreddits + community participation"
+      expected_impact: "+30 conversions (from 20 to 50)"
       confidence: "Medium"
-      effort: "Medium"
-      priority: 4
-      
-    - opportunity: "Optimize email signup CTAs"
-      potential_impact: "+10-15% email conversions"
-      confidence: "Medium"
-      effort: "Low"
-      priority: 5
+      priority: "P1"
+    
+    - opportunity: "Reduce announcement content"
+      rationale: "Announcements perform 50% below average"
+      current: "36% of content mix"
+      proposed: "10% of content mix"
+      expected_impact: "+15% average engagement"
+      confidence: "Medium-High"
+      priority: "P1"
   
-  low_impact:
-    - opportunity: "Adjust LinkedIn content strategy"
-      potential_impact: "+20-30 conversions"
-      confidence: "Low"
-      effort: "High"
-      priority: 6
+  # Type 3: Optimize Existing
+  optimize_current:
+    - opportunity: "Shift blog publishing to optimal days"
+      rationale: "Tuesday/Thursday posts perform 20% better"
+      current: "Mixed schedule"
+      proposed: "All posts on Tuesday/Thursday"
+      expected_impact: "+10% blog conversions"
+      confidence: "Medium"
+      priority: "P2"
+    
+    - opportunity: "Standardize Twitter image format"
+      rationale: "Code snippet images get 50% more engagement"
+      current: "Mixed image styles"
+      proposed: "Standardized code snippet template"
+      expected_impact: "+15% Twitter engagement"
+      confidence: "Medium"
+      priority: "P2"
+  
+  # Type 4: Eliminate Waste
+  cut_inefficiencies:
+    - opportunity: "Stop weekend social posts"
+      rationale: "50% lower engagement on weekends"
+      current: "7 days/week posting"
+      proposed: "Weekday-only posting"
+      expected_impact: "Save time, maintain results"
+      confidence: "High"
+      priority: "P2"
+    
+    - opportunity: "Reduce Reddit budget by 50%"
+      rationale: "Underperforming channel"
+      current: "$500 budget"
+      proposed: "$250 budget (-50%)"
+      expected_impact: "Reallocate $250 to Twitter"
+      confidence: "High"
+      priority: "P1"
 ```
 
-### Step 3: Budget Reallocation Recommendations
+---
 
-**Scenario Analysis**:
+### Step 3: Generate Budget Reallocation Plan
+
+Based on channel performance, propose new budget allocation:
 
 ```yaml
 budget_optimization:
   current_allocation:
     total: 10000
-    breakdown:
-      content_creation: 4000 (40%)
-      paid_promotion: 3000 (30%)
-      tools: 1500 (15%)
-      community: 1000 (10%)
-      contingency: 500 (5%)
+    content_creation: 4000
+    twitter: 1000
+    blog: 2000
+    dev_to: 500
+    reddit: 500
+    tools: 1500
+    contingency: 1500
   
-  # Scenario 1: Conservative (Same Total Budget)
-  conservative_reallocation:
-    total: 10000
-    changes: "Minimal changes, optimize within categories"
-    breakdown:
-      content_creation: 4200 (42%)  # +200 for lead magnet
-      paid_promotion: 3000 (30%)    # No change
-      tools: 1700 (17%)             # +200 for email automation
-      community: 800 (8%)           # -200 (underutilized)
-      contingency: 300 (3%)         # -200 (overestimated)
-    channel_reallocation:
-      reddit: 700 (+200 from LinkedIn)
-      dev_to: 1000 (+200 from LinkedIn)
-      dev_blog: 1000 (no change)
-      linkedin: 600 (-400)
-      twitter: 700 (no change)
-    expected_improvement: "+5-8% overall achievement"
+  proposed_allocation:
+    total: 10000  # Same total
+    content_creation: 4200  # +5% (more tutorials)
+    twitter: 1300  # +30% (top performer)
+    blog: 2000  # No change (consistent performer)
+    dev_to: 700  # +40% (best efficiency)
+    reddit: 250  # -50% (underperformer)
+    tools: 1550  # +3% (better tracking)
+    contingency: 0  # Built into allocations
   
-  # Scenario 2: Balanced (Same Budget, Bigger Shifts)
-  balanced_reallocation:
-    total: 10000
-    changes: "Significant shifts based on performance"
-    breakdown:
-      content_creation: 4500 (45%)  # +500 for variety
-      paid_promotion: 2800 (28%)    # -200 (organic works better)
-      tools: 1800 (18%)             # +300 for email + analytics
-      community: 700 (7%)           # -300 (optimize efficiency)
-      contingency: 200 (2%)         # -300 (better planning)
-    channel_reallocation:
-      reddit: 1000 (+500)           # Double investment
-      dev_to: 1200 (+400)           # Increase
-      dev_blog: 1300 (+300)         # Owned channel priority
-      linkedin: 300 (-700)          # Minimal presence
-      twitter: 0 (-200)             # Cut if underperforming
-      new_channels: 200             # Test HackerNews
-    expected_improvement: "+10-15% overall achievement"
-  
-  # Scenario 3: Aggressive (Increased Budget)
-  aggressive_reallocation:
-    total: 15000 (+50%)
-    changes: "Scale what works, cut what doesn't"
-    breakdown:
-      content_creation: 7000 (47%)  # +75% (more variety + quality)
-      paid_promotion: 4000 (27%)    # +33% (on best channels only)
-      tools: 2500 (17%)             # +67% (better analytics + automation)
-      community: 1200 (8%)          # +20% (community manager)
-      contingency: 300 (2%)         # -40% (better planning)
-    channel_reallocation:
-      reddit: 1500 (+1000)          # 3x investment
-      dev_to: 1800 (+1000)          # 2.25x investment
-      dev_blog: 2000 (+1000)        # 2x investment
-      linkedin: 0 (-1000)           # Cut entirely
-      twitter: 700 (no change)      # Maintain
-      hackernews: 500 (new)         # Add high-ROI channel
-      youtube: 500 (new)            # Add video content
-    expected_improvement: "+25-35% overall achievement"
+  changes:
+    increases:
+      - channel: "Twitter"
+        change: "+$300 (+30%)"
+        justification: "9/10 performance, highest engagement"
+        expected_roi: "180% (based on current performance)"
+      
+      - channel: "Dev.to"
+        change: "+$200 (+40%)"
+        justification: "Best cost-per-conversion ($5.63)"
+        expected_roi: "250%"
+      
+      - channel: "Content"
+        change: "+$200 (+5%)"
+        justification: "Shift to more tutorials (higher performance)"
+        expected_roi: "200%"
+    
+    decreases:
+      - channel: "Reddit"
+        change: "-$250 (-50%)"
+        justification: "Underperforming, reallocate to high performers"
+        mitigation: "Implement niche subreddit strategy with remaining budget"
+    
+    total_reallocation: "$750 moved to higher-ROI channels"
 ```
 
-### Step 4: Channel Mix Optimization
+---
 
-Recommend optimal channel strategy:
-
-```yaml
-channel_optimization:
-  current_mix:
-    channels: 5
-    spend_distribution: "Relatively even"
-    effectiveness: "3 strong, 1 weak, 1 average"
-  
-  recommended_mix:
-    strategy: "Power law distribution - heavy investment in proven channels"
-    
-    tier_1_channels:  # 60% of budget
-      - channel: "reddit"
-        current: 500
-        recommended: 1000-1500
-        rationale: "Best ROI (9/10), highest engagement rate"
-        tactics:
-          - "Increase posting frequency: 1x/week → 2x/week"
-          - "Expand to r/programming + r/opensource + r/selfhosted"
-          - "Run 1 AMA session per quarter"
-        expected_impact: "+40-60 GitHub stars"
-      
-      - channel: "dev-to"
-        current: 800
-        recommended: 1200-1800
-        rationale: "Strong ROI (8/10), growing community"
-        tactics:
-          - "Launch series format: 'MetaSpec in Practice' (8 parts)"
-          - "Collaborate with Dev.to influencers"
-          - "Cross-promote blog content"
-        expected_impact: "+50-80 GitHub stars"
-      
-      - channel: "dev-blog"
-        current: 1500
-        recommended: 1300-2000
-        rationale: "Owned channel, high conversion, sustainable"
-        tactics:
-          - "Improve SEO for tutorial content"
-          - "Add video tutorials"
-          - "Optimize email capture CTAs"
-        expected_impact: "+150-200 email subscribers"
-    
-    tier_2_channels:  # 30% of budget
-      - channel: "twitter"
-        current: 1200
-        recommended: 700-1000
-        rationale: "Average performance, maintain presence"
-        tactics:
-          - "Focus on community engagement vs broadcasting"
-          - "Share behind-the-scenes content"
-          - "Engage with developer influencers"
-        expected_impact: "+20-30 GitHub stars"
-    
-    tier_3_channels:  # 10% of budget
-      - channel: "linkedin"
-        current: 1000
-        recommended: 300-500
-        rationale: "Underperformed, but has different audience"
-        tactics:
-          - "Pivot to business-value content"
-          - "Target engineering managers, not developers"
-          - "Share case studies, not technical tutorials"
-        expected_impact: "+10-20 decision-maker awareness"
-    
-    experimental_channels:  # Minimal budget
-      - channel: "hackernews"
-        current: 0
-        recommended: 200-500
-        rationale: "Similar to Reddit, high-quality audience"
-        tactics:
-          - "1 Show HN post"
-          - "Engage authentically in comments"
-        expected_impact: "+20-40 GitHub stars (if successful)"
-      
-      - channel: "youtube"
-        current: 0
-        recommended: 300-500
-        rationale: "Video content performs well"
-        tactics:
-          - "Create 3-5 tutorial videos"
-          - "Repurpose blog content"
-        expected_impact: "+1000-2000 views, +20-30 stars"
-  
-  channels_to_cut:
-    - channel: "linkedin"
-      if: "Budget is tight"
-      rationale: "Lowest ROI, audience mismatch"
-      savings: 700-1000
-      risk: "Low - not core audience"
-```
-
-### Step 5: Content Strategy Optimization
-
-Recommend content improvements:
+### Step 4: Content Strategy Optimization
 
 ```yaml
 content_optimization:
-  current_strategy:
-    types: ["tutorial", "case_study", "comparison", "announcement"]
-    frequency: "3x/week"
-    top_performer: "tutorial"
-    weakness: "Repetitive format after week 7"
+  current_mix:
+    tutorials: 55%
+    case_studies: 23%
+    announcements: 14%
+    tips_lists: 8%
   
-  recommended_strategy:
-    content_mix:
-      - type: "Tutorial"
-        current_share: 42% (5/12)
-        recommended_share: 50% (6/12)
-        rationale: "Highest performance, 5% GitHub referral rate"
-        formats:
-          - "Step-by-step guides"
-          - "Video tutorials (new)"
-          - "Interactive examples"
-        frequency: "2x/month"
-        
-      - type: "Case Study"
-        current_share: 33% (4/12)
-        recommended_share: 25% (3/12)
-        rationale: "Strong email conversion (2.5%)"
-        formats:
-          - "Written deep dives"
-          - "Customer interviews (new)"
-          - "Before/after comparisons"
-        frequency: "1.5x/month"
-        
-      - type: "Comparison"
-        current_share: 17% (2/12)
-        recommended_share: 17% (2/12)
-        rationale: "Good engagement, addresses skepticism"
-        formats:
-          - "Tool comparisons"
-          - "Methodology comparisons"
-        frequency: "1x/month"
-        
-      - type: "Announcement"
-        current_share: 25% (3/12)
-        recommended_share: 8% (1/12)
-        rationale: "Low performance, reduce drastically"
-        formats:
-          - "Major releases only"
-          - "Embed in tutorials, not standalone"
-        frequency: "Quarterly only"
+  proposed_mix:
+    tutorials: 70%  # +15% (2x performance)
+    case_studies: 10%  # -13% (good but fewer needed)
+    tips_lists: 15%  # +7% (good performance)
+    announcements: 5%  # -9% (underperform)
+  
+  format_optimization:
+    blog_posts:
+      current: "Mixed lengths (1000-3000 words)"
+      optimal: "2000-2500 words (deep-dive format)"
+      change: "Standardize to 2000-word minimum"
+      impact: "+20% views per post"
     
-    new_content_types:
-      - type: "Developer Stories"
-        share: "17% (2/12 new)"
-        rationale: "Community-driven, authentic"
-        format: "Guest posts from users"
-        frequency: "1x/month"
-        
-      - type: "Live Coding"
-        share: "8% (1/12 new)"
-        rationale: "High engagement, interactive"
-        format: "Twitch/YouTube streams"
-        frequency: "1x/month"
+    twitter:
+      current: "Mixed formats"
+      optimal: "Code snippet images + questions"
+      change: "70% with code images, 50% with questions"
+      impact: "+25% engagement"
     
-    content_calendar_optimization:
-      phase_1:  # Weeks 1-4: Education
-        focus: "Tutorials + comparisons"
-        goal: "Build awareness"
-        content: 60% tutorial, 40% comparison
-        
-      phase_2:  # Weeks 5-8: Validation
-        focus: "Case studies + developer stories"
-        goal: "Build trust"
-        content: 40% case study, 40% tutorial, 20% stories
-        
-      phase_3:  # Weeks 9-12: Engagement
-        focus: "Interactive + community"
-        goal: "Drive conversion"
-        content: 30% tutorial, 30% live, 40% community
+    video_content:
+      current: "Minimal (5% of content)"
+      opportunity: "Increase to 15%"
+      rationale: "Video tutorials got 2.5x avg views"
+      impact: "+30% overall engagement"
+  
+  publishing_schedule:
+    blog:
+      current: "2 posts/week, mixed days"
+      optimal: "2 posts/week, Tuesday + Thursday"
+      impact: "+20% views"
     
-    posting_schedule_optimization:
-      best_days: ["Tuesday", "Wednesday", "Thursday"]
-      best_times: "9-11 AM ET (developer working hours)"
-      avoid: ["Friday afternoon", "Weekends", "Holidays"]
-      
-      recommended_schedule:
-        monday: "Plan + prep"
-        tuesday: "Publish tutorial (Reddit + Dev.to)"
-        wednesday: "Publish case study (Blog + LinkedIn)"
-        thursday: "Publish comparison/story (Twitter + Dev.to)"
-        friday: "Community engagement (respond, share)"
-        weekend: "None (negligible traffic)"
+    twitter:
+      current: "3 posts/day, 7 days/week"
+      optimal: "3 posts/day, weekdays only + 1 weekend"
+      impact: "Maintain results, save effort"
+      best_times: ["Tuesday 10am", "Wednesday 2pm", "Thursday 9am"]
+    
+    dev_to:
+      current: "1 post/week"
+      optimal: "2 posts/week (Mon + Thu)"
+      impact: "+40 conversions"
 ```
 
-### Step 6: KPI Refinement
+---
 
-Adjust targets based on learnings:
+### Step 5: Channel Strategy Improvements
 
 ```yaml
-kpi_optimization:
-  current_kpis:
-    - name: "GitHub Stars"
-      original_target: 500
-      achieved: 420 (84%)
-      
-    - name: "Email Subscribers"
-      original_target: 1000
-      achieved: 850 (85%)
-      
-    - name: "Website Traffic"
-      original_target: 50000
-      achieved: 45000 (90%)
+channel_strategies:
+  twitter_optimization:
+    current_strategy:
+      - "3 posts/day"
+      - "Mixed content types"
+      - "$1,000 budget"
+    
+    optimized_strategy:
+      - "3 posts/day weekdays, 1/day weekends"
+      - "70% with code snippet images"
+      - "50% end with questions"
+      - "Schedule for Tuesday 10am (optimal time)"
+      - "$1,300 budget (+30%)"
+      - "Focus on tutorial threads (perform 3x better)"
+    
+    expected_improvement: "+40 conversions (120 → 160)"
   
-  refined_kpis:
-    - name: "GitHub Stars"
-      rationale: "Original target was aggressive but achievable with optimizations"
-      next_target_options:
-        conservative: 450  # +7% from last campaign
-        balanced: 520      # +24% with optimizations
-        aggressive: 600    # +43% with increased budget
-      recommended: 520
-      adjustments_needed:
-        - "Increase Reddit investment"
-        - "Add content variety"
-        - "Community engagement tactics"
-      
-    - name: "Email Subscribers"
-      rationale: "Underinvested in email tactics, high upside"
-      next_target_options:
-        conservative: 900   # +6% from last campaign
-        balanced: 1100      # +29% with lead magnet
-        aggressive: 1400    # +65% with automation
-      recommended: 1100
-      adjustments_needed:
-        - "Create lead magnet"
-        - "Optimize CTAs"
-        - "Build nurture sequence"
-        - "Add email automation tool"
-      
-    - name: "Website Traffic"
-      rationale: "Closest to target, maintain trajectory"
-      next_target_options:
-        conservative: 50000  # Original target
-        balanced: 60000      # +33% with SEO
-        aggressive: 80000    # +78% with video + SEO
-      recommended: 60000
-      adjustments_needed:
-        - "SEO optimization for tutorials"
-        - "Add video content"
-        - "Expand to YouTube"
+  reddit_strategy_pivot:
+    current_strategy:
+      - "2 posts/week"
+      - "Broad subreddits (r/programming)"
+      - "Direct promotion"
+      - "$500 budget"
+    
+    optimized_strategy:
+      - "1-2 posts/week"
+      - "Niche subreddits (r/python, r/opensource, r/devops)"
+      - "Contribute to community first (10:1 ratio)"
+      - "Avoid weekends"
+      - "$250 budget (-50%)"
+      - "Test for 4 weeks, then reassess"
+    
+    expected_improvement: "+15 conversions (20 → 35)"
+    success_criteria: "If cost-per-conversion < $15 after 4 weeks, continue"
   
-  new_kpis_to_add:
-    - name: "Community Engagement Rate"
-      definition: "(Comments + Shares) / Content Pieces"
-      baseline: 18  # (450 reactions / 25 pieces)
-      target: 30
-      rationale: "Leading indicator of virality"
-      
-    - name: "Content ROI"
-      definition: "GitHub Stars / Content Pieces"
-      baseline: 14.8  # (370 stars / 25 pieces)
-      target: 20
-      rationale: "Content effectiveness metric"
-      
-    - name: "Email Conversion Rate"
-      definition: "Email Signups / Website Visits"
-      baseline: 1.9%  # (850 / 45000)
-      target: 2.5%
-      rationale: "Email funnel optimization metric"
+  blog_optimization:
+    current_strategy:
+      - "2 posts/week"
+      - "2000 words average"
+      - "Mixed topics"
+    
+    optimized_strategy:
+      - "2 posts/week (Tuesday + Thursday)"
+      - "2000-2500 words (deep-dive format)"
+      - "70% tutorials, 20% tips, 10% announcements"
+      - "Every post must include code examples"
+      - "Add video version for top-performing posts"
+    
+    expected_improvement: "+30 conversions (180 → 210)"
+  
+  dev_to_expansion:
+    current_strategy:
+      - "1 post/week"
+      - "Cross-post from blog"
+      - "$500 budget"
+    
+    optimized_strategy:
+      - "2 posts/week (Monday + Thursday)"
+      - "Cross-post + 1 Dev.to-exclusive per month"
+      - "Engage with comments (crucial for Dev.to algorithm)"
+      - "$700 budget (+40%)"
+    
+    expected_improvement: "+40 conversions (80 → 120)"
 ```
 
-### Step 7: Risk Analysis
+---
 
-Identify potential risks in optimizations:
+### Step 6: Generate Tactical Playbook
+
+Create specific tactics to implement:
 
 ```yaml
-risk_analysis:
-  high_risk_changes:
-    - change: "Cut LinkedIn investment by 70%"
-      risk: "Lose visibility with decision-makers"
-      mitigation: "Maintain minimal presence, pivot messaging"
-      probability: "Medium"
-      impact: "Low"
-      recommendation: "Proceed with mitigation"
+tactical_playbook:
+  immediate_actions:
+    week_1:
+      - action: "Create standardized code snippet image template"
+        owner: "Design Team"
+        effort: "4 hours"
+        impact: "High"
       
-    - change: "Triple Reddit investment"
-      risk: "Diminishing returns, community fatigue"
-      mitigation: "Expand to multiple subreddits, vary content"
-      probability: "Low"
-      impact: "Medium"
-      recommendation: "Proceed with monitoring"
-  
-  medium_risk_changes:
-    - change: "Add video content (YouTube)"
-      risk: "Resource-intensive, unproven for this audience"
-      mitigation: "Start with 3 videos, measure engagement"
-      probability: "Medium"
-      impact: "Medium"
-      recommendation: "Pilot first"
+      - action: "Analyze landing page design elements"
+        owner: "UX Team"
+        effort: "8 hours"
+        impact: "High"
       
-    - change: "Increase aggressive KPI targets"
-      risk: "Team demotivation if missed again"
-      mitigation: "Use balanced targets, celebrate progress"
-      probability: "Low"
-      impact: "High"
-      recommendation: "Use balanced scenario"
+      - action: "Research niche subreddits"
+        owner: "Social Media Manager"
+        effort: "6 hours"
+        impact: "Medium"
+    
+    week_2:
+      - action: "Create landing page template"
+        owner: "UX + Dev Team"
+        effort: "16 hours"
+        impact: "High"
+      
+      - action: "Update content calendar (70% tutorials)"
+        owner: "Content Lead"
+        effort: "4 hours"
+        impact: "High"
+      
+      - action: "Set up Twitter scheduling for optimal times"
+        owner: "Social Media Manager"
+        effort: "2 hours"
+        impact: "Medium"
   
-  low_risk_changes:
-    - change: "Add lead magnet for email growth"
-      risk: "Minimal - proven tactic"
-      probability: "Very Low"
-      impact: "Low"
-      recommendation: "Implement immediately"
+  ongoing_optimizations:
+    content_production:
+      - "Standardize blog posts to 2000-2500 words"
+      - "Every post must include code examples"
+      - "Publish only on Tuesday/Thursday"
+      - "Create video version for top 20% of posts"
+    
+    social_media:
+      - "Twitter: 3x/day weekdays, 1x/day weekends"
+      - "Focus Tuesday 10am for important announcements"
+      - "70% of tweets include code snippet images"
+      - "50% of tweets end with questions"
+      - "Stop weekend posts for other channels"
+    
+    reddit_community:
+      - "Participate in 10 discussions for every 1 promotion"
+      - "Post only on weekdays"
+      - "Focus on r/python, r/opensource (niche communities)"
+      - "Test for 4 weeks, measure cost-per-conversion"
+  
+  testing_roadmap:
+    month_1:
+      - test: "Video content expansion"
+        hypothesis: "Video tutorials will drive 2x engagement"
+        method: "Create 4 video versions of top blog posts"
+        success_metric: "Views > 2x text-only average"
+      
+      - test: "Dev.to exclusive content"
+        hypothesis: "Platform-specific content performs better"
+        method: "Create 2 Dev.to-only posts"
+        success_metric: "Reactions > 1.5x cross-posts"
+    
+    month_2:
+      - test: "Niche subreddit strategy"
+        hypothesis: "Niche communities have higher conversion"
+        method: "Test r/python vs r/programming"
+        success_metric: "Cost-per-conversion < $15"
+      
+      - test: "Tutorial thread format"
+        hypothesis: "Multi-tweet threads drive more engagement"
+        method: "Create 8 tutorial threads"
+        success_metric: "Engagement > 2x single tweets"
 ```
 
-### Step 8: Implementation Roadmap
+---
 
-Create actionable next steps:
+### Step 7: Risk Assessment for Changes
 
 ```yaml
-implementation_roadmap:
-  immediate_actions:  # Week 1-2
-    - action: "Create email lead magnet"
-      owner: "Content Writer"
-      effort: "20 hours"
-      cost: 500
-      expected_outcome: "+30% email conversion rate"
-      
-    - action: "Optimize email signup CTAs"
-      owner: "Designer"
-      effort: "8 hours"
-      cost: 200
-      expected_outcome: "+10% email signups"
-      
-    - action: "Pivot LinkedIn content strategy"
-      owner: "Marketing Lead"
-      effort: "4 hours planning"
-      cost: 0
-      expected_outcome: "Test new messaging"
+risk_assessment:
+  high_confidence_changes:
+    - change: "Increase Twitter budget by 30%"
+      confidence: "95%"
+      risk: "Low"
+      reasoning: "Proven 9/10 performance, clear ROI"
+      mitigation: "Monitor first 2 weeks, can rollback"
+    
+    - change: "Replicate landing page design"
+      confidence: "90%"
+      risk: "Low"
+      reasoning: "8% conversion vs 4% expected (2x)"
+      mitigation: "A/B test in first campaign"
+    
+    - change: "Shift to 70% tutorial content"
+      confidence: "85%"
+      risk: "Low"
+      reasoning: "Tutorials outperformed 2:1"
+      mitigation: "Phase in over 4 weeks"
   
-  short_term:  # Week 3-4
-    - action: "Set up email automation tool"
-      owner: "Marketing Lead"
-      effort: "12 hours"
-      cost: 500
-      expected_outcome: "Enable nurture sequences"
-      
-    - action: "Expand Reddit presence"
-      owner: "Social Media Manager"
-      effort: "Ongoing"
-      cost: 500
-      expected_outcome: "+40 GitHub stars"
-      
-    - action: "Create first 3 video tutorials"
-      owner: "Content Writer + Designer"
-      effort: "40 hours"
-      cost: 1000
-      expected_outcome: "+1000 YouTube views"
+  medium_confidence_changes:
+    - change: "Expand Dev.to to 2 posts/week"
+      confidence: "70%"
+      risk: "Medium"
+      reasoning: "Current performance good, but unsure if scales"
+      mitigation: "Test for 4 weeks, measure efficiency"
+    
+    - change: "Pivot Reddit strategy"
+      confidence: "60%"
+      risk: "Medium"
+      reasoning: "Current approach failed, new approach unproven"
+      mitigation: "Reduce budget 50%, test niche communities"
   
-  medium_term:  # Week 5-8
-    - action: "Launch Dev.to series"
-      owner: "Content Writer"
-      effort: "60 hours"
-      cost: 1500
-      expected_outcome: "+50 GitHub stars"
-      
-    - action: "Test HackerNews"
-      owner: "Marketing Lead"
-      effort: "8 hours"
-      cost: 0
-      expected_outcome: "+20-40 stars if successful"
-      
-    - action: "Build 5-email nurture sequence"
-      owner: "Content Writer"
-      effort: "20 hours"
-      cost: 500
-      expected_outcome: "+15% email engagement"
-  
-  long_term:  # Week 9-12
-    - action: "Community engagement program"
-      owner: "Social Media Manager"
-      effort: "Ongoing"
-      cost: 1000
-      expected_outcome: "Sustain growth through campaign"
-      
-    - action: "SEO optimization"
-      owner: "Marketing Lead"
-      effort: "20 hours"
-      cost: 500
-      expected_outcome: "+20% organic traffic"
+  low_confidence_changes:
+    - change: "Reduce case study content"
+      confidence: "50%"
+      risk: "Medium-High"
+      reasoning: "Case studies perform well, just not as well as tutorials"
+      mitigation: "Only reduce from 23% to 10%, not eliminate"
 ```
 
-### Step 9: Generate Optimization Report
+---
 
-Create comprehensive recommendations document:
+### Step 8: Generate Optimization Report
+
+**Output**: `specs/{sequence}-{name}/optimize.md`
 
 ```markdown
-# Optimization Recommendations Report
+# Campaign Optimization Recommendations: Q1 2025
 
-**Based on**: Campaign Review (2025-01-15 to 2025-03-31)  
-**Campaign**: MetaSpec Developer Onboarding  
-**Overall Achievement**: 85.1% (B+)  
-**Generated**: 2025-04-05
+**Campaign**: 001-q1-campaign  
+**Review Date**: 2025-04-05  
+**Optimization Date**: 2025-04-06  
+**Based On**: Campaign review (100.2% overall achievement)
 
 ---
 
 ## Executive Summary
 
-Based on your campaign performance, here are **data-driven recommendations** to achieve **95%+ goal achievement** in your next campaign.
+The Q1 campaign achieved strong overall results (100.2%), with clear winners (Twitter, Blog, Dev.to) and areas for improvement (Reddit, content mix). This optimization plan reallocates $750 to higher-performing channels and shifts content strategy to favor tutorials (70% vs current 55%).
 
 **Key Recommendations**:
-1. 🔄 Reallocate budget: LinkedIn → Reddit/Dev.to (+50-80 stars)
-2. 📧 Add email lead magnet (+200-300 subscribers)
-3. 🎨 Introduce content variety after week 7 (prevent plateau)
-4. 👥 Add community engagement tactics (+15-20% growth)
-5. 📹 Test video content (new channel: YouTube)
+1. ✅ Increase Twitter budget by 30% (+$300)
+2. ✅ Expand Dev.to to 2 posts/week (+$200 budget)
+3. ✅ Shift content to 70% tutorials
+4. ✅ Reduce Reddit budget by 50% (-$250)
+5. ✅ Replicate landing page design template
 
-**Expected Impact**: +10-15% overall achievement (85% → 95-100%)
-
-**Confidence**: High (based on actual performance data)
+**Expected Impact**: +20-25% overall conversions in next campaign
 
 ---
 
-## Budget Optimization
+## Priority Recommendations
 
-### Current vs Recommended Allocation
+### P0 (Implement Immediately) 🔥
 
-| Category | Current | Recommended | Change | Rationale |
-|----------|---------|-------------|--------|-----------|
-| **Content Creation** | $4,000 (40%) | $4,500 (45%) | +$500 | Add variety, lead magnet |
-| **Paid Promotion** | $3,000 (30%) | $2,800 (28%) | -$200 | Organic works better |
-| **Tools** | $1,500 (15%) | $1,800 (18%) | +$300 | Email automation |
-| **Community** | $1,000 (10%) | $700 (7%) | -$300 | Optimize efficiency |
-| **Contingency** | $500 (5%) | $200 (2%) | -$300 | Better planning |
-| **TOTAL** | **$10,000** | **$10,000** | **$0** | Same budget |
+#### 1. Increase Twitter Budget by 30%
 
-### Channel Budget Reallocation
+**Current**: $1,000 budget, 9/10 performance score  
+**Proposed**: $1,300 budget (+$300)  
+**Rationale**: Top-performing channel with clear ROI  
+**Expected Impact**: +36 GitHub stars (120 → 156)  
+**Confidence**: 95% (High)  
+**Risk**: Low  
 
-| Channel | Current | Recommended | Change | Expected Impact |
-|---------|---------|-------------|--------|-----------------|
-| **Reddit** | $500 | $1,000 | +$500 ✅ | +40-60 stars (ROI: 9/10) |
-| **Dev.to** | $800 | $1,200 | +$400 ✅ | +50-80 stars (ROI: 8/10) |
-| **Blog** | $1,000 | $1,300 | +$300 ✅ | +100-150 subscribers |
-| **Twitter** | $1,200 | $700 | -$500 | Maintain presence |
-| **LinkedIn** | $1,000 | $300 | -$700 ❌ | Lowest ROI, cut 70% |
-| **HackerNews** | $0 | $200 | +$200 🆕 | +20-40 stars (experiment) |
-| **YouTube** | $0 | $300 | +$300 🆕 | +1K views (new format) |
-| **TOTAL** | **$4,500** | **$5,000** | **+$500** | - |
+**Implementation**:
+```yaml
+twitter:
+  budget: 1300  # +30%
+  strategy:
+    - "Maintain 3 posts/day weekdays"
+    - "Focus on tutorial threads (3x performance)"
+    - "Schedule key posts for Tuesday 10am"
+    - "70% include code snippet images"
+    - "50% end with questions"
+```
 
----
-
-## Channel Strategy Optimization
-
-### Tier 1: Double Down (60% of Budget)
-
-#### 🥇 Reddit → $1,000 (+100%)
-**Why**: Best ROI (9/10), lowest cost-per-star ($6.25)
-
-**Tactics**:
-- Increase frequency: 1x/week → 2x/week
-- Expand subreddits: r/programming + r/opensource + r/selfhosted
-- Best posting time: Tuesday 10 AM ET
-- Run 1 AMA per quarter
-
-**Expected Impact**: +40-60 GitHub stars
+**Success Metrics**:
+- Maintain or exceed 9/10 performance score
+- Cost-per-conversion < $10
+- 150+ conversions in next campaign
 
 ---
 
-#### 🥈 Dev.to → $1,200 (+50%)
-**Why**: Strong ROI (8/10), engaged community
+#### 2. Replicate Landing Page Design
 
-**Tactics**:
-- Launch series: "MetaSpec in Practice" (8 parts)
-- Collaborate with Dev.to influencers
-- Cross-promote blog content
-- Use series format (40% higher follow-through)
+**Current**: 8% conversion rate (vs 4% expected)  
+**Proposed**: Create template for all campaigns  
+**Rationale**: 2x expected conversion rate  
+**Expected Impact**: +50-100 email subscribers per campaign  
+**Confidence**: 90% (High)  
+**Risk**: Low  
 
-**Expected Impact**: +50-80 GitHub stars
+**Design Elements to Replicate**:
+```markdown
+✅ Single, clear call-to-action (no navigation distraction)
+✅ Above-the-fold value proposition (no scroll needed)
+✅ Minimal design (white background, single column)
+✅ Social proof (3-4 testimonials, not more)
+✅ Trust signals (security badges, privacy notice)
+✅ Mobile-optimized (60% of traffic from mobile)
 
----
+❌ Avoid: Multiple CTAs, complex navigation, cluttered design
+```
 
-#### 🥉 Developer Blog → $1,300 (+30%)
-**Why**: Owned channel, highest email conversion (1.33%)
-
-**Tactics**:
-- SEO optimization for tutorials
-- Add video content
-- Optimize email CTAs
-- Create lead magnet
-
-**Expected Impact**: +150-200 email subscribers
-
----
-
-### Tier 2: Maintain (30% of Budget)
-
-#### Twitter → $700 (-40%)
-**Why**: Average performance, reduce but maintain presence
-
-**Tactics**:
-- Focus on engagement vs broadcasting
-- Share behind-the-scenes
-- Engage with influencers
-
-**Expected Impact**: +20-30 GitHub stars
+**Implementation Timeline**:
+- Week 1: Extract design elements
+- Week 2: Create Figma template
+- Week 3: Code reusable component
+- Week 4: A/B test in next campaign
 
 ---
 
-### Tier 3: Pivot or Cut (10% of Budget)
+#### 3. Shift Content to 70% Tutorials
 
-#### LinkedIn → $300 (-70%)
-**Why**: Underperformed (ROI: 4/10), wrong audience fit
+**Current**: 55% tutorials, 36% mixed content  
+**Proposed**: 70% tutorials, 20% tips, 10% announcements  
+**Rationale**: Tutorials outperform 2:1  
+**Expected Impact**: +15% overall engagement  
+**Confidence**: 85% (High)  
+**Risk**: Low  
 
-**Tactics**:
-- Pivot to business-value content
-- Target engineering managers, not developers
-- Share case studies, not tutorials
-- Minimal investment
+**Content Calendar Adjustment**:
+```yaml
+weekly_content:
+  blog:
+    - Tuesday: Tutorial (2000-2500 words)
+    - Thursday: Tutorial or Tips (2000 words)
+  
+  twitter:
+    - "10 tutorial threads per week"
+    - "6 quick tips"
+    - "5 misc/engagement posts"
+  
+  dev_to:
+    - "Cross-post Tuesday blog (tutorial)"
+    - "Original tutorial or tips"
 
-**Expected Impact**: +10-20 decision-maker awareness
+content_requirements:
+  every_tutorial:
+    - "Include code examples (syntax highlighted)"
+    - "Provide working repository/demo"
+    - "Add 'What you'll learn' section"
+    - "Include troubleshooting section"
+```
 
 ---
 
-### Experimental: Test New Channels
+### P1 (Implement Next Campaign) ⭐
 
-#### 🆕 HackerNews → $200 (new)
-**Why**: Similar to Reddit, high-quality audience
+#### 4. Expand Dev.to to 2 Posts/Week
 
-**Tactics**:
-- 1 "Show HN" post
-- Engage authentically in comments
+**Current**: 1 post/week, 7/10 score, $5.63 cost-per-conversion  
+**Proposed**: 2 posts/week, $700 budget (+40%)  
+**Rationale**: Best cost-efficiency, room to scale  
+**Expected Impact**: +40 conversions (80 → 120)  
+**Confidence**: 70% (Medium-High)  
+**Risk**: Medium  
 
-**Expected Impact**: +20-40 stars (if successful)
+**Implementation**:
+```yaml
+dev_to_strategy:
+  frequency: "2 posts/week (Monday + Thursday)"
+  content:
+    - "Monday: Cross-post from blog"
+    - "Thursday: Dev.to-native content or second cross-post"
+  engagement:
+    - "Respond to all comments within 24 hours"
+    - "Participate in Dev.to discussions"
+    - "Use tags strategically (#tutorial, #beginners, #python)"
+  
+  success_criteria:
+    - "Maintain cost-per-conversion < $7"
+    - "If not, scale back to 1 post/week"
+```
 
 ---
 
-#### 🆕 YouTube → $300 (new)
-**Why**: Video format, untapped channel
+#### 5. Pivot Reddit Strategy
 
-**Tactics**:
-- Create 3-5 tutorial videos
-- Repurpose blog content
+**Current**: $500 budget, 4/10 score, $22.50 cost-per-conversion  
+**Proposed**: $250 budget (-50%), niche community focus  
+**Rationale**: Current approach failed, test new strategy with lower risk  
+**Expected Impact**: +15 conversions (20 → 35)  
+**Confidence**: 60% (Medium)  
+**Risk**: Medium  
 
-**Expected Impact**: +1,000-2,000 views, +20-30 stars
+**New Reddit Strategy**:
+```yaml
+reddit_pivot:
+  budget: 250  # -50%
+  
+  community_selection:
+    drop:
+      - "r/programming (too broad, low engagement)"
+    
+    test:
+      - "r/python (if Python-related)"
+      - "r/opensource (relevant community)"
+      - "r/devops (if DevOps use case)"
+      - "r/sysadmin (if sysadmin relevance)"
+  
+  engagement_strategy:
+    - "10:1 ratio: Contribute 10 times before promoting once"
+    - "Participate in discussions, provide value"
+    - "Post only on weekdays (weekends: -50% engagement)"
+    - "No direct promotion in titles"
+    - "Provide genuine help, mention product organically"
+  
+  test_timeline:
+    - "Week 1-2: Community participation only (no promotion)"
+    - "Week 3-4: Soft promotion (1-2 posts)"
+    - "Week 5-6: Measure results"
+  
+  success_criteria:
+    - "Cost-per-conversion < $15"
+    - "If not achieved after 6 weeks, cut Reddit entirely"
+    - "Reallocate remaining budget to Twitter"
+```
+
+---
+
+#### 6. Optimize Publishing Schedule
+
+**Current**: Mixed schedule, 7 days/week  
+**Proposed**: Weekday-focused, optimal time slots  
+**Rationale**: Weekend posts: -50% engagement  
+**Expected Impact**: +10% engagement, save time  
+**Confidence**: 75% (Medium-High)  
+**Risk**: Low  
+
+**Optimized Schedule**:
+```yaml
+blog:
+  publish_days: ["Tuesday", "Thursday"]
+  publish_time: "10:00 AM UTC"
+  rationale: "Tuesday/Thursday posts perform 20% better"
+
+twitter:
+  weekdays:
+    - "9:00 AM UTC"
+    - "1:00 PM UTC"
+    - "5:00 PM UTC"
+  weekend:
+    - "10:00 AM UTC (Saturday only)"
+  optimal_slot: "Tuesday 10:00 AM (+30% engagement)"
+
+dev_to:
+  publish_days: ["Monday", "Thursday"]
+  publish_time: "11:00 AM UTC"
+  
+reddit:
+  post_days: ["Tuesday", "Thursday"]
+  post_time: "10:00 AM PST"
+  avoid: "Weekends entirely"
+```
+
+---
+
+### P2 (Nice to Have) 💡
+
+#### 7. Standardize Code Snippet Image Format
+
+**Impact**: +15% Twitter engagement  
+**Effort**: Low (4-6 hours)  
+**Implementation**:
+- Create Figma template for code snippet images
+- Include: syntax highlighting, brand colors, logo
+- Dimension: 1200x675 (Twitter optimal)
+
+#### 8. Add Video Versions of Top Content
+
+**Impact**: +30% engagement (based on initial tests)  
+**Effort**: Medium (8 hours per video)  
+**Implementation**:
+- Create video versions of top 20% blog posts
+- 5-10 minute format
+- Post to YouTube + embed in blog
+
+#### 9. Implement Tutorial Thread Format
+
+**Impact**: +50% engagement vs single tweets  
+**Effort**: Low (content repurposing)  
+**Implementation**:
+- Convert blog tutorials to Twitter threads
+- 5-8 tweets per thread
+- Include code snippets, visuals
+
+---
+
+## Budget Reallocation Plan
+
+### Current vs Proposed Budget
+
+| Category | Current | Proposed | Change | Justification |
+|----------|---------|----------|--------|---------------|
+| **Total** | **$10,000** | **$10,000** | **$0** | |
+| Content Creation | $4,000 | $4,200 | +$200 | More tutorial production |
+| **Twitter** | **$1,000** | **$1,300** | **+$300** | **Top performer (9/10)** |
+| Blog | $2,000 | $2,000 | $0 | Maintain |
+| **Dev.to** | **$500** | **$700** | **+$200** | **Best efficiency** |
+| **Reddit** | **$500** | **$250** | **-$250** | **Underperformer** |
+| Tools | $1,500 | $1,550 | +$50 | Better tracking |
+| Contingency | $1,500 | $0 | - | Built into allocations |
+
+**Net Reallocation**: $750 moved from underperformers to high-ROI channels
+
+### Expected ROI by Channel
+
+| Channel | Investment | Expected Conversions | Cost/Conv | ROI |
+|---------|------------|---------------------|-----------|-----|
+| Twitter | $1,300 | 156 | $8.33 | 200% |
+| Blog | $2,000 | 210 | $9.52 | 180% |
+| Dev.to | $700 | 120 | $5.83 | 250% |
+| Reddit | $250 | 35 | $7.14 | 150% (if pivot works) |
+| **Total** | **$10,000** | **~520** | **~$19** | **190%** |
 
 ---
 
 ## Content Strategy Optimization
 
-### Current Problems
-❌ Announcements underperformed (25% of content, 3/10 score)
-❌ Content repetition caused week 8-11 plateau
-❌ No email lead magnet
+### Content Mix Adjustment
 
-### Recommended Content Mix
+**Current Mix**:
+- Tutorials: 55%
+- Case Studies: 23%
+- Announcements: 14%
+- Tips/Lists: 8%
 
-| Type | Current | Recommended | Change | Rationale |
-|------|---------|-------------|--------|-----------|
-| **Tutorial** | 42% (5/12) | 50% (6/12) | +1 | Best performer (9/10) |
-| **Case Study** | 33% (4/12) | 25% (3/12) | -1 | Strong but sufficient |
-| **Comparison** | 17% (2/12) | 17% (2/12) | 0 | Keep as is |
-| **Announcement** | 25% (3/12) | 8% (1/12) | -2 ❌ | Cut drastically |
-| **Dev Stories** | 0% | 17% (2/12) | +2 🆕 | Community-driven |
-| **Live Coding** | 0% | 8% (1/12) | +1 🆕 | Interactive |
+**Optimized Mix**:
+- **Tutorials: 70%** (+15%) ⬆️
+- Case Studies: 10% (-13%) ⬇️
+- **Tips/Lists: 15%** (+7%) ⬆️
+- **Announcements: 5%** (-9%) ⬇️
 
-### Content Calendar by Phase
+**Justification**:
+- Tutorials: 2x performance vs average
+- Tips/Lists: 1.5x performance
+- Announcements: 0.5x performance (reduce drastically)
 
-**Phase 1 (Weeks 1-4): Education**
-- 60% tutorials, 40% comparisons
-- Goal: Build awareness
+### Content Format Standards
 
-**Phase 2 (Weeks 5-8): Validation**
-- 40% case studies, 40% tutorials, 20% stories
-- Goal: Build trust
+#### Blog Post Template
 
-**Phase 3 (Weeks 9-12): Engagement** ⚠️ (Previously plateau)
-- 30% tutorials, 30% live, 40% community
-- Goal: Drive conversion + prevent plateau
+```markdown
+# [Tutorial Title] - [Outcome in X Minutes]
 
-### Posting Schedule Optimization
-
-| Day | Action | Content Type |
-|-----|--------|--------------|
-| **Mon** | Plan + prep | - |
-| **Tue** | Publish | Tutorial (Reddit + Dev.to) ✅ |
-| **Wed** | Publish | Case Study (Blog + LinkedIn) ✅ |
-| **Thu** | Publish | Comparison/Story (Twitter + Dev.to) ✅ |
-| **Fri** | Engage | Community (respond, share) |
-| **Sat-Sun** | None | Negligible developer traffic ❌ |
-
-**Best Time**: 9-11 AM ET (developer working hours)
+**What you'll learn**: [3-4 bullet points]  
+**Prerequisites**: [Any requirements]  
+**Time**: [5-15 minutes]
 
 ---
 
-## KPI Refinement
+## Introduction (150 words)
+[Hook + problem statement]
 
-### Recommended Targets (Balanced Scenario)
+## Step-by-Step Guide
 
-| KPI | Last Campaign | Achievement | Next Target | Increase | Feasibility |
-|-----|---------------|-------------|-------------|----------|-------------|
-| **GitHub Stars** | 500 (420 actual) | 84% | **520** | +24% | ✅ High |
-| **Email Subscribers** | 1,000 (850 actual) | 85% | **1,100** | +29% | ✅ High |
-| **Website Traffic** | 50,000 (45K actual) | 90% | **60,000** | +33% | ✅ Medium |
+### Step 1: [Action]
+[Explanation]
 
-### Adjustments Needed
+```code
+// Code example with syntax highlighting
+```
 
-**For GitHub Stars → 520**:
-- ✅ Increase Reddit investment (+$500)
-- ✅ Add content variety (prevent plateau)
-- ✅ Community engagement tactics
+[Expected output]
 
-**For Email Subscribers → 1,100**:
-- ✅ Create lead magnet (high priority)
-- ✅ Optimize CTAs
-- ✅ Build nurture sequence
-- ✅ Add email automation tool
+### Step 2-N: [Continue...]
 
-**For Website Traffic → 60,000**:
-- ✅ SEO optimization for tutorials
-- ✅ Add video content
-- ✅ Expand to YouTube
+## Troubleshooting
+[Common issues and solutions]
+
+## Conclusion
+[Summary + next steps + CTA]
 
 ---
 
-## New KPIs to Track
+**Requirements**:
+- 2000-2500 words
+- Minimum 3 code examples
+- Syntax highlighting
+- Working repository link
+- Troubleshooting section
+```
 
-| KPI | Definition | Baseline | Target | Why Track |
-|-----|------------|----------|--------|-----------|
-| **Community Engagement Rate** | (Comments + Shares) / Content | 18 | 30 | Leading indicator of virality |
-| **Content ROI** | GitHub Stars / Content Pieces | 14.8 | 20 | Content effectiveness |
-| **Email Conversion Rate** | Email Signups / Website Visits | 1.9% | 2.5% | Email funnel optimization |
+#### Twitter Thread Template
 
----
+```
+🧵 [Hook Tweet - State outcome in 1 sentence]
 
-## Implementation Roadmap
+(1/N) [Problem statement]
 
-### ⚡ Immediate (Week 1-2)
+(2/N) [Solution overview with visual]
 
-| Action | Owner | Effort | Cost | Impact |
-|--------|-------|--------|------|--------|
-| Create email lead magnet | Content Writer | 20h | $500 | +30% email conversion |
-| Optimize email CTAs | Designer | 8h | $200 | +10% signups |
-| Pivot LinkedIn strategy | Marketing Lead | 4h | $0 | Test new messaging |
+(3/N) [Step 1 with code snippet image]
 
-**Total**: 32 hours, $700
+(4/N) [Step 2 with code snippet image]
 
----
+(5/N) [Results/outcome]
 
-### 📅 Short-Term (Week 3-4)
-
-| Action | Owner | Effort | Cost | Impact |
-|--------|-------|--------|------|--------|
-| Set up email automation | Marketing Lead | 12h | $500 | Enable nurture sequences |
-| Expand Reddit presence | Social Manager | Ongoing | $500 | +40 stars |
-| Create 3 video tutorials | Content + Designer | 40h | $1,000 | +1K YouTube views |
-
-**Total**: 52 hours, $2,000
-
----
-
-### 🎯 Medium-Term (Week 5-8)
-
-| Action | Owner | Effort | Cost | Impact |
-|--------|-------|--------|------|--------|
-| Launch Dev.to series | Content Writer | 60h | $1,500 | +50 stars |
-| Test HackerNews | Marketing Lead | 8h | $0 | +20-40 stars |
-| Build nurture sequence | Content Writer | 20h | $500 | +15% email engagement |
-
-**Total**: 88 hours, $2,000
-
----
-
-### 🚀 Long-Term (Week 9-12)
-
-| Action | Owner | Effort | Cost | Impact |
-|--------|-------|--------|------|--------|
-| Community engagement | Social Manager | Ongoing | $1,000 | Prevent plateau |
-| SEO optimization | Marketing Lead | 20h | $500 | +20% organic traffic |
-
-**Total**: 20 hours, $1,500
-
----
-
-**Grand Total**: 192 hours, $6,200 (within $10K budget with existing operations)
-
----
-
-## Risk Assessment
-
-| Change | Risk | Probability | Impact | Mitigation | Decision |
-|--------|------|-------------|--------|------------|----------|
-| Cut LinkedIn 70% | Lose decision-maker visibility | Medium | Low | Maintain minimal presence | ✅ Proceed |
-| Triple Reddit | Diminishing returns | Low | Medium | Expand subreddits, vary content | ✅ Proceed |
-| Add YouTube | Resource-intensive | Medium | Medium | Pilot with 3 videos | ⚠️ Pilot first |
-| Aggressive KPI targets | Team demotivation | Low | High | Use balanced targets | ✅ Use balanced |
-
----
-
-## Expected Results
-
-### Scenario: Balanced Optimizations (Recommended)
-
-**Investment**: $10,000 (same budget)
-
-**Expected Achievement**:
-- GitHub Stars: 520 (previously 420) → **95% of target** ✅
-- Email Subscribers: 1,100 (previously 850) → **100% of target** ✅
-- Website Traffic: 60,000 (previously 45K) → **100% of target** ✅
-
-**Overall Achievement**: **95-100%** (up from 85%)
-
-**Confidence Level**: **High** (based on proven tactics from review)
-
-**ROI**: Estimated **180-200%** (up from 154%)
-
----
-
-## Next Steps
-
-1. **Review recommendations** with team
-2. **Select scenario**: Conservative / Balanced / Aggressive
-3. **Adjust budget** if needed
-4. **Start /marketspec.discover** for next campaign with these learnings
-5. **Implement immediate actions** (Week 1-2)
-
----
-
-## How to Use This Report
-
-This report should feed into your next campaign planning:
-
-```bash
-# Start next campaign with optimization insights
-/marketspec.discover "Q2 2025 Growth" --based-on optimization-recommendations.md
-
-# The discover command will incorporate:
-# - Budget reallocation suggestions
-# - Channel mix optimization
-# - Content strategy improvements
-# - Refined KPI targets
-# - Lessons learned
+(N/N) [CTA: Link to full tutorial + question for engagement]
 ```
 
 ---
 
-**Report Prepared By**: Marketing AI Assistant  
-**Based On**: campaign-review.md + marketing-spec.yaml  
-**Confidence**: High (data-driven recommendations)  
-**Ready to Implement**: Yes ✅
-```
+## Implementation Timeline
 
-**Output Location**: `optimization-recommendations.md`
+### Month 1 (Immediate)
 
----
+**Week 1**: Setup & Templates
+- ✅ Analyze landing page design elements
+- ✅ Create code snippet image template
+- ✅ Research niche subreddits
+- ✅ Update Twitter scheduling tool
 
-## Success Criteria
+**Week 2**: Template Creation
+- ✅ Create landing page template
+- ✅ Update content calendar (70% tutorials)
+- ✅ Create tutorial blog post template
+- ✅ Create Twitter thread template
 
-- ✅ Review data loaded and analyzed
-- ✅ Optimization opportunities identified
-- ✅ Budget reallocation recommended (3 scenarios)
-- ✅ Channel mix optimized
-- ✅ Content strategy refined
-- ✅ KPI targets adjusted
-- ✅ Risks assessed
-- ✅ Implementation roadmap created
-- ✅ Expected outcomes projected
+**Week 3**: Testing
+- ✅ A/B test landing page template
+- ✅ Test niche Reddit communities (participation only)
+- ✅ Test new blog schedule (Tue/Thu)
 
----
+**Week 4**: Rollout
+- ✅ Launch optimized content mix
+- ✅ Implement budget reallocation
+- ✅ Begin Reddit soft promotion
 
-## Output
+### Month 2 (Expansion)
 
-**Primary Output**: `optimization-recommendations.md`
+**Week 5-6**: Dev.to Expansion
+- ✅ Increase to 2 posts/week
+- ✅ Create Dev.to-specific content
+- ✅ Monitor cost-per-conversion
 
-**Structure**:
-```
-project-root/
-├── marketing-spec.yaml                # Original plan
-├── campaign-review.md                 # Review from /marketspec.review
-└── optimization-recommendations.md    # Optimization report (NEW)
-```
+**Week 7-8**: Video Content
+- ✅ Create 4 video versions of top posts
+- ✅ Test video engagement
+- ✅ Decide on video expansion
 
----
+### Month 3 (Optimization)
 
-## Error Handling
+**Week 9-10**: Reddit Assessment
+- ✅ Measure Reddit pivot results
+- ✅ Decision: Continue, adjust, or cut
 
-**Missing Review Data**:
-```
-❌ Error: Cannot find campaign-review.md
-→ Run /marketspec.review first to analyze campaign performance
-→ Optimization requires actual performance data
-```
-
-**Incomplete Review**:
-```
-⚠️ Warning: Review data is incomplete
-→ Missing: Channel performance data
-→ Recommendations will be limited without complete data
-```
-
-**No Clear Optimization Opportunities**:
-```
-✅ Campaign performed excellently (98% achievement)
-→ Optimization opportunities are minimal
-→ Recommend: Maintain current strategy, scale budget if possible
-```
+**Week 11-12**: Campaign Launch
+- ✅ Launch next campaign with all optimizations
+- ✅ Track KPIs closely
+- ✅ Prepare for mid-campaign review
 
 ---
 
-## Example Interaction
+## Testing & Measurement Plan
 
-```
-User: /marketspec.optimize
+### Tests to Run
 
-AI: I'll generate optimization recommendations based on your campaign review!
+| Test | Hypothesis | Method | Duration | Success Metric |
+|------|------------|--------|----------|----------------|
+| Video Content | Videos drive 2x engagement | Create 4 video versions | 4 weeks | Views > 2x text |
+| Dev.to Expansion | Can scale to 2x/week | Increase frequency | 6 weeks | Cost/conv < $7 |
+| Reddit Pivot | Niche communities better | Test r/python vs r/programming | 6 weeks | Cost/conv < $15 |
+| Tutorial Threads | Threads > single tweets | Create 8 tutorial threads | 4 weeks | Engagement > 2x |
+| Landing Page | Template replicates success | A/B test next campaign | 4 weeks | Conv rate > 6% |
 
-📄 **Review Data Loaded**: campaign-review.md
-📊 **Overall Achievement**: 85.1% (B+)
-💰 **Budget**: $9,500 spent / $10,000 planned
-📈 **ROI**: 154%
+### Key Metrics to Track
 
----
+**Campaign-Level**:
+- Overall achievement rate (target: >100%)
+- Cost per conversion (target: <$20)
+- ROI (target: >180%)
 
-**Analyzing performance data...**
+**Channel-Level**:
+- Performance score (target: All channels >6/10)
+- Cost-per-conversion by channel
+- Engagement rate
 
-✅ **Opportunities Identified**: 6
-
-**High Impact** (Top 3):
-1. 🔄 Reallocate budget: LinkedIn → Reddit/Dev.to
-   Impact: +50-80 GitHub stars
-   Effort: Low
-   
-2. 📧 Add email lead magnet
-   Impact: +200-300 subscribers
-   Effort: Medium
-   
-3. 🎨 Add content variety after week 7
-   Impact: Prevent plateau, sustain 60 stars/week
-   Effort: Medium
+**Content-Level**:
+- Views per post type
+- Conversion rate by content type
+- Time on page
 
 ---
 
-**Budget Optimization**:
+## Risk Mitigation
 
-🎯 **Recommended Scenario**: Balanced (same $10K budget)
+### High-Risk Changes
 
-**Key Changes**:
-- Reddit: $500 → $1,000 (+100%)
-- Dev.to: $800 → $1,200 (+50%)
-- LinkedIn: $1,000 → $300 (-70%)
-- YouTube: $0 → $300 (new)
+#### Reddit Pivot
+**Risk**: New strategy might also fail  
+**Mitigation**:
+- Only invest 50% of previous budget ($250 vs $500)
+- Set clear 6-week test window
+- Kill-switch: If cost-per-conversion >$15 after 6 weeks, cut entirely
+- Have backup plan to reallocate $250 to Twitter
 
-**Expected Impact**: +10-15% overall achievement (85% → 95-100%)
+#### Dev.to Expansion
+**Risk**: Might not scale efficiently  
+**Mitigation**:
+- Monitor cost-per-conversion weekly
+- If exceeds $7, scale back to 1 post/week
+- Test with 1 Dev.to-native post first
 
----
+### Rollback Plans
 
-**Channel Strategy**:
+**If Twitter budget increase underperforms**:
+- Rollback to $1,000 after 2 weeks
+- Reallocate $300 to Blog
 
-✅ **Double Down**: Reddit, Dev.to, Blog (top performers)
-⚠️ **Reduce**: LinkedIn, Twitter (underperformers)
-🆕 **Test**: YouTube, HackerNews (new opportunities)
+**If tutorial content underperforms**:
+- Revert to 60% tutorials (from 70%)
+- Increase tips/lists to 20%
 
----
-
-**Content Strategy**:
-
-Current Problem: Announcements (25%) underperformed, plateau in weeks 8-11
-
-Recommendations:
-- Cut announcements: 25% → 8% (-2 pieces)
-- Add tutorials: 42% → 50% (+1 piece)
-- Add dev stories: 0% → 17% (+2 pieces, new format)
-- Add live coding: 0% → 8% (+1 piece, new format)
-
----
-
-**Refined KPI Targets** (Balanced Scenario):
-
-| KPI | Last Target | Next Target | Increase | Feasibility |
-|-----|-------------|-------------|----------|-------------|
-| GitHub Stars | 500 | 520 | +24% | ✅ High |
-| Email Subscribers | 1,000 | 1,100 | +29% | ✅ High |
-| Website Traffic | 50,000 | 60,000 | +33% | ✅ Medium |
+**If landing page template underperforms**:
+- A/B test will automatically identify
+- Keep original design for other campaigns
 
 ---
 
-**Implementation Roadmap**:
+## Expected Outcomes
 
-⚡ Immediate (Week 1-2): $700, 32 hours
-- Create lead magnet
-- Optimize CTAs
-- Pivot LinkedIn
+### Next Campaign Projections
 
-📅 Short-term (Week 3-4): $2,000, 52 hours
-- Email automation
-- Expand Reddit
-- First videos
+**If all recommendations implemented**:
 
-🎯 Medium-term (Week 5-8): $2,000, 88 hours
-- Dev.to series
-- Test HackerNews
+| KPI | Q1 Actual | Q2 Target | Expected | Confidence |
+|-----|-----------|-----------|----------|------------|
+| GitHub Stars | 450 | 500 | 520 | 85% |
+| Email Subs | 1,200 | 1,000 | 1,300 | 90% |
+| Sessions | 4,500 | 5,000 | 5,200 | 80% |
 
-🚀 Long-term (Week 9-12): $1,500, 20 hours
-- Community engagement
-- SEO optimization
+**Budget Efficiency**:
+- Cost per conversion: $19 (vs $21 in Q1)
+- ROI: 190% (vs 181% in Q1)
+- Overall achievement: 110-115% (vs 100% in Q1)
 
----
+### Long-Term Impact
 
-**Expected Results**:
-- Achievement: 85% → **95-100%** ✅
-- ROI: 154% → **180-200%** ✅
-- Confidence: **High**
+**After 3 campaigns with optimizations**:
+- Compounding learnings drive continuous improvement
+- Template library reduces campaign setup time by 50%
+- Proven playbooks increase confidence and efficiency
+- Team capability improves through documented best practices
 
 ---
 
-📄 **Full Report Generated**: optimization-recommendations.md
+## Checklist for Next Campaign
 
-**Next Step**: Use this report as input for your next `/marketspec.discover` to plan Q2 campaign with these optimizations baked in.
+### Pre-Campaign
 
-Would you like me to:
-- Show detailed channel analysis?
-- Export in different format?
-- Start next campaign planning with these insights?
-```
+- [ ] Apply budget reallocation ($1,300 Twitter, $700 Dev.to, $250 Reddit)
+- [ ] Update content calendar (70% tutorials)
+- [ ] Use landing page template
+- [ ] Set up Twitter scheduling (optimal times)
+- [ ] Research and join niche subreddits
+- [ ] Create code snippet image template
 
----
+### During Campaign
 
-## Notes
+- [ ] Post blog only on Tuesday/Thursday
+- [ ] Twitter: 3x/day weekdays, focus on Tuesday 10am
+- [ ] Dev.to: 2 posts/week (Mon/Thu)
+- [ ] Reddit: Participate 10x before promoting once
+- [ ] Track all metrics weekly
+- [ ] Run mid-campaign review at week 6
 
-- **Data-Driven**: All recommendations based on actual performance
-- **Actionable**: Every recommendation has clear tactics
-- **Realistic**: Considers budget, resources, and risks
-- **Prioritized**: Focus on high-impact, low-effort changes first
-- **Scenarios**: Provides options for different budgets/ambitions
-- **Closes Loop**: Feeds back into next `/marketspec.discover`
+### Post-Campaign
 
----
-
-## Integration with Other Commands
-
-**Position**: Extension (AFTER review)
-
-References:
-- `/marketspec.review` - Source of performance data
-- `/marketspec.create` - Original specification
-
-Feeds into:
-- `/marketspec.discover` - Next campaign planning (closes the loop)
-
-**Complete Cycle**:
-```
-discover → ... → create → [Execute] → review → optimize
-    ↑                                               ↓
-    └───────────────────── (closes loop) ──────────┘
-```
+- [ ] Run `/marketspec.review`
+- [ ] Compare actual vs expected improvements
+- [ ] Document new learnings
+- [ ] Run `/marketspec.optimize`
+- [ ] Iterate for next campaign
 
 ---
 
-## See Also
+## Conclusion
 
-- `/marketspec.review` - Previous step
-- `/marketspec.discover` - Next campaign planning
-- `/marketspec.create` - Original specification
-- Optimization examples in `examples/` directory
+This optimization plan reallocates resources to proven high-performers (Twitter, Dev.to) while testing a lower-risk approach for underperformers (Reddit). The shift to 70% tutorial content aligns with clear performance data, and the landing page template captures a proven success pattern.
 
+**Expected overall improvement**: +20-25% conversions in next campaign.
+
+**Key Success Factors**:
+1. Disciplined implementation of budget reallocation
+2. Commitment to 70% tutorial content mix
+3. Rigorous testing of Reddit pivot (with kill-switch)
+4. Weekly tracking and mid-campaign optimization
+
+**Next Steps**:
+1. Review and approve this optimization plan
+2. Begin Week 1 implementation (templates & setup)
+3. Launch next campaign with all optimizations
+4. Track results and compare to projections
+
+---
+
+**Optimization Plan Generated**: 2025-04-06  
+**Ready for Implementation**: ✅ Yes  
+**Review After**: Next campaign completion

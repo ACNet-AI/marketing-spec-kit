@@ -62,8 +62,20 @@ logs/
 docs/internal/
 .archive/
 
+# Example projects (managed independently)
+examples/q1-github-stars-campaign/
+
 # Temporary files
 tmp/
 temp/
 *.tmp
+
+# Backup files
+*.backup
+*.bak
+commands.backup-*/
+.metaspec/commands.backup-*/
+
+# Test files
+/tmp/test-*
 

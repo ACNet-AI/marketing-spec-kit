@@ -1,26 +1,27 @@
 ---
-name: marketspec.strategy
-description: Plan marketing approach and architecture
+name: marketspec.plan
+description: Plan marketing strategy architecture
 layer: sdm
 status: implemented
 type: core
 category: Core Flow
-source: Adapted from metaspec.sdd.plan
+source: Adapted from metaspec.sds.plan
 version: 0.3.0
 ---
 
-# /marketspec.strategy 🔴 Core
+# /marketspec.plan 🔴 Core
 
-**Purpose**: Develop a comprehensive marketing strategy based on clarified requirements.
+**Purpose**: Develop a comprehensive marketing strategy plan based on clarified requirements.
 
 **Category**: Core Flow (Essential Workflow)  
-**Adapted from**: `metaspec.sdd.plan`
+**Output**: `specs/{sequence}-{name}/plan.md` ⭐  
+**Adapted from**: `metaspec.sds.plan`
 
 ---
 
 ## Purpose
 
-Transform discovered and clarified requirements into a concrete marketing strategy:
+Transform discovered and clarified requirements into a concrete marketing strategy plan:
 - Define marketing approach and tactics
 - Select channels and content types
 - Plan campaigns and milestones  
@@ -28,29 +29,29 @@ Transform discovered and clarified requirements into a concrete marketing strate
 - Set measurable KPIs and success metrics
 - Create execution timeline
 
-This strategy serves as the blueprint for implementation.
+This plan serves as the **architecture blueprint** for implementation.
 
 ---
 
 ## Command Usage
 
 ```
-/marketspec.strategy
-/marketspec.strategy --approach [approach]
+/marketspec.plan
+/marketspec.plan --approach [approach]
 ```
 
 **Examples**:
 ```
-/marketspec.strategy
-/marketspec.strategy --approach "content-led growth"
-/marketspec.strategy --approach "community-first"
+/marketspec.plan
+/marketspec.plan --approach "content-led growth"
+/marketspec.plan --approach "community-first"
 ```
 
 ---
 
 ## Prerequisites
 
-- **Required**: Discovery document from `/marketspec.discover`
+- **Required**: Draft specification from `/marketspec.specify`
 - **Recommended**: Clarifications from `/marketspec.clarify`
 - **Recommended**: Constitution from `/marketspec.constitution`
 
@@ -61,7 +62,7 @@ This strategy serves as the blueprint for implementation.
 ### Step 1: Review Requirements
 
 Load and analyze:
-1. Discovery document (`specs/discovery/[project-name]-discovery.md`)
+1. Draft specification (`specs/{sequence}-{name}/spec.md`)
 2. Clarification sessions (if any)
 3. Constitution principles (if defined)
 
@@ -402,7 +403,7 @@ timeline:
       milestone: "Mid-Campaign Review"
       deliverables:
         - "KPI performance analysis"
-        - "Strategy adjustments if needed"
+        - "Plan adjustments if needed"
         - "A/B test results"
     
     - date: "2025-03-31"
@@ -451,15 +452,15 @@ risks:
       - "Have freelancer backup list"
 ```
 
-### Step 10: Generate Strategy Document
+### Step 10: Generate Marketing Plan Document
 
-Create comprehensive strategy document:
+Create comprehensive plan document:
 
 ```markdown
-# Marketing Strategy: [Project Name]
+# Marketing Plan: [Campaign Name]
 
 **Version**: 1.0  
-**Date**: 2025-11-16  
+**Date**: 2025-11-19  
 **Period**: Q1 2025  
 **Status**: Approved, ready for implementation
 
@@ -467,7 +468,7 @@ Create comprehensive strategy document:
 
 ## Executive Summary
 
-[2-3 paragraph summary of strategy]
+[2-3 paragraph summary of plan]
 
 **Approach**: Content-led growth + Community-first  
 **Budget**: $10,000 for Q1 2025  
@@ -480,11 +481,48 @@ Create comprehensive strategy document:
 
 [Content from Step 2]
 
+### Primary Approach: [Name]
+
+**Description**: [What and why]
+
+**Rationale**: [Why this fits objectives and audience]
+
+**Key Tactics**:
+- [Tactic 1]
+- [Tactic 2]
+- [Tactic 3]
+
+### Supporting Approach: [Name]
+
+[If applicable]
+
 ---
 
 ## Campaign Structure
 
 [Content from Step 3]
+
+### Campaign 1: [Name]
+
+**Objective**: [Awareness/Consideration/Conversion]  
+**Duration**: [Timeline]  
+**Budget**: [Amount]  
+**Priority**: [High/Medium/Low]
+
+**Phases**:
+1. **[Phase 1]** ([Dates])
+   - Focus: [What]
+   - Key Activities: [List]
+   
+2. **[Phase 2]** ([Dates])
+   - Focus: [What]
+   - Key Activities: [List]
+
+**Success Metrics**: [How to measure]
+
+### Campaign 2: [Name]
+
+[Similar structure]
 
 ---
 
@@ -492,11 +530,75 @@ Create comprehensive strategy document:
 
 [Content from Step 4]
 
+### Channel Selection Rationale
+
+[Why these channels]
+
+### Primary Channels
+
+#### [Channel 1]
+
+**Type**: [Blog, Social, Email, etc.]  
+**Role**: [Primary/Secondary]  
+**Audience Fit**: [High/Medium/Low]
+
+**Content Strategy**:
+- Frequency: [How often]
+- Content Mix: [Types and percentages]
+- Distribution: [How content reaches audience]
+
+**Engagement Strategy**:
+- [Strategy point 1]
+- [Strategy point 2]
+
+**Budget**: [Amount]  
+**Expected Reach**: [Metric]
+
+#### [Channel 2]
+
+[Similar structure for each channel]
+
+### Channel Integration
+
+[How channels work together to amplify each other]
+
 ---
 
 ## Content Plan
 
 [Content from Step 5]
+
+### Content Themes
+
+#### Theme 1: [Name]
+
+**Purpose**: [Goal]  
+**Target Audience**: [Segment]
+
+**Content Pieces**:
+1. [Piece 1]
+   - Format: [Type]
+   - Channel: [Where]
+   - Timeline: [When]
+   
+2. [Piece 2]
+   [Details]
+
+#### Theme 2: [Name]
+
+[Similar structure]
+
+### Content Production
+
+**Team Structure**:
+- [Role 1]: [Capacity and cost]
+- [Role 2]: [Capacity and cost]
+
+**Content Calendar Framework**:
+[Week-by-week outline]
+
+**Quality Standards**:
+[From constitution or requirements]
 
 ---
 
@@ -504,11 +606,50 @@ Create comprehensive strategy document:
 
 [Content from Step 6]
 
+### Primary KPIs (P0)
+
+| KPI | Baseline | Target | Timeframe | Measurement |
+|-----|----------|--------|-----------|-------------|
+| [Name] | [Number] | [Number] | [Period] | [Method] |
+
+### Secondary KPIs (P1)
+
+| KPI | Baseline | Target | Timeframe | Measurement |
+|-----|----------|--------|-----------|-------------|
+| [Name] | [Number] | [Number] | [Period] | [Method] |
+
+### Leading Indicators
+
+[Early signals that predict success]
+
 ---
 
 ## Budget Allocation
 
 [Content from Step 7]
+
+### Total Budget
+
+**Amount**: $[Total]  
+**Period**: [Timeline]  
+**Currency**: USD
+
+### Breakdown by Category
+
+| Category | Amount | % | Rationale |
+|----------|--------|---|-----------|
+| Content Creation | $[Amount] | [%] | [Why] |
+| Paid Promotion | $[Amount] | [%] | [Why] |
+| Tools & Platforms | $[Amount] | [%] | [Why] |
+| Community & Events | $[Amount] | [%] | [Why] |
+| Contingency | $[Amount] | [%] | [Why] |
+| **Total** | **$[Total]** | **100%** | - |
+
+### Budget by Channel
+
+| Channel | Budget | % of Total | Expected ROI |
+|---------|--------|------------|--------------|
+| [Channel 1] | $[Amount] | [%] | [Est.] |
 
 ---
 
@@ -516,36 +657,117 @@ Create comprehensive strategy document:
 
 [Content from Step 8]
 
+### Campaign Timeline
+
+**Start**: [Date]  
+**End**: [Date]  
+**Duration**: [Weeks]
+
+### Milestones
+
+#### Milestone 1: [Name]
+
+**Date**: [Date]  
+**Description**: [What]
+
+**Deliverables**:
+- [Deliverable 1]
+- [Deliverable 2]
+
+**Success Criteria**:
+- [Criterion 1]
+- [Criterion 2]
+
+#### Milestone 2: [Name]
+
+[Similar structure]
+
+### Weekly Cadence
+
+| Day | Activity | Owner |
+|-----|----------|-------|
+| Monday | [Activity] | [Role] |
+| Tuesday | [Activity] | [Role] |
+| Wednesday | [Activity] | [Role] |
+| Thursday | [Activity] | [Role] |
+| Friday | [Activity] | [Role] |
+
 ---
 
 ## Risk Assessment
 
 [Content from Step 9]
 
+### Identified Risks
+
+#### Risk 1: [Name]
+
+**Description**: [What could go wrong]  
+**Probability**: [High/Medium/Low]  
+**Impact**: [High/Medium/Low]  
+**Priority**: [H/M/L]
+
+**Mitigation**:
+- [Strategy 1]
+- [Strategy 2]
+
+**Contingency Plan**:
+[What to do if risk occurs]
+
+#### Risk 2: [Name]
+
+[Similar structure]
+
+---
+
+## Tools & Resources
+
+### Required Tools
+
+| Tool | Purpose | Cost | Owner |
+|------|---------|------|-------|
+| [Tool name] | [Use] | $[Amount]/month | [Role] |
+
+### Team Resources
+
+| Role | Capacity | Responsibilities |
+|------|----------|------------------|
+| [Role] | [Hours/week or output] | [What they do] |
+
 ---
 
 ## Next Steps
 
-1. **Break down tasks** → `/marketspec.tasks`
-2. **Create detailed specification** → `/marketspec.create`
-3. **Begin execution** → Follow campaign plan
+1. **Break down into tasks** → `/marketspec.tasks`
+2. **Generate checklist** → `/marketspec.checklist`
+3. **Create final specification** → `/marketspec.implement`
+4. **Begin execution** → Follow campaign plan
 
 ---
 
-## Appendix
+## Appendices
 
-### Tools Required
-- Analytics: Google Analytics, Twitter Analytics
-- Content: Figma, Canva, VS Code
-- Distribution: Buffer, ConvertKit
-- Project Management: Linear, Notion
+### A. Approach Research
 
-### Team Responsibilities
-- Marketing Lead: Strategy, coordination
-- Content Writer: Blog posts, guides
-- Designer: Graphics, visual assets
-- Community Manager: Social, engagement
+[Details on why chosen approach fits]
+
+### B. Channel Analysis
+
+[Competitive analysis of chosen channels]
+
+### C. Content Examples
+
+[Sample content structures or examples]
+
+### D. Reference Materials
+
+**Source Documents**:
+- Draft Specification: `specs/{sequence}-{name}/spec.md`
+- Clarifications: `specs/{sequence}-{name}/clarifications.md`
+- Constitution: `memory/constitution.md`
 ```
+
+**Output Location**: `specs/{sequence}-{name}/plan.md`
 
 ---
 
@@ -558,32 +780,35 @@ Create comprehensive strategy document:
 - ✅ Budget allocated across initiatives with rationale
 - ✅ Timeline with milestones and weekly cadence
 - ✅ Risks identified with mitigation plans
+- ✅ Plan document is Markdown (not YAML or operational data)
 
 ---
 
 ## Output
 
-**Primary Output**: `specs/strategy/[project-name]-strategy.md`
+**Primary Output**: `specs/{sequence}-{name}/plan.md`
 
-**Optional YAML Summary**: `specs/strategy/[project-name]-strategy-summary.yaml`
+**Example**:
+```
+specs/001-q1-campaign-strategy/
+├── spec.md              ← Draft (from /marketspec.specify)
+└── plan.md              ← Marketing plan (from this command) ⭐
+```
 
 **Structure**:
 ```
 specs/
-├── discovery/
-│   └── [project-name]-discovery.md
-├── clarifications/
-│   └── [project-name]-clarification-2025-11-16.md
-└── strategy/
-    ├── [project-name]-strategy.md
-    └── [project-name]-strategy-summary.yaml  # Optional
+├── 001-q1-campaign-strategy/
+│   ├── spec.md                  ← Draft specification
+│   ├── clarifications.md        ← Clarifications (optional)
+│   └── plan.md                  ← Marketing plan (NEW)
 ```
 
 ---
 
 ## Error Handling
 
-- If discovery/clarification incomplete, prompt to complete first
+- If draft specification incomplete, prompt to complete first
 - If objectives conflict with budget, highlight trade-offs
 - If timeline unrealistic, suggest adjustment or phasing
 - If KPIs unmeasurable, help define tracking method
@@ -593,13 +818,13 @@ specs/
 ## Example Interaction
 
 ```
-User: /marketspec.strategy
+User: /marketspec.plan
 
-AI: I'll help you develop a marketing strategy for MetaSpec. Let me review your discovery and clarifications...
+AI: I'll help you develop a marketing plan based on your specification.
 
-📄 Loaded:
-- Discovery: specs/discovery/metaspec-discovery.md
-- Clarifications: specs/clarifications/metaspec-clarification-2025-11-16.md
+📄 **Loaded**:
+- Draft Spec: specs/001-q1-campaign/spec.md
+- Clarifications: specs/001-q1-campaign/clarifications.md
 
 **Key Inputs**:
 ✅ Objectives: Awareness + GitHub stars
@@ -634,7 +859,7 @@ I recommend 2 main campaigns for Q1:
 **Campaign 1: "Developer Onboarding" (Weeks 1-6)**
 - Goal: Awareness + Education
 - Budget: $6K
-- Focus: Help developers understand MetaSpec
+- Focus: Help developers understand your product
 
 **Campaign 2: "Power User Stories" (Weeks 7-11)**
 - Goal: Social proof + Conversion
@@ -670,9 +895,9 @@ Based on your audience (Python/JS developers), I recommend:
 
 [After completing all steps]
 
-AI: Perfect! Your marketing strategy is complete:
+AI: Perfect! Your marketing plan is complete:
 
-📄 **Strategy Document**: specs/strategy/metaspec-strategy.md
+📄 **Plan Document**: specs/001-q1-campaign/plan.md
 
 **Summary**:
 ✅ Approach: Content-led + Community-first
@@ -685,7 +910,8 @@ AI: Perfect! Your marketing strategy is complete:
 
 **Next Steps**:
 1. 📋 Break down into tasks → `/marketspec.tasks`
-2. 📄 Generate final spec → `/marketspec.create`
+2. ✅ Generate quality checklist → `/marketspec.checklist`
+3. 📄 Write final specification → `/marketspec.implement`
 
 Ready to break down the tasks?
 ```
@@ -694,24 +920,34 @@ Ready to break down the tasks?
 
 ## Notes
 
+- **Plan defines ARCHITECTURE, not execution details**
 - Strategy should be realistic given constraints
 - Align with constitution principles if defined
 - Focus on 2-3 channels done well vs. many channels done poorly
 - Content-led and community approaches work well for developer tools
 - Include both leading (activity) and lagging (outcome) metrics
-- Build in flexibility - strategy may need adjustment mid-execution
+- Build in flexibility - plan may need adjustment mid-execution
+- **This is still a SPECIFICATION (how to market), not operational data**
 
 ---
 
 ## Integration with Other Commands
 
 Feeds into:
-- `/marketspec.tasks` - Break strategy into actionable tasks
-- `/marketspec.create` - Generate final YAML spec
+- `/marketspec.tasks` - Break plan into actionable tasks
+- `/marketspec.implement` - Generate final complete specification
 
 References:
-- `/marketspec.constitution` - Ensure strategy aligns with principles
-- `/marketspec.discover` + `/marketspec.clarify` - Source requirements
+- `/marketspec.constitution` - Ensure plan aligns with principles
+- `/marketspec.specify` - Source requirements
+- `/marketspec.clarify` - Source refined requirements
+
+**Workflow Position**:
+```
+specify → clarify → plan → tasks → analyze → implement
+                      ↑
+                  (you are here)
+```
 
 ---
 
@@ -719,5 +955,7 @@ References:
 
 - `/marketspec.clarify` - Previous step
 - `/marketspec.tasks` - Next step
-- Strategy examples in `examples/` directory
+- `/marketspec.implement` - Final specification generation
+- Plan examples in `examples/` directory
 - Marketing approaches documented in project specs
+- MetaSpec SDD Plan: `.metaspec/commands/metaspec.sdd.plan.md`

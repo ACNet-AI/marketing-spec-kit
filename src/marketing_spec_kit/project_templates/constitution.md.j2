@@ -1,0 +1,138 @@
+# {{ project_name }} - Marketing Constitution
+
+**Generated**: {{ generated_date }}  
+**Toolkit**: {{ toolkit_name }} v{{ toolkit_version }}
+
+---
+
+## 🎯 Project Mission
+
+Define the core principles and constraints for {{ project_name }}'s marketing operations.
+
+---
+
+## 📋 Core Principles
+
+### 1. Specification-First Approach
+
+- All marketing activities must be defined in YAML specifications before execution
+- Specifications serve as the single source of truth
+- Changes require specification updates first, implementation second
+
+### 2. Data-Driven Decisions
+
+- All campaigns must define measurable KPIs
+- Budget allocation based on historical performance data
+- A/B testing required for major content changes
+
+### 3. Brand Consistency
+
+- All content must align with brand voice and guidelines
+- Visual assets must follow design system
+- Messaging must be coherent across channels
+
+### 4. Audience-Centric
+
+- Segment audiences before campaign planning
+- Personalization based on audience attributes
+- Regular audience feedback collection and analysis
+
+---
+
+## 🚫 Prohibited Patterns
+
+### Anti-Pattern 1: Ad-hoc Campaign Launches
+
+❌ **DON'T**: Launch campaigns without proper specification  
+✅ **DO**: Create campaign spec → Review → Validate → Execute
+
+### Anti-Pattern 2: Budget Overruns
+
+❌ **DON'T**: Exceed planned budgets without approval  
+✅ **DO**: Monitor budget usage → Alert at 80% → Request increase if needed
+
+### Anti-Pattern 3: Inconsistent Messaging
+
+❌ **DON'T**: Create content without brand guidelines  
+✅ **DO**: Reference brand voice → Follow templates → Peer review
+
+---
+
+## ✅ Required Patterns
+
+### Pattern 1: Campaign Lifecycle
+
+```
+Specification → Validation → Approval → Execution → Monitoring → Analysis
+```
+
+### Pattern 2: Content Creation
+
+```
+Outline → Draft → Review → Edit → Brand Check → Publish → Track
+```
+
+### Pattern 3: Budget Management
+
+```
+Planning → Allocation → Monitoring → Adjustment → Reporting
+```
+
+---
+
+## 📏 Quality Standards
+
+### Specification Quality
+
+- [ ] All required fields populated
+- [ ] Valid YAML syntax
+- [ ] Passes `marketing_spec_kit validate`
+- [ ] Peer-reviewed by at least 1 team member
+
+### Campaign Quality
+
+- [ ] Clear objectives and KPIs defined
+- [ ] Target audience specified
+- [ ] Budget allocated and approved
+- [ ] Timeline with milestones
+- [ ] Success criteria documented
+
+### Content Quality
+
+- [ ] Follows brand voice guidelines
+- [ ] Grammar and spelling checked
+- [ ] Visual assets optimized
+- [ ] Call-to-action clear and compelling
+- [ ] Mobile-responsive (for digital content)
+
+---
+
+## 🔄 Change Management
+
+### Updating This Constitution
+
+1. Propose changes in a pull request
+2. Team discussion and consensus
+3. Update this document
+4. Communicate changes to all stakeholders
+5. Update specifications to reflect new principles
+
+### Specification Evolution
+
+- Minor changes: Direct update with review
+- Major changes: RFC-style proposal process
+- Breaking changes: Version increment + migration guide
+
+---
+
+## 📚 References
+
+- [Marketing Spec Kit Documentation](https://github.com/yourusername/marketing-spec-kit)
+- [Brand Guidelines](./docs/brand-guidelines.md) _(if exists)_
+- [Campaign Templates](./specs/templates/) _(if exists)_
+
+---
+
+**Last Updated**: {{ generated_date }}  
+**Version**: 1.0.0
+

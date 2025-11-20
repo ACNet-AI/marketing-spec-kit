@@ -1,11 +1,11 @@
 ---
 name: marketspec.clarify
-description: Clarify ambiguities and details before strategy
+description: Clarify ambiguities and details before planning
 layer: sdm
 status: implemented
 type: quality_gate
 category: Quality Gates
-source: Adapted from metaspec.sdd.clarify
+source: Adapted from metaspec.sds.clarify
 version: 0.3.0
 ---
 
@@ -334,21 +334,14 @@ clarification_summary:
 
 ## Output
 
-**Primary Output**: 
+**Primary Output**: `specs/{sequence}-{name}/clarifications.md`
 
-**Option A**: Updated discovery document with "Clarifications" section  
-`specs/discovery/[project-name]-discovery.md` (updated)
-
-**Option B**: Separate clarification session document  
-`specs/clarifications/[project-name]-clarification-2025-11-16.md`
-
-**Structure**:
+**Example Structure**:
 ```
 specs/
-├── discovery/
-│   └── [project-name]-discovery.md  # Original or updated
-└── clarifications/
-    └── [project-name]-clarification-2025-11-16.md  # Session notes
+└── 001-q1-campaign-strategy/
+    ├── spec.md                 ← Draft (from /marketspec.specify)
+    └── clarifications.md       ← Clarifications (from this command) ⭐
 ```
 
 ---
@@ -465,17 +458,18 @@ Would you like to proceed with strategy planning?
 ## Integration with Other Commands
 
 Feeds into:
-- `/marketspec.strategy` - Uses clarified requirements for planning
-- `/marketspec.create` - Generates spec from clarified requirements
+- `/marketspec.plan` - Uses clarified requirements for planning
+- `/marketspec.implement` - Uses clarified requirements in final specification
 
 References:
 - `/marketspec.constitution` - Use guidelines to resolve ambiguities
-- `/marketspec.discover` - Source of requirements being clarified
+- `/marketspec.specify` - Source of requirements being clarified
 
 ---
 
 ## See Also
 
-- `/marketspec.discover` - Previous step
-- `/marketspec.strategy` - Next step
+- `/marketspec.specify` - Previous step
+- `/marketspec.plan` - Next step
 - Clarification examples in `examples/` directory
+- MetaSpec SDS Clarify: `.metaspec/commands/metaspec.sds.clarify.md`

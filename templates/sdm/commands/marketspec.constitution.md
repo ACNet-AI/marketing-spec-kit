@@ -1,365 +1,229 @@
 ---
 name: marketspec.constitution
-description: Establish marketing principles for the project
+description: Define design principles and governance rules for marketing strategy specifications
 layer: sdm
 status: implemented
 type: core
 category: Core Flow
-source: Adapted from metaspec.sdd.constitution
-version: 0.3.0
+source: Adapted from metaspec.sds.constitution
+version: 0.4.0
 ---
 
-# /marketspec.constitution 🔴 Core
+# /marketspec.constitution
 
-**Purpose**: Establish marketing principles for the project
+## User Input
 
-**Category**: Core Flow (Essential Workflow)  
-**Adapted from**: `metaspec.sdd.constitution`
-
----
-
-## Purpose
-
-Establish a "constitution" document that defines:
-- Marketing execution principles
-- Brand guidelines and constraints
-- Quality standards for marketing specifications
-- Workflow best practices
-- Required vs. optional specification sections
-
-This document acts as a **north star** for all marketing activities and ensures consistency across campaigns and content.
-
----
-
-## Command Usage
-
-```
-/marketspec.constitution
+```text
+$ARGUMENTS
 ```
 
----
+You **MUST** consider the user input before proceeding (if not empty).
 
-## Prerequisites
+## Outline
 
-- None (can be run at any time)
-- Recommended: Run before creating any marketing specifications
+You are creating or updating **Part II: Marketing Specification Design Principles** in `/memory/constitution.md`. This section defines guidelines for creating marketing strategy specifications.
 
----
+Follow this execution flow:
 
-## Execution Steps
+### 1. Load existing constitution
 
-### Step 1: Determine Constitution Scope
+- Read `/memory/constitution.md` if exists
+- Locate `## Part II: Marketing Specification Design Principles` section
+- Preserve other parts unchanged
 
-Ask the user what aspects they want to define:
+### 2. Understand the marketing context
 
-**Core Sections** (recommended to include):
-1. **Marketing Principles** - Core values and approaches
-2. **Brand Guidelines** - Voice, tone, visual identity
-3. **Target Audience** - Primary and secondary audiences
-4. **Content Standards** - Quality requirements and prohibited patterns
-5. **Workflow Constraints** - Process requirements and approval flows
-6. **Measurement Philosophy** - How to define and track success
+**Critical**: Before defining principles, understand the marketing environment:
+- What products/services are being marketed?
+- What are the business goals? (Awareness, leads, conversions?)
+- What are the constraints? (Budget, timeline, resources?)
+- What channels are available? (Social, email, content, paid?)
 
-### Step 2: Gather Constitution Content
+**Ask clarifying questions if unclear**:
+- "What products or services will this marketing project promote?"
+- "What are the primary marketing objectives?"
+- "What budget and timeline constraints exist?"
 
-For each selected section, guide the user through defining:
+### 3. Define Part II principles
 
-#### 2.1 Marketing Principles
-```yaml
-marketing_principles:
-  - principle: "Customer-First Approach"
-    description: "Always prioritize customer value over promotional messaging"
-    rationale: "Builds trust and long-term relationships"
-  
-  - principle: "Data-Driven Decisions"
-    description: "Base marketing decisions on analytics and user feedback"
-    rationale: "Reduces guesswork and improves ROI"
-```
+Based on user input, establish these **marketing specification design principles**:
 
-#### 2.2 Brand Guidelines
-```yaml
-brand_guidelines:
-  voice: "Professional yet approachable"
-  tone: "Educational and empowering"
-  
-  visual_identity:
-    primary_colors: ["#0066CC", "#00CC66"]
-    typography: "Inter for headings, Source Sans for body"
-    
-  prohibited_patterns:
-    - "Excessive exclamation marks (!!!!!)"
-    - "All-caps headlines"
-    - "Clickbait language"
-    - "Overpromising without evidence"
-```
+#### **I. Audience Clarity**
+- Target audiences are precisely defined
+- Personas include demographics, psychographics, pain points
+- Audience needs and motivations documented
+- Channel preferences identified
 
-#### 2.3 Target Audience
-```yaml
-target_audience:
-  primary:
-    name: "Technical Decision Makers"
-    description: "CTOs, Engineering Leads, Senior Developers"
-    characteristics:
-      - "5+ years experience"
-      - "Values efficiency and quality"
-      - "Prefers technical depth over marketing fluff"
-    
-  secondary:
-    name: "Individual Contributors"
-    description: "Developers and engineers"
-    characteristics:
-      - "Looking for tools to improve workflow"
-      - "Active in developer communities"
-```
+**Rationale**: Clear audience definitions enable focused, effective campaigns.
 
-#### 2.4 Content Standards
-```yaml
-content_standards:
-  required:
-    - "All claims must be backed by evidence or user testimonials"
-    - "Technical content must be reviewed by engineering team"
-    - "Include clear CTAs (Call-to-Actions)"
-    
-  quality_thresholds:
-    - "Blog posts: minimum 800 words, maximum 3000 words"
-    - "Social posts: minimum 50 characters, maximum 280 characters"
-    - "Readability: Flesch Reading Ease score ≥ 60"
-    
-  prohibited:
-    - "False or misleading claims"
-    - "Competitor bashing"
-    - "Unsubstantiated superlatives (best, fastest, etc.)"
-```
+#### **II. Objective Measurability**
+- All marketing objectives have measurable KPIs
+- Success metrics defined upfront
+- Baseline and target values specified
+- Measurement methods documented
 
-#### 2.5 Workflow Constraints
-```yaml
-workflow_constraints:
-  approval_required_for:
-    - "Public-facing campaigns with budget > $5,000"
-    - "Content mentioning partnerships or customers"
-    - "Legal or compliance-sensitive topics"
-    
-  review_process:
-    - step: "Draft Creation"
-      owner: "Marketing Team"
-    - step: "Technical Review"
-      owner: "Engineering Lead"
-      required_for: ["Technical content", "Product announcements"]
-    - step: "Final Approval"
-      owner: "Marketing Director"
-```
+**Rationale**: Measurable objectives enable data-driven optimization.
 
-#### 2.6 Measurement Philosophy
-```yaml
-measurement_philosophy:
-  success_metrics_must:
-    - "Be specific and measurable"
-    - "Align with business objectives"
-    - "Have baseline and target values"
-    
-  kpi_tiers:
-    P0: "Critical metrics that directly impact revenue or growth"
-    P1: "Important metrics for operational efficiency"
-    P2: "Nice-to-have metrics for additional insights"
-    
-  reporting_frequency:
-    campaigns: "Weekly during active period"
-    overall_marketing: "Monthly dashboard"
-```
+#### **III. Channel Appropriateness**
+- Channel selection justified by audience behavior
+- Channel capabilities match content requirements
+- Budget allocation aligns with channel ROI
+- Channel mix addresses multiple touchpoints
 
-### Step 3: Document Versioning
+**Rationale**: Right channels ensure message reaches the audience effectively.
 
-Add version control metadata:
+#### **IV. Content Consistency**
+- Brand voice and tone consistently applied
+- Messaging aligned across channels
+- Visual identity maintained
+- Value propositions clearly communicated
 
-```yaml
-constitution_metadata:
-  version: "1.0.0"
-  created_at: "2025-11-16T10:00:00Z"
-  last_updated: "2025-11-16T10:00:00Z"
-  authors: ["Marketing Team", "Brand Team"]
-  review_cycle: "Quarterly"
-```
+**Rationale**: Consistent content builds brand recognition and trust.
 
-### Step 4: Generate Constitution Document
+#### **V. Budget Realism**
+- Budget allocations are realistic and justified
+- Contingency funds included
+- ROI expectations documented
+- Cost-benefit analysis performed
 
-Create the constitution file at `memory/marketing-constitution.md`:
+**Rationale**: Realistic budgets prevent mid-campaign resource issues.
+
+#### **VI. Timeline Feasibility**
+- Campaign timelines account for production time
+- Dependencies and milestones identified
+- Buffer time included for iterations
+- Seasonal factors considered
+
+**Rationale**: Feasible timelines prevent rushed execution and quality issues.
+
+#### **VII. Review & Optimization**
+- Review checkpoints defined
+- Optimization criteria specified
+- A/B testing methodology documented
+- Feedback incorporation process defined
+
+**Rationale**: Continuous optimization maximizes marketing effectiveness.
+
+#### **VIII. Compliance & Ethics**
+- Legal requirements documented (GDPR, CAN-SPAM, etc.)
+- Ethical guidelines established
+- Disclosure requirements specified
+- Data privacy principles defined
+
+**Rationale**: Compliance prevents legal issues and maintains brand reputation.
+
+### 4. Add domain-specific constraints
+
+Include marketing-specific constraints relevant to this project:
+
+**Example constraints**:
+- "All campaigns must comply with GDPR"
+- "Brand voice: Professional but approachable"
+- "No paid advertising on platforms with < 5% conversion rate"
+- "All content must pass accessibility standards (WCAG AA)"
+- "Influencer partnerships require 30-day advance approval"
+
+### 5. Output format
+
+Update `/memory/constitution.md` with this structure:
 
 ```markdown
-# Marketing Execution Constitution
+# Marketing Project Constitution
 
-**Version**: 1.0.0  
-**Last Updated**: 2025-11-16  
-**Review Cycle**: Quarterly
+## Part I: Project Principles
+[User-defined project values and mission]
 
----
+## Part II: Marketing Specification Design Principles
 
-## 1. Marketing Principles
+### Specification Quality Standards
 
-[Generated content from Step 2.1]
+#### I. Audience Clarity
+[Details based on step 3]
 
----
+#### II. Objective Measurability
+[Details based on step 3]
 
-## 2. Brand Guidelines
+[...continue with all 8 principles...]
 
-[Generated content from Step 2.2]
+### Domain-Specific Constraints
 
----
+1. [Constraint from step 4]
+2. [Constraint from step 4]
+...
 
-## 3. Target Audience
-
-[Generated content from Step 2.3]
-
----
-
-## 4. Content Standards
-
-[Generated content from Step 2.4]
-
----
-
-## 5. Workflow Constraints
-
-[Generated content from Step 2.5]
-
----
-
-## 6. Measurement Philosophy
-
-[Generated content from Step 2.6]
-
----
-
-## Change History
-
-- **v1.0.0** (2025-11-16): Initial constitution
+## Part III: Review & Evolution
+[How this constitution will be reviewed and updated]
 ```
 
-### Step 5: Validate Constitution
+## Validation
 
-Check for completeness:
-- ✅ At least 3 core sections defined
-- ✅ Brand guidelines include voice and tone
-- ✅ Content standards include both required and prohibited patterns
-- ✅ Measurement philosophy defines success criteria
+Before finalizing, verify:
+- [ ] All 8 principles are included
+- [ ] Each principle has rationale
+- [ ] Domain constraints are specific and actionable
+- [ ] Document is clear and unambiguous
+- [ ] Marketing terminology is used correctly
 
----
+## Example Output
 
-## Success Criteria
+```markdown
+# MetaSpec Marketing Constitution
 
-- Constitution document is created at `memory/marketing-constitution.md`
-- All selected sections have meaningful content (not just placeholders)
-- Document is version-controlled
-- Easy to reference in future marketing activities
+## Part I: Project Principles
 
----
+**Mission**: Establish MetaSpec as the leading specification toolkit in the developer tools ecosystem.
 
-## Output
+**Core Values**:
+- Developer-first: All messaging speaks to developer needs
+- Education-focused: Content educates, not just promotes
+- Community-driven: Engage authentically with developer community
 
-**Primary Output**: `memory/marketing-constitution.md`
+## Part II: Marketing Specification Design Principles
 
-**Structure**:
+### I. Audience Clarity
+
+**Target Audience**: Senior Python/JavaScript developers (5+ years experience) building developer tools or internal platforms.
+
+**Persona**: Alex, 32, Senior Engineer
+- Pain: Tired of building tools from scratch
+- Goal: Reusable tool generation system
+- Channels: Dev.to, Twitter, GitHub, HackerNews
+
+**Rationale**: Clear audience definition enables focused content strategy.
+
+### II. Objective Measurability
+
+**Primary KPI**: GitHub stars (50 → 500 in 11 weeks)
+**Secondary KPIs**:
+- Website traffic: 500 → 50,000 visits/month
+- Email subscribers: 100 → 1,000
+- Community engagement: 0 → 50 active contributors
+
+**Rationale**: Measurable objectives enable data-driven optimization.
+
+[...continue with all principles...]
+
+### Domain-Specific Constraints
+
+1. All content must pass technical review by core team
+2. No paid promotion until organic reach validated (>1000 monthly visits)
+3. Community guidelines: No spam, no hard sells, education-first
+4. Brand voice: Technical but accessible, authoritative but friendly
+5. Content must be open-source friendly (CC BY-SA 4.0 licensing)
+
+## Part III: Review & Evolution
+
+This constitution will be reviewed:
+- Weekly during active campaigns
+- Quarterly for strategic alignment
+- After significant market changes
+
+Updates require consensus from marketing lead and product owner.
 ```
-memory/
-└── marketing-constitution.md  # Marketing execution principles
-```
-
-**Alternative**: If user prefers YAML format, can generate `memory/marketing-constitution.yaml`
-
----
-
-## Error Handling
-
-- If user is unsure about a section, provide examples and templates
-- If sections are too generic, prompt for more specific details
-- Suggest industry best practices when user needs guidance
-
----
-
-## Example Interaction
-
-```
-User: /marketspec.constitution
-
-AI: I'll help you create a marketing execution constitution. This will define the core principles and constraints for all your marketing activities.
-
-Let's start with the essential sections. Which would you like to define?
-
-1. ✅ Marketing Principles (recommended)
-2. ✅ Brand Guidelines (recommended)
-3. ✅ Target Audience (recommended)
-4. ✅ Content Standards (recommended)
-5. ⚪ Workflow Constraints (optional)
-6. ⚪ Measurement Philosophy (optional)
-
-Would you like to define all 6 sections, or start with the core 4?
-
----
-
-User: Let's define all 6 sections.
-
-AI: Great! Let's start with Marketing Principles.
-
-**1. Marketing Principles**
-
-What are your top 3-5 core marketing principles? For example:
-- "Customer-first approach"
-- "Data-driven decisions"
-- "Transparency and authenticity"
-
-What principles guide your marketing efforts?
-
-[User provides principles]
-
-AI: Excellent. Let me document those with descriptions and rationale...
-
-[Continues through all sections]
-
----
-
-[After completing all sections]
-
-AI: Perfect! I've created your marketing constitution at:
-
-📄 **memory/marketing-constitution.md**
-
-This document includes:
-✅ 5 Marketing Principles
-✅ Brand Guidelines (voice, tone, visual identity)
-✅ 2 Target Audience Segments
-✅ Content Standards (required, quality thresholds, prohibited)
-✅ Workflow Constraints (approval process)
-✅ Measurement Philosophy (KPI tiers, reporting frequency)
-
-You can now reference this constitution when creating marketing specifications with `/marketspec.discover`.
-
-Would you like to proceed with discovering your marketing needs?
-```
-
----
 
 ## Notes
 
-- Constitution should be **living document** - review and update quarterly
-- Can be referenced in all subsequent marketing commands
-- Acts as validation criteria for `/marketspec.checklist`
-- If project already has brand guidelines, incorporate them
-- Keep it concise but comprehensive (2-5 pages is ideal)
-
----
-
-## Integration with Other Commands
-
-This constitution will be referenced by:
-- `/marketspec.discover` - Ensures requirements align with principles
-- `/marketspec.clarify` - Uses brand guidelines to resolve ambiguities
-- `/marketspec.strategy` - Plans must align with marketing principles
-- `/marketspec.create` - Generated specs must comply with standards
-- `/marketspec.checklist` - Uses constitution as validation criteria
-
----
-
-## See Also
-
-- `/marketspec.discover` - Next step after defining constitution
-- Domain Specification: `specs/domain/001-marketing-operations-spec/spec.md`
-- Marketing Constitution examples in `examples/` directory
+- This command focuses on **specification design principles**, not campaign execution
+- The constitution guides how to create good marketing strategy specifications
+- It does NOT define specific campaigns (that's done in `/marketspec.specify` and `/marketspec.plan`)
+- Review and optimize the constitution based on campaign learnings

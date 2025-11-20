@@ -66,6 +66,7 @@ Parse user intent to select appropriate analysis mode:
   - "constitution", "principles" → Constitution Alignment
   - "completeness" → Specification Completeness
   - "cross-artifacts" → Cross-Artifact Consistency
+  - "framework", "standards", "init", "components" → Framework Standards Compliance ⭐ NEW (v0.9.0+)
 - Use when: Fixing specific issues, targeted improvement
 
 **Full Mode** 📊 (5-10 min, comprehensive):
@@ -543,6 +544,220 @@ OR
 ✅ All field names consistent across spec and plan
 ```
 
+#### J. Framework Standards Compliance ⭐ NEW (v0.9.0+)
+
+**Purpose**: Verify toolkit spec compliance with MetaSpec framework conventions
+
+**Context**: These rules are built into MetaSpec framework design and documented in MetaSpec/AGENTS.md for reference. The validation checks enforce these conventions without requiring external file reads.
+
+**J1: init Command Standards** (Generator/Scaffolder toolkits):
+
+**Check**:
+```python
+# Extract toolkit type and init command from spec.md
+toolkit_type = extract_section(spec_md, "Toolkit Type")
+init_command = extract_cli_command(spec_md, "init")
+
+# Validate if toolkit is Generator/Scaffolder
+if "Generator" in toolkit_type or "Scaffolder" in toolkit_type:
+    # Rule 1: Argument format
+    if "<filename>" in init_command or ".yaml" in init_command or ".json" in init_command:
+        report_error("INIT_CMD_001", "HIGH")
+    
+    # Rule 2: Output structure
+    output_desc = extract_init_output(spec_md)
+    required_dirs = [".{toolkit}/", "memory/", "specs/", "README.md"]
+    for dir in required_dirs:
+        if dir not in output_desc:
+            report_warning("INIT_OUT_001", "MEDIUM")
+    
+    # Rule 3: constitution.md content
+    if "constitution.md" in output_desc:
+        if "empty" in output_desc or "placeholder" in output_desc:
+            report_error("INIT_CONST_001", "HIGH")
+```
+
+**Rules**:
+- ✅ Argument MUST be `<project-directory>` (not `<filename>`, `<spec-file>`, `.yaml`)
+- ✅ Output MUST include: `.{toolkit}/`, `memory/`, `specs/`, `README.md`
+- ✅ `memory/constitution.md` MUST be pre-filled (not empty/placeholder)
+
+**Report**:
+```
+❌ HIGH: init command uses <filename> instead of <project-directory> [INIT_CMD_001]
+  Location: spec.md §CLI Commands → init
+  Current: marketing-spec-kit init <spec-file>
+  Expected: marketing-spec-kit init <project-directory>
+  
+  Impact: Violates framework convention for Generator/Scaffolder toolkits
+  Reference: MetaSpec framework standards (init command pattern)
+  
+  Fix: In CLI Commands section, change:
+       FROM: init <spec-file>
+       TO:   init <project-directory>
+
+❌ MEDIUM: init output missing required directory [INIT_OUT_001]
+  Missing: memory/constitution.md
+  Expected: Complete project structure with all standard directories
+  
+  Fix: Add to init command output description:
+       - memory/constitution.md (pre-filled with project principles)
+
+✅ init command follows framework standards
+  - Argument: <project-directory> ✅
+  - Output structure: Complete ✅
+  - constitution.md: Pre-filled ✅
+```
+
+---
+
+**J2: Component Priority Logic**:
+
+**Check**:
+```python
+# Extract use cases and component priorities
+use_cases = extract_section(spec_md, "Primary Use Cases")
+core_components = extract_section(spec_md, "Core Components")
+future_components = extract_section(spec_md, "Future Enhancements")
+
+# Rule 1: Generation use case → Generator must be Core
+use_case_lower = use_cases.lower()
+if any(kw in use_case_lower for kw in ["generate", "generation", "create content", "produce", "output"]):
+    generator_location = find_component_location(spec_md, "Generator")
+    if generator_location != "Core Components":
+        report_warning("COMP_PRI_001", "HIGH")
+
+# Rule 2: Validation use case → Validator should be Core
+if any(kw in use_case_lower for kw in ["validate", "verify", "check", "ensure"]):
+    validator_location = find_component_location(spec_md, "Validator")
+    if validator_location != "Core Components":
+        report_warning("COMP_PRI_002", "MEDIUM")
+
+# Rule 3: Generator/Scaffolder toolkit → Generator must be Core
+if toolkit_type in ["Generator/Scaffolder"]:
+    if "Generator" not in core_components:
+        report_error("COMP_PRI_003", "CRITICAL")
+```
+
+**Rules**:
+- If use_case contains `"generate|generation|create|produce"` → Generator MUST be in Core Components
+- If use_case contains `"validate|verify|check"` → Validator SHOULD be in Core Components
+- If toolkit_type is `"Generator/Scaffolder"` → Generator MUST be Core (cannot be Future)
+
+**Report**:
+```
+❌ HIGH: Component priority mismatch [COMP_PRI_001]
+  Use Case: "AI-Driven Content Generation" (PRIMARY)
+  Keyword detected: "generation"
+  Generator location: Future Enhancements ❌
+  Expected location: Core Components ✅
+  
+  Impact: Cannot fulfill PRIMARY use case without CORE component
+  Rationale: Primary features must be supported by core components
+  
+  Fix: Move Generator from "Future Enhancements" to "Core Components" section
+  Reference: Use Case → Component Analysis logic (Component Requirements section)
+
+❌ CRITICAL: Toolkit type requires Generator as Core [COMP_PRI_003]
+  Toolkit Type: Generator/Scaffolder
+  Generator location: Not in Core Components ❌
+  
+  Impact: Violates toolkit type definition
+  
+  Fix: Add Generator to "Core Components" section
+
+✅ Component priorities align with use cases
+  - "validate" in use case → Validator in Core ✅
+  - "generate" in use case → Generator in Core ✅
+```
+
+---
+
+**J3: Generator Necessity Check**:
+
+**Check**:
+```python
+# Apply decision logic from Component 5 specification
+toolkit_type = extract_toolkit_type(spec_md)
+use_cases = extract_use_cases(spec_md)
+generator_location = find_component_location(spec_md, "Generator")
+
+# Decision tree (from specify.md.j2 Component 5)
+should_have_generator = False
+
+# Step 1: Check use cases
+if any(kw in use_cases.lower() for kw in ["generate", "generation", "scaffold", "create"]):
+    should_have_generator = True
+
+# Step 2: Check toolkit type
+if toolkit_type in ["Generator/Scaffolder", "Code Generator"]:
+    should_have_generator = True
+
+# Step 3: Compare with similar tools
+similar_tools = extract_similar_tools(spec_md)
+if has_generation_capability(similar_tools):
+    should_have_generator = True
+
+# Validate
+if should_have_generator and generator_location not in ["Core Components"]:
+    report_warning("GEN_NEC_001", "HIGH")
+elif not should_have_generator and generator_location == "Core Components":
+    report_info("GEN_NEC_002", "LOW")
+```
+
+**Rules**:
+- If toolkit_type == "Generator/Scaffolder" → Generator MUST be Core
+- If use_cases contain generation keywords → Generator SHOULD be Core
+- If similar tools have generation → Consider adding Generator
+
+**Report**:
+```
+❌ HIGH: Generator component missing or misclassified [GEN_NEC_001]
+  Toolkit Type: Generator/Scaffolder
+  Primary Use Case: "AI-driven content generation"
+  Similar Tools: create-react-app (has generator)
+  
+  Current: Generator in "Future Enhancements"
+  Expected: Generator in "Core Components"
+  
+  Decision Tree Analysis:
+    ✅ Step 1: Use case mentions "generation"
+    ✅ Step 2: Toolkit type is "Generator/Scaffolder"
+    ✅ Step 3: Similar tools have generation capability
+    → Conclusion: Generator MUST be Core
+  
+  Fix: Move Generator to "Core Components" section
+  Reference: Component Requirements Analysis & Decision Tree
+
+ℹ️  LOW: Generator may be over-specified [GEN_NEC_002]
+  Toolkit Type: Validator/Analyzer
+  Primary Use Case: "Validate specifications"
+  Generator: In Core Components
+  
+  Note: Generator not required for validation-focused toolkit
+  Consider: Moving to "Future Enhancements" if not essential
+
+✅ Generator classification correct
+  - Toolkit type matches component priority ✅
+  - Use cases justify Generator as Core ✅
+  - Similar tools analysis consistent ✅
+```
+
+---
+
+**Dimension J Summary**:
+
+Framework Standards Compliance checks ensure toolkit specs follow MetaSpec conventions:
+- **J1**: init command format and output structure
+- **J2**: Component priorities match use case requirements
+- **J3**: Generator necessity based on toolkit type and use cases
+
+**Severity Guidelines**:
+- **CRITICAL**: Toolkit type violation (e.g., Generator/Scaffolder without Generator in Core)
+- **HIGH**: init command format errors, primary use case not supported by core components
+- **MEDIUM**: Missing optional directories, secondary use case support
+- **LOW**: Over-specification, informational notices
+
 #### K. Cross-Artifact Consistency (⭐ NEW - MetaSpec specific)
 
 **SDD Layer Cross-Document Analysis** (spec-kit inspired, MetaSpec adapted):
@@ -592,6 +807,297 @@ OR
   Recommendation: Update spec to include schema validation requirements
 ✅ All CLI commands in spec have corresponding plan components and tasks
 ```
+
+---
+
+#### L. Generator Pattern Compliance ⭐ NEW (v0.10.0+)
+
+**Purpose**: Verify Generator component follows toolkit pattern (project files), not domain pattern (business content)
+
+**Context**: This validation prevents the common architectural mistake where Generator is defined to create domain deliverables (posts, articles, emails) instead of project files (specs, constitution, commands).
+
+**Critical Pattern Check**:
+
+**L1: Generator Purpose Validation**:
+
+**Check**:
+```python
+# Extract Generator definition from spec.md
+generator_def = extract_component(spec_md, "Generator")
+
+if generator_def:
+    purpose = generator_def.get("purpose", "").lower()
+    features = generator_def.get("features", "").lower()
+    
+    # Anti-pattern keywords (domain content generation)
+    domain_content_patterns = [
+        "social post", "social media post", "twitter post", "linkedin post",
+        "blog article", "blog post", "article",
+        "email campaign", "email template",
+        "marketing content", "marketing copy",
+        "user story", "test case", "product description",
+        "documentation page", "content generation"
+    ]
+    
+    # Check for violations
+    violations = []
+    for pattern in domain_content_patterns:
+        if pattern in purpose or pattern in features:
+            violations.append(pattern)
+    
+    if violations:
+        report_error("GEN_PATTERN_001", "CRITICAL", violations)
+    
+    # Check for correct patterns (project file generation)
+    toolkit_patterns = [
+        "project structure", "project directory", "project file",
+        "specification file", "spec file", "constitution",
+        "template rendering", "directory structure",
+        "project scaffolding", "boilerplate"
+    ]
+    
+    has_toolkit_pattern = any(p in purpose or p in features for p in toolkit_patterns)
+    if not has_toolkit_pattern and "generate" in (purpose + features):
+        report_warning("GEN_PATTERN_002", "HIGH")
+```
+
+**Rules**:
+- ❌ Generator MUST NOT mention domain content generation (posts, articles, emails, marketing content)
+- ✅ Generator MUST mention project/specification file generation
+- ✅ Templates MUST be project file templates (constitution.j2, spec.yaml.j2), NOT content templates (post.j2, article.j2)
+
+**Report**:
+```
+❌ CRITICAL: Generator follows domain content pattern instead of toolkit pattern [GEN_PATTERN_001]
+  Location: spec.md §Component: Generator → Purpose & Features
+  
+  Detected Anti-Patterns:
+    - "social media post" (in Features)
+    - "blog article" (in Features)
+    - "email campaign" (in Features)
+  
+  Current Definition:
+    Purpose: "Generate marketing content from validated specifications"
+    Features: "Generate social posts, blog articles, email campaigns"
+  
+  Expected (Toolkit Pattern):
+    Purpose: "Generate project files and specification structure"
+    Features: "Generate project directory, render spec files, create constitution"
+  
+  Impact: CRITICAL - This is a fundamental architectural mistake.
+    Your toolkit should help users CREATE specifications, not CONSUME them.
+    Domain content generation belongs in the user's application, not in your toolkit.
+  
+  Reference: MetaSpec's own generator.py (src/metaspec/generator.py)
+    ✅ Generates project files (constitution.md, specs/, README.md)
+    ❌ Does NOT generate domain content
+  
+  Fix Strategy:
+    1. Update Generator Purpose:
+       FROM: "Generate marketing content from specs"
+       TO:   "Generate project structure and specification files"
+    
+    2. Update Generator Features:
+       FROM: "Generate posts, articles, emails"
+       TO:   "Generate project directory, render spec templates, create constitution"
+    
+    3. Update Templates:
+       FROM: templates/post.j2, templates/article.j2
+       TO:   templates/constitution.j2, templates/spec.yaml.j2
+    
+    4. Update CLI Commands:
+       FROM: {toolkit} generate post --spec=campaign.yaml
+       TO:   {toolkit} init <project-dir> --template=campaign
+  
+  See Also:
+    - specify.md.j2 §Component 5 "Generator Pattern - Toolkit vs Domain Tool"
+    - docs/patterns/generator-component.md (if exists)
+
+⚠️ HIGH: Generator purpose unclear - missing toolkit pattern keywords [GEN_PATTERN_002]
+  Location: spec.md §Component: Generator → Purpose
+  
+  Current: Purpose mentions "generate" but doesn't specify what
+  Expected: Clearly state "generate project files" or "generate specification structure"
+  
+  Recommendation: Add toolkit pattern keywords:
+    - "project structure"
+    - "specification file"  
+    - "constitution"
+    - "project scaffolding"
+
+✅ Generator follows correct toolkit pattern
+  - Purpose: "Generate project structure and specification files" ✅
+  - Features: "Create project directory, render constitution.md, generate spec templates" ✅
+  - Templates: templates/constitution.j2, templates/spec.yaml.j2 ✅
+  - No domain content patterns detected ✅
+```
+
+---
+
+**L2: Template Pattern Validation**:
+
+**Check**:
+```python
+# Extract Generator templates section
+templates_section = extract_section(spec_md, "Templates", parent="Generator")
+
+if templates_section:
+    template_list = templates_section.lower()
+    
+    # Check for domain content template anti-patterns
+    content_template_patterns = [
+        "post.j2", "article.j2", "email.j2", "blog.j2",
+        "social_post", "content_template", "marketing_template"
+    ]
+    
+    violations = []
+    for pattern in content_template_patterns:
+        if pattern in template_list:
+            violations.append(pattern)
+    
+    if violations:
+        report_error("GEN_TEMPLATE_001", "HIGH", violations)
+    
+    # Check for correct toolkit templates
+    toolkit_template_patterns = [
+        "constitution.j2", "spec.yaml.j2", "spec.j2",
+        "readme.md.j2", "command.md.j2"
+    ]
+    
+    has_toolkit_templates = any(p in template_list for p in toolkit_template_patterns)
+    if not has_toolkit_templates:
+        report_warning("GEN_TEMPLATE_002", "MEDIUM")
+```
+
+**Rules**:
+- ❌ Templates MUST NOT be domain content templates (post.j2, article.j2, email.j2)
+- ✅ Templates MUST be project file templates (constitution.j2, spec.yaml.j2, readme.md.j2)
+
+**Report**:
+```
+❌ HIGH: Generator templates follow domain content pattern [GEN_TEMPLATE_001]
+  Location: spec.md §Generator → Templates
+  
+  Domain Content Templates Detected:
+    - templates/social_post.j2 ❌
+    - templates/blog_article.j2 ❌
+    - templates/email_campaign.j2 ❌
+  
+  Expected (Toolkit Templates):
+    - templates/constitution.j2 ✅
+    - templates/spec.yaml.j2 ✅
+    - templates/readme.md.j2 ✅
+  
+  Recommendation: Replace domain content templates with project file templates.
+
+⚠️ MEDIUM: Missing standard toolkit templates [GEN_TEMPLATE_002]
+  Expected Templates:
+    - constitution.j2 (for memory/constitution.md)
+    - spec.yaml.j2 (for specs/*.yaml)
+  
+  Recommendation: Add standard project file templates.
+
+✅ Templates follow toolkit pattern
+  - constitution.j2 ✅
+  - spec.yaml.j2 ✅
+  - readme.md.j2 ✅
+```
+
+---
+
+**L3: CLI Command Pattern Validation**:
+
+**Check**:
+```python
+# Extract CLI commands from Generator section or CLI Commands section
+cli_commands = extract_cli_commands(spec_md)
+
+# Check for domain content generation commands
+content_command_patterns = [
+    "generate post", "generate article", "generate email",
+    "generate content", "create post", "create article"
+]
+
+violations = []
+for cmd in cli_commands:
+    cmd_lower = cmd.lower()
+    for pattern in content_command_patterns:
+        if pattern in cmd_lower:
+            violations.append(cmd)
+            break
+
+if violations:
+    report_error("GEN_CLI_001", "HIGH", violations)
+
+# Check for correct toolkit commands
+toolkit_command_patterns = [
+    "init <project", "generate spec", "generate command"
+]
+
+has_toolkit_commands = any(
+    any(p in cmd.lower() for p in toolkit_command_patterns)
+    for cmd in cli_commands
+)
+
+if not has_toolkit_commands:
+    report_warning("GEN_CLI_002", "MEDIUM")
+```
+
+**Rules**:
+- ❌ CLI MUST NOT include domain content generation commands (generate post, generate article)
+- ✅ CLI MUST include project generation commands (init <project-dir>, generate spec)
+
+**Report**:
+```
+❌ HIGH: CLI includes domain content generation commands [GEN_CLI_001]
+  Location: spec.md §CLI Commands
+  
+  Domain Content Commands Detected:
+    - "{toolkit} generate post" ❌
+    - "{toolkit} generate article" ❌
+    - "{toolkit} generate email" ❌
+  
+  These commands belong in user's domain application, not in toolkit.
+  
+  Recommendation: Remove domain commands, add toolkit commands:
+    ✅ {toolkit} init <project-dir>
+    ✅ {toolkit} generate spec --template=campaign
+    ✅ {toolkit} generate command --name=custom
+
+⚠️ MEDIUM: Missing standard toolkit CLI commands [GEN_CLI_002]
+  Expected Commands:
+    - init <project-dir> (generate complete project)
+    - generate spec (generate specification file)
+  
+  Current: Only validation commands found.
+  
+  Recommendation: Add project generation commands if toolkit type is Generator/Scaffolder.
+
+✅ CLI commands follow toolkit pattern
+  - init <project-dir> ✅
+  - generate spec ✅
+  - No domain content commands ✅
+```
+
+---
+
+**Dimension L Summary**:
+
+Generator Pattern Compliance ensures Generator component is correctly defined as a toolkit tool (generating project files), not a domain application (generating business content).
+
+**Three Pattern Checks**:
+- **L1**: Generator purpose and features (CRITICAL if violated)
+- **L2**: Template patterns (HIGH if violated)
+- **L3**: CLI command patterns (HIGH if violated)
+
+**Key Insight**: 
+The phrase "Content Generation" in use cases means "Generate project files and specifications", NOT "Generate domain deliverables (posts, articles)". This is the most common architectural misunderstanding in toolkit development.
+
+**Reference**: 
+- MetaSpec's own generator.py implementation
+- specify.md.j2 §Component 5 "Generator Pattern - Toolkit vs Domain Tool"
+
+---
 
 ### 5. Severity assignment
 

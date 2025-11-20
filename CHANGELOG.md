@@ -7,6 +7,150 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-11-20
+
+### 🚀 Major Update: Distributed Architecture + Code Generation
+
+#### 🏗️ Architecture Redesign
+
+**From**: Three-layer architecture (`specs/` + `operations/` + `src/`)  
+**To**: Distributed directory structure (5 directories with clear purposes)
+
+```
+specs/      ← Strategy specifications (Markdown)
+config/     ← Campaign configurations (YAML)
+templates/  ← Content templates (Markdown/Text)
+data/       ← Collected metrics (JSON)
+src/        ← Executable code (TypeScript)
+```
+
+**Rationale**:
+- ✅ **Semantic Clarity**: "operations" was ambiguous in marketing context
+- ✅ **Industry Standards**: `config/`, `templates/`, `data/` are universal conventions
+- ✅ **Single Responsibility**: Each directory has one clear purpose
+- ✅ **12-Factor App**: Separates configuration from code
+- ✅ **Discoverability**: Clear names reduce cognitive load
+
+#### 🔥 Code Generation (Inspired by Anthropic's MCP)
+
+**Before**: `/marketspec.implement` generated YAML configurations  
+**After**: `/marketspec.implement` generates **executable TypeScript code** + configs
+
+**What's generated**:
+- `src/campaigns/{seq}-{name}.ts` - Main campaign execution script
+- `src/shared/mcp-tools/*.ts` - MCP tool wrappers (GitHub, Twitter, etc.)
+- `config/{seq}-{name}.yaml` - Campaign configuration (adjustable parameters)
+- `templates/{seq}-{name}/` - Content templates (reusable)
+
+**Why generate code?** (Ref: [Anthropic's Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp))
+- 📉 **98% token savings**: Progressive disclosure, load tools on-demand
+- ⚡ **Better performance**: Filter data in execution environment, not LLM context
+- 🔄 **Control flow**: Use code loops/conditions instead of chaining tool calls
+- 🔒 **Privacy**: Sensitive data stays in execution environment
+- ✅ **Testable**: Standard testing frameworks (Jest, pytest)
+- 📝 **Version control**: Git tracks code changes
+
+#### Changed
+
+- **Command #8 (`/marketspec.implement`)**: Complete rewrite
+  - Before: Generated YAML in `operations/`
+  - After: Generates TypeScript code in `src/` + configs in `config/` + templates in `templates/`
+  - Reads: `tasks.md`, `spec.md`, `plan.md`
+  - Executes: All tasks to build complete marketing campaign operations
+
+- **Workflow update**: Minimum workflow now 4 steps (not 3)
+  - Before: `specify → plan → implement`
+  - After: `specify → plan → tasks → implement` (tasks is required)
+  - Reason: `implement` needs to read `tasks.md` to know what to generate
+
+- **Command outputs**:
+  - Commands 1-7, 9-10: Still generate Markdown in `specs/`
+  - Command 8: Now generates code + configs in multiple directories
+
+#### Documentation
+
+**Completely rewritten**:
+- `README.md` - Distributed architecture, code generation rationale, 10+ path updates
+- `AGENTS.md` - Complete AI agent workflow guide with new structure
+- `templates/sdm/commands/README.md` - Updated for AI assistants
+- `templates/README.md` - Updated command list and extension examples
+- `marketspec.implement.md` - Complete rewrite with code generation
+- `marketspec.review.md` - Updated data paths (`operations/data/` → `data/`)
+- `generator.py` - Updated comments to reflect new architecture
+
+**Added**:
+- `docs/sdm-commands.md` - Architecture evolution summary
+- Detailed "Why Generate Code?" section with Anthropic MCP reference
+- Progressive disclosure examples and benefits
+
+#### Files Renamed/Restructured
+
+**Directory changes**:
+- `operations/configs/` → `config/`
+- `operations/templates/` → `templates/`
+- `operations/data/` → `data/`
+- Added: `src/` (new directory for executable code)
+
+**Naming convention**:
+- Config: `config/{seq}-{name}.yaml`
+- Templates: `templates/{seq}-{name}/`
+- Data: `data/{seq}-{name}/`
+- Code: `src/campaigns/{seq}-{name}.ts`
+
+#### Technical Details
+
+**Generator changes**:
+- Does NOT pre-create `config/`, `templates/`, `data/`, `src/`
+- These directories created by `/marketspec.implement` (like MetaSpec's `src/`)
+- Only creates infrastructure: `memory/`, `specs/`, `README.md`, `.gitignore`
+
+**Alignment with MetaSpec**:
+- MetaSpec: `specs/` → `src/`
+- marketing-spec-kit: `specs/` → `src/` + `config/` + `templates/` + `data/`
+
+### 🐛 Bug Fixes
+
+- Fixed minimum workflow documentation (3 steps → 4 steps, tasks is required)
+- Fixed all `operations/` references in documentation (140+ updates across 7 files)
+
+### 📚 References
+
+- Anthropic: [Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)
+- MetaSpec: Specification-Driven Development pattern
+- 12-Factor App: Configuration management principles
+
+---
+
+## [0.3.1] - 2025-11-19
+
+### 🚀 Major Update: MetaSpec v0.9.5 Alignment
+
+#### Changed
+- **MetaSpec sync**: Updated to MetaSpec v0.9.5 (Generator vs AI Commands pattern)
+- **init command**: Now creates complete project structure (not single file)
+  - Before: `marketing_spec_kit init my-spec.yaml` (single file)
+  - After: `marketing_spec_kit init my-project` (full structure)
+- **AI-first workflow**: Specifications generated by AI dialogue, not manual templates
+- **Project structure**: Follows MetaSpec v0.9.5 standards
+  - `.marketingspeckit/commands/` - 10 slash commands for AI
+  - `memory/constitution.md` - Marketing principles
+  - `specs/README.md` - Workflow guidance (NOT spec templates)
+  - No `spec-template.yaml` or `example-spec.yaml`
+
+#### Added
+- `specs-readme.md.j2` template (8.2KB) - Comprehensive AI workflow guidance
+- Complete slash commands deployment to user projects
+- MetaSpec v0.9.5 compliance verification
+
+#### Removed
+- `spec-template.yaml.j2` - Anti-pattern per MetaSpec v0.9.5
+- `example-campaign.yaml.j2` - Anti-pattern per MetaSpec v0.9.5
+
+#### Documentation
+- Updated README.md quick start guide
+- Updated AGENTS.md to reflect AI-driven workflow
+- Archived 6 resolved MetaSpec feedback documents
+
 ### Changed
 - **Command classification refactor**: Aligned with MetaSpec SDD patterns
   - Core Flow (5 commands): constitution, discover, strategy, tasks, create

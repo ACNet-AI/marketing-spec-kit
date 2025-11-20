@@ -1,11 +1,11 @@
 ---
 name: marketspec.checklist
-description: Validate strategy completeness
+description: Validate specification completeness and quality
 layer: sdm
 status: implemented
 type: quality_gate
 category: Quality Gates
-source: Adapted from metaspec.sdd.checklist
+source: Adapted from metaspec.sds.checklist
 version: 0.3.0
 ---
 
@@ -52,7 +52,7 @@ This command generates both automated checks and human review checklists.
 
 ## Prerequisites
 
-- **Required**: `marketing-spec.yaml` from `/marketspec.create`
+- **Required**: Specification from `/marketspec.specify` or `/marketspec.implement`
 - **Recommended**: Constitution from `/marketspec.constitution`
 - **Optional**: Source documents for cross-validation
 
@@ -787,20 +787,15 @@ Your marketing specification is **excellent** and ready for execution with minor
 
 ## Output
 
-**Primary Output**: `marketing-spec-checklist.md`
+**Primary Output**: `specs/{sequence}-{name}/checklist.md`
 
-**Optional Outputs**:
-- `validation-report.yaml` - Machine-readable results
-- `validation-report.json` - For tooling integration
-- `action-items.md` - Extracted action list
-
-**Structure**:
+**Example Structure**:
 ```
-project-root/
-├── marketing-spec.yaml
-├── marketing-spec-checklist.md     # Main checklist (PRIMARY)
-├── validation-report.yaml           # Optional
-└── action-items.md                  # Optional
+specs/
+└── 001-q1-campaign-strategy/
+    ├── spec.md                 ← Draft or final specification
+    ├── plan.md                 ← Marketing plan
+    └── checklist.md            ← Quality checklist (from this command) ⭐
 ```
 
 ---
@@ -938,15 +933,15 @@ Feeds into:
 - Decision making: Launch readiness assessment
 
 References:
-- `/marketspec.create` - Validates the generated spec
+- `/marketspec.implement` - Validates the final specification
 - `/marketspec.constitution` - Compliance validation
-- `/marketspec.analyze` - Deeper consistency analysis (next step)
+- `/marketspec.analyze` - Consistency analysis (companion command)
 
 ---
 
 ## See Also
 
-- `/marketspec.create` - Previous step
-- `/marketspec.analyze` - Next step (consistency analysis)
-- Quality standards in `memory/marketing-constitution.md`
-- Validation rules in `specs/domain/001-marketing-operations-spec/spec.md`
+- `/marketspec.implement` - Final specification generation
+- `/marketspec.analyze` - Consistency analysis (companion command)
+- Quality standards in `memory/constitution.md`
+- MetaSpec SDS Checklist: `.metaspec/commands/metaspec.sds.checklist.md`
