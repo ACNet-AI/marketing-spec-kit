@@ -15,7 +15,7 @@ version: 0.4.0
 
 **Category**: Core Flow (Essential Workflow)  
 **Output**: 
-- `src/campaigns/{sequence}-{name}.ts` - Executable campaign code ⭐
+- `src/campaigns/{sequence}-{name}.py` - Executable campaign code ⭐
 - `config/{sequence}-{name}.yaml` - Campaign configuration
 - `templates/{sequence}-{name}/` - Content templates  
 **Adapted from**: `metaspec.sdd.implement`
@@ -25,7 +25,7 @@ version: 0.4.0
 ## Purpose
 
 This is the **implementation command** that generates:
-1. **Executable code** (`src/`) - TypeScript scripts that call MCP tools
+1. **Executable code** (`src/`) - Python scripts that call MCP tools
 2. **Configuration** (`config/`) - YAML configuration files
 3. **Templates** (`templates/`) - Content templates
 
@@ -57,16 +57,16 @@ data/                               ← 收集的数据 (JSON - 运行时)
 └── 001-q1/
     └── (created during execution)
 
-src/                                ← HOW (执行代码 - TypeScript)
+src/                                ← HOW (执行代码 - Python)
 ├── campaigns/
-│   └── 001-q1-campaign.ts          ← Main execution script ⭐
+│   └── 001_q1_campaign.py          ← Main execution script ⭐
 └── shared/
-    ├── mcp-tools/
-    │   ├── github.ts               ← GitHub MCP tool wrapper
-    │   ├── twitter.ts
-    │   └── analytics.ts
-    ├── config-loader.ts
-    └── template-renderer.ts
+    ├── mcp_tools/
+    │   ├── github.py               ← GitHub MCP tool wrapper
+    │   ├── twitter.py
+    │   └── analytics.py
+    ├── config_loader.py
+    └── template_renderer.py
 ```
 
 ---
@@ -76,13 +76,13 @@ src/                                ← HOW (执行代码 - TypeScript)
 ```
 /marketspec.implement
 /marketspec.implement --dry-run
-/marketspec.implement --language [typescript|python]
+/marketspec.implement --language [python|typescript]
 ```
 
 **Examples**:
 ```
-/marketspec.implement                        # Generate TypeScript (default)
-/marketspec.implement --language python      # Generate Python
+/marketspec.implement                        # Generate Python (default)
+/marketspec.implement --language typescript  # Generate TypeScript
 /marketspec.implement --dry-run              # Preview structure
 ```
 
@@ -268,281 +268,313 @@ tags: {{tags}}
 
 #### 4.1 Create Main Campaign Script
 
-**Output**: `src/campaigns/{sequence}-{name}.ts`
+**Output**: `src/campaigns/{sequence}_{name}.py`
 
 **Purpose**: Executable script that orchestrates campaign execution using MCP tools
 
 **Example**:
-```typescript
-// src/campaigns/001-q1-github-stars.ts
-import * as github from '../shared/mcp-tools/github';
-import * as twitter from '../shared/mcp-tools/twitter';
-import * as devto from '../shared/mcp-tools/devto';
-import { loadConfig, saveData, renderTemplate } from '../shared/utils';
+```python
+# src/campaigns/001_q1_github_stars.py
+"""
+Q1 GitHub Stars Growth Campaign
 
-/**
- * Q1 GitHub Stars Growth Campaign
- * 
- * Spec: specs/001-q1-github-stars/spec.md
- * Config: config/001-q1-github-stars.yaml
- * 
- * Objectives:
- * - Grow GitHub stars from 100 to 500
- * - Increase website traffic from 1000 to 5000 sessions
- * 
- * Channels: Twitter (3/day), Dev.to (2/week)
- * Budget: $5000
- * Timeline: Q1 2025 (Jan 1 - Mar 31)
- */
+Spec: specs/001-q1-github-stars/spec.md
+Config: config/001-q1-github-stars.yaml
 
-async function execute001Q1Campaign() {
-  console.log('🚀 Starting Q1 GitHub Stars Growth Campaign\n');
-  
-  // Step 1: Load configuration
-  const config = await loadConfig('config/001-q1-github-stars.yaml');
-  console.log(`Campaign: ${config.campaign.name}`);
-  console.log(`Target: ${config.kpis.github_stars.target} stars\n`);
-  
-  // Step 2: Publish Twitter content
-  console.log('📱 Publishing Twitter content...');
-  const twitterTemplate = await renderTemplate(
-    config.channels.twitter.template,
-    { theme: 'Getting Started', hashtags: '#OpenSource #DevTools' }
-  );
-  
-  for (const time of config.channels.twitter.times) {
-    await twitter.scheduleTweet({
-      text: twitterTemplate,
-      scheduledTime: time
-    });
-    console.log(`  ✅ Scheduled tweet at ${time}`);
-  }
-  
-  // Step 3: Publish Dev.to articles
-  console.log('\n📝 Publishing Dev.to articles...');
-  const blogTemplate = await renderTemplate(
-    config.channels.devto.template,
-    { 
-      title: 'Getting Started with marketing-spec-kit',
-      tags: ['opensource', 'marketing', 'automation']
-    }
-  );
-  
-  await devto.publishArticle({
-    title: 'Getting Started with marketing-spec-kit',
-    body: blogTemplate,
-    published: true
-  });
-  console.log('  ✅ Published article on Dev.to');
-  
-  // Step 4: Track KPIs
-  console.log('\n📊 Tracking KPIs...');
-  
-  // GitHub Stars (data filtered in execution environment, not in LLM context)
-  const currentStars = await github.getStarCount({
-    repo: config.kpis.github_stars.repo
-  });
-  const starsProgress = (currentStars / config.kpis.github_stars.target) * 100;
-  console.log(`  GitHub Stars: ${currentStars}/${config.kpis.github_stars.target} (${starsProgress.toFixed(1)}%)`);
-  
-  // Website Traffic
-  const traffic = await analytics.getSessions({
-    startDate: config.timeline.start,
-    endDate: 'today'
-  });
-  const trafficProgress = (traffic / config.kpis.website_traffic.target) * 100;
-  console.log(`  Website Traffic: ${traffic}/${config.kpis.website_traffic.target} (${trafficProgress.toFixed(1)}%)`);
-  
-  // Step 5: Save data (persists in data/, not in LLM context)
-  await saveData('data/001-q1/github-stars.json', {
-    timestamp: new Date().toISOString(),
-    value: currentStars,
-    target: config.kpis.github_stars.target,
-    progress: starsProgress
-  });
-  
-  await saveData('data/001-q1/website-traffic.json', {
-    timestamp: new Date().toISOString(),
-    value: traffic,
-    target: config.kpis.website_traffic.target,
-    progress: trafficProgress
-  });
-  
-  console.log('\n✅ Campaign execution completed');
-  console.log(`📂 Data saved to data/001-q1/`);
-}
+Objectives:
+- Grow GitHub stars from 100 to 500
+- Increase website traffic from 1000 to 5000 sessions
 
-// Execute the campaign
-execute001Q1Campaign().catch(console.error);
+Channels: Twitter (3/day), Dev.to (2/week)
+Budget: $5000
+Timeline: Q1 2025 (Jan 1 - Mar 31)
+"""
+
+import asyncio
+from datetime import datetime
+from pathlib import Path
+
+from ..shared.mcp_tools import github, twitter, devto, analytics
+from ..shared.config_loader import load_config
+from ..shared.template_renderer import render_template
+from ..shared.data_saver import save_data
+
+
+async def execute_001_q1_campaign():
+    """Execute Q1 GitHub Stars Growth Campaign"""
+    print('🚀 Starting Q1 GitHub Stars Growth Campaign\n')
+    
+    # Step 1: Load configuration
+    config = await load_config('config/001-q1-github-stars.yaml')
+    print(f"Campaign: {config['campaign']['name']}")
+    print(f"Target: {config['kpis']['github_stars']['target']} stars\n")
+    
+    # Step 2: Publish Twitter content
+    print('📱 Publishing Twitter content...')
+    twitter_template = await render_template(
+        config['channels']['twitter']['template'],
+        {'theme': 'Getting Started', 'hashtags': '#OpenSource #DevTools'}
+    )
+    
+    for time in config['channels']['twitter']['times']:
+        await twitter.schedule_tweet(
+            text=twitter_template,
+            scheduled_time=time
+        )
+        print(f"  ✅ Scheduled tweet at {time}")
+    
+    # Step 3: Publish Dev.to articles
+    print('\n📝 Publishing Dev.to articles...')
+    blog_template = await render_template(
+        config['channels']['devto']['template'],
+        {
+            'title': 'Getting Started with marketing-spec-kit',
+            'tags': ['opensource', 'marketing', 'automation']
+        }
+    )
+    
+    await devto.publish_article(
+        title='Getting Started with marketing-spec-kit',
+        body=blog_template,
+        published=True
+    )
+    print('  ✅ Published article on Dev.to')
+    
+    # Step 4: Track KPIs
+    print('\n📊 Tracking KPIs...')
+    
+    # GitHub Stars (data filtered in execution environment, not in LLM context)
+    current_stars = await github.get_star_count(
+        repo=config['kpis']['github_stars']['repo']
+    )
+    target_stars = config['kpis']['github_stars']['target']
+    stars_progress = (current_stars / target_stars) * 100
+    print(f"  GitHub Stars: {current_stars}/{target_stars} ({stars_progress:.1f}%)")
+    
+    # Website Traffic
+    traffic = await analytics.get_sessions(
+        start_date=config['timeline']['start'],
+        end_date='today'
+    )
+    target_traffic = config['kpis']['website_traffic']['target']
+    traffic_progress = (traffic / target_traffic) * 100
+    print(f"  Website Traffic: {traffic}/{target_traffic} ({traffic_progress:.1f}%)")
+    
+    # Step 5: Save data (persists in data/, not in LLM context)
+    await save_data('data/001-q1/github-stars.json', {
+        'timestamp': datetime.now().isoformat(),
+        'value': current_stars,
+        'target': target_stars,
+        'progress': stars_progress
+    })
+    
+    await save_data('data/001-q1/website-traffic.json', {
+        'timestamp': datetime.now().isoformat(),
+        'value': traffic,
+        'target': target_traffic,
+        'progress': traffic_progress
+    })
+    
+    print('\n✅ Campaign execution completed')
+    print(f'📂 Data saved to data/001-q1/')
+
+
+if __name__ == '__main__':
+    asyncio.run(execute_001_q1_campaign())
 ```
 
 #### 4.2 Create MCP Tool Wrappers
 
-**Output**: `src/shared/mcp-tools/*.ts`
+**Output**: `src/shared/mcp_tools/*.py`
 
 **Purpose**: Wrap MCP tools for progressive disclosure (load tool definitions on-demand)
 
 **Example - GitHub Tool**:
-```typescript
-// src/shared/mcp-tools/github.ts
-import { callMCPTool } from '../mcp-client';
+```python
+# src/shared/mcp_tools/github.py
+"""
+GitHub MCP Tool Wrapper
 
-/**
- * GitHub MCP Tool Wrapper
- * 
- * Progressive disclosure: Tool definitions loaded on-demand,
- * not upfront in LLM context (reduces token usage by 98%)
- * 
- * Reference: https://www.anthropic.com/engineering/code-execution-with-mcp
- */
+Progressive disclosure: Tool definitions loaded on-demand,
+not upfront in LLM context (reduces token usage by 98%)
 
-interface GetStarCountInput {
-  repo: string;
-}
+Reference: https://www.anthropic.com/engineering/code-execution-with-mcp
+"""
 
-interface GetStarCountResponse {
-  stars: number;
-  forksCount: number;
-  watchersCount: number;
-}
+from typing import Optional
+from ..mcp_client import call_mcp_tool
 
-/**
- * Get star count for a GitHub repository
- * 
- * @param input - Repository in format "owner/repo"
- * @returns Star count and other metrics
- */
-export async function getStarCount(input: GetStarCountInput): Promise<number> {
-  const result = await callMCPTool<GetStarCountResponse>('github__get_star_count', input);
-  return result.stars;
-}
 
-/**
- * Star a GitHub repository
- */
-export async function starRepo(input: { repo: string }): Promise<void> {
-  await callMCPTool('github__star_repo', input);
-}
+async def get_star_count(repo: str) -> int:
+    """
+    Get star count for a GitHub repository
+    
+    Args:
+        repo: Repository in format "owner/repo"
+        
+    Returns:
+        Star count
+    """
+    result = await call_mcp_tool('github__get_star_count', {'repo': repo})
+    return result['stars']
 
-/**
- * Get repository contributors
- */
-export async function getContributors(input: { repo: string, limit?: number }): Promise<string[]> {
-  const result = await callMCPTool<{ contributors: string[] }>('github__get_contributors', input);
-  return result.contributors;
-}
+
+async def star_repo(repo: str) -> None:
+    """Star a GitHub repository"""
+    await call_mcp_tool('github__star_repo', {'repo': repo})
+
+
+async def get_contributors(repo: str, limit: Optional[int] = None) -> list[str]:
+    """Get repository contributors"""
+    result = await call_mcp_tool('github__get_contributors', {
+        'repo': repo,
+        'limit': limit
+    })
+    return result['contributors']
 ```
 
 **Example - Twitter Tool**:
-```typescript
-// src/shared/mcp-tools/twitter.ts
-import { callMCPTool } from '../mcp-client';
+```python
+# src/shared/mcp_tools/twitter.py
+"""Twitter MCP Tool Wrapper"""
 
-interface ScheduleTweetInput {
-  text: string;
-  scheduledTime: string;
-  mediaUrls?: string[];
-}
+from typing import Optional
+from ..mcp_client import call_mcp_tool
 
-/**
- * Schedule a tweet for future posting
- */
-export async function scheduleTweet(input: ScheduleTweetInput): Promise<void> {
-  await callMCPTool('twitter__schedule_tweet', input);
-}
 
-/**
- * Publish a tweet immediately
- */
-export async function publishTweet(input: { text: string; mediaUrls?: string[] }): Promise<void> {
-  await callMCPTool('twitter__publish_tweet', input);
-}
+async def schedule_tweet(
+    text: str,
+    scheduled_time: str,
+    media_urls: Optional[list[str]] = None
+) -> None:
+    """Schedule a tweet for future posting"""
+    await call_mcp_tool('twitter__schedule_tweet', {
+        'text': text,
+        'scheduledTime': scheduled_time,
+        'mediaUrls': media_urls
+    })
 
-/**
- * Get tweet engagement metrics
- */
-export async function getTweetMetrics(input: { tweetId: string }): Promise<{
-  likes: number;
-  retweets: number;
-  replies: number;
-}> {
-  return await callMCPTool('twitter__get_tweet_metrics', input);
-}
+
+async def publish_tweet(
+    text: str,
+    media_urls: Optional[list[str]] = None
+) -> None:
+    """Publish a tweet immediately"""
+    await call_mcp_tool('twitter__publish_tweet', {
+        'text': text,
+        'mediaUrls': media_urls
+    })
+
+
+async def get_tweet_metrics(tweet_id: str) -> dict:
+    """Get tweet engagement metrics"""
+    return await call_mcp_tool('twitter__get_tweet_metrics', {
+        'tweetId': tweet_id
+    })
 ```
 
 #### 4.3 Create Utility Functions
 
-**Output**: `src/shared/utils.ts`
+**Output**: `src/shared/config_loader.py`, `src/shared/template_renderer.py`, `src/shared/data_saver.py`
 
 **Purpose**: Helper functions for config loading, template rendering, data persistence
 
-**Example**:
-```typescript
-// src/shared/utils.ts
-import * as fs from 'fs/promises';
-import * as yaml from 'js-yaml';
+**Example - Config Loader**:
+```python
+# src/shared/config_loader.py
+"""Configuration loading utilities"""
 
-/**
- * Load YAML configuration file
- */
-export async function loadConfig(path: string): Promise<any> {
-  const content = await fs.readFile(path, 'utf-8');
-  return yaml.load(content);
-}
+from pathlib import Path
+import yaml
 
-/**
- * Render template with variables
- */
-export async function renderTemplate(templatePath: string, vars: Record<string, any>): Promise<string> {
-  let template = await fs.readFile(templatePath, 'utf-8');
-  
-  // Simple template rendering (replace {{variable}} with values)
-  for (const [key, value] of Object.entries(vars)) {
-    template = template.replace(new RegExp(`{{${key}}}`, 'g'), value);
-  }
-  
-  return template;
-}
 
-/**
- * Save data to JSON file (for later review/analysis)
- */
-export async function saveData(path: string, data: any): Promise<void> {
-  await fs.mkdir(path.split('/').slice(0, -1).join('/'), { recursive: true });
-  await fs.writeFile(path, JSON.stringify(data, null, 2), 'utf-8');
-}
+async def load_config(path: str) -> dict:
+    """Load YAML configuration file"""
+    config_path = Path(path)
+    with config_path.open('r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+```
+
+**Example - Template Renderer**:
+```python
+# src/shared/template_renderer.py
+"""Template rendering utilities"""
+
+import re
+from pathlib import Path
+
+
+async def render_template(template_path: str, vars: dict) -> str:
+    """
+    Render template with variables
+    
+    Simple template rendering (replace {{variable}} with values)
+    """
+    template_file = Path(template_path)
+    template = template_file.read_text(encoding='utf-8')
+    
+    for key, value in vars.items():
+        pattern = r'\{\{' + re.escape(key) + r'\}\}'
+        template = re.sub(pattern, str(value), template)
+    
+    return template
+```
+
+**Example - Data Saver**:
+```python
+# src/shared/data_saver.py
+"""Data persistence utilities"""
+
+import json
+from pathlib import Path
+
+
+async def save_data(path: str, data: dict) -> None:
+    """Save data to JSON file (for later review/analysis)"""
+    data_path = Path(path)
+    data_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with data_path.open('w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 ```
 
 #### 4.4 Create MCP Client
 
-**Output**: `src/shared/mcp-client.ts`
+**Output**: `src/shared/mcp_client.py`
 
 **Purpose**: Low-level MCP tool calling interface
 
 **Example**:
-```typescript
-// src/shared/mcp-client.ts
-/**
- * MCP Client - Calls MCP tools via stdio transport
- * 
- * This is a simplified example. In production, use official MCP SDK:
- * - TypeScript: @modelcontextprotocol/sdk
- * - Python: mcp
- */
+```python
+# src/shared/mcp_client.py
+"""
+MCP Client - Calls MCP tools via stdio transport
 
-export async function callMCPTool<T = any>(toolName: string, input: any): Promise<T> {
-  // In real implementation, this would:
-  // 1. Connect to MCP server via stdio
-  // 2. Send tool call request
-  // 3. Receive and parse response
-  // 4. Return result
-  
-  console.log(`[MCP] Calling tool: ${toolName}`);
-  console.log(`[MCP] Input:`, JSON.stringify(input, null, 2));
-  
-  // Placeholder - replace with actual MCP SDK call
-  throw new Error('MCP client not implemented - use @modelcontextprotocol/sdk');
-}
+This is a simplified example. In production, use official MCP SDK:
+- Python: mcp (https://github.com/modelcontextprotocol/python-sdk)
+"""
+
+import json
+from typing import Any
+
+
+async def call_mcp_tool(tool_name: str, input_data: dict) -> Any:
+    """
+    Call MCP tool
+    
+    In real implementation, this would:
+    1. Connect to MCP server via stdio
+    2. Send tool call request
+    3. Receive and parse response
+    4. Return result
+    """
+    print(f"[MCP] Calling tool: {tool_name}")
+    print(f"[MCP] Input: {json.dumps(input_data, indent=2)}")
+    
+    # Placeholder - replace with actual MCP SDK call
+    raise NotImplementedError(
+        'MCP client not implemented - use mcp Python SDK'
+    )
 ```
 
 ---
@@ -557,32 +589,33 @@ export async function callMCPTool<T = any>(toolName: string, input: any): Promis
 ```markdown
 # Campaign Execution Scripts
 
-This directory contains executable TypeScript scripts for running marketing campaigns.
+This directory contains executable Python scripts for running marketing campaigns.
 
 ## Structure
 
 \`\`\`
 src/
 ├── campaigns/
-│   └── 001-q1-github-stars.ts    ← Main campaign scripts
+│   └── 001_q1_github_stars.py    ← Main campaign scripts
 └── shared/
-    ├── mcp-tools/                 ← MCP tool wrappers
-    ├── utils.ts                   ← Helper functions
-    └── mcp-client.ts              ← MCP client interface
+    ├── mcp_tools/                 ← MCP tool wrappers
+    ├── config_loader.py           ← Config loading
+    ├── template_renderer.py       ← Template rendering
+    ├── data_saver.py              ← Data persistence
+    └── mcp_client.py              ← MCP client interface
 \`\`\`
 
 ## Running a Campaign
 
 \`\`\`bash
 # Install dependencies
-npm install
+uv sync  # or: pip install -r requirements.txt
 
 # Run a campaign
-ts-node src/campaigns/001-q1-github-stars.ts
+python -m src.campaigns.001_q1_github_stars
 
-# Or compile and run
-npm run build
-node dist/campaigns/001-q1-github-stars.js
+# Or with uv
+uv run python -m src.campaigns.001_q1_github_stars
 \`\`\`
 
 ## MCP Tools Required
@@ -604,55 +637,45 @@ Campaign parameters are stored in \`config/\`:
 - Runtime data collected in \`data/\`
 ```
 
-#### 5.2 Create package.json
+#### 5.2 Create pyproject.toml
 
-**Output**: `package.json`
+**Output**: `pyproject.toml`
 
 **Content**:
-```json
-{
-  "name": "marketing-campaigns",
-  "version": "1.0.0",
-  "description": "Executable marketing campaign scripts",
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/campaigns/001-q1-github-stars.js",
-    "dev": "ts-node src/campaigns/001-q1-github-stars.ts"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.5.0",
-    "js-yaml": "^4.1.0"
-  },
-  "devDependencies": {
-    "@types/js-yaml": "^4.0.5",
-    "@types/node": "^20.0.0",
-    "ts-node": "^10.9.0",
-    "typescript": "^5.0.0"
-  }
-}
+```toml
+[project]
+name = "marketing-campaigns"
+version = "1.0.0"
+description = "Executable marketing campaign scripts"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=0.5.0",
+    "pyyaml>=6.0.0",
+    "aiofiles>=23.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.1.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
 ```
 
-#### 5.3 Create tsconfig.json
+#### 5.3 Create requirements.txt (Optional)
 
-**Output**: `tsconfig.json`
+**Output**: `requirements.txt`
 
 **Content**:
-```json
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
-}
+```
+mcp>=0.5.0
+pyyaml>=6.0.0
+aiofiles>=23.0.0
 ```
 
 ---
@@ -678,24 +701,26 @@ Generated Files:
    └─ data/001-q1/                               ← Data directory (empty)
 
 💻 src/ (Executable Code)
-   ├─ campaigns/001-q1-github-stars.ts           ← Main script ⭐
+   ├─ campaigns/001_q1_github_stars.py           ← Main script ⭐
    ├─ shared/
-   │  ├─ mcp-tools/
-   │  │  ├─ github.ts                            ← GitHub wrapper
-   │  │  ├─ twitter.ts                           ← Twitter wrapper
-   │  │  └─ devto.ts                             ← Dev.to wrapper
-   │  ├─ utils.ts                                ← Helper functions
-   │  └─ mcp-client.ts                           ← MCP client
+   │  ├─ mcp_tools/
+   │  │  ├─ github.py                            ← GitHub wrapper
+   │  │  ├─ twitter.py                           ← Twitter wrapper
+   │  │  └─ devto.py                             ← Dev.to wrapper
+   │  ├─ config_loader.py                        ← Config loading
+   │  ├─ template_renderer.py                    ← Template rendering
+   │  ├─ data_saver.py                           ← Data persistence
+   │  └─ mcp_client.py                           ← MCP client
    ├─ README.md                                  ← Execution guide
-   ├─ package.json                               ← Dependencies
-   └─ tsconfig.json                              ← TypeScript config
+   ├─ pyproject.toml                             ← Dependencies
+   └─ requirements.txt                           ← Pip requirements
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Next Steps:
-1. Install dependencies: npm install
+1. Install dependencies: uv sync  (or: pip install -r requirements.txt)
 2. Configure MCP tools (github-api, twitter-api, devto-api)
-3. Run campaign: ts-node src/campaigns/001-q1-github-stars.ts
+3. Run campaign: python -m src.campaigns.001_q1_github_stars
 4. Monitor data: data/001-q1/
 5. After execution, run: /marketspec.review
 ```
@@ -715,8 +740,8 @@ Load all 1000 tool definitions upfront
 ```
 
 **With code execution**:
-```typescript
-import * as github from './mcp-tools/github';  // Only loads github tools
+```python
+from .mcp_tools import github  # Only loads github tools
 → 2,000 tokens (98.7% savings)
 ```
 
@@ -730,10 +755,10 @@ Fetch 10,000-row spreadsheet
 ```
 
 **With code execution**:
-```typescript
-const allRows = await sheets.getSheet({ id: 'abc' });
-const filtered = allRows.filter(row => row.status === 'pending');
-console.log(filtered.slice(0, 5));  // Only 5 rows logged
+```python
+all_rows = await sheets.get_sheet(id='abc')
+filtered = [row for row in all_rows if row['status'] == 'pending']
+print(filtered[:5])  # Only 5 rows logged
 → 1,000 tokens (99.8% savings)
 ```
 
@@ -746,24 +771,23 @@ LLM makes 10 sequential tool calls with sleep between each
 ```
 
 **With code execution**:
-```typescript
-while (!found) {
-  const messages = await slack.getMessages();
-  found = messages.some(m => m.text.includes('deployed'));
-  if (!found) await sleep(5000);
-}
+```python
+while not found:
+    messages = await slack.get_messages()
+    found = any('deployed' in m.text for m in messages)
+    if not found:
+        await asyncio.sleep(5)
 → Single code execution, efficient polling
 ```
 
 ### 4. Privacy-Preserving Operations
 
 **With code execution**:
-```typescript
-const users = await db.getUsers();  // PII stays in execution environment
-for (const user of users) {
-  await crm.updateContact({ email: user.email });  // Flows directly, not through LLM
-}
-console.log(`Updated ${users.length} contacts`);  // Only count logged
+```python
+users = await db.get_users()  # PII stays in execution environment
+for user in users:
+    await crm.update_contact(email=user.email)  # Flows directly, not through LLM
+print(f"Updated {len(users)} contacts")  # Only count logged
 ```
 
 Sensitive data never enters LLM context.
@@ -775,9 +799,11 @@ Sensitive data never enters LLM context.
 ### Primary Outputs
 
 **Executable Code**:
-- `src/campaigns/{sequence}-{name}.ts` - Main campaign script
-- `src/shared/mcp-tools/*.ts` - MCP tool wrappers
-- `src/shared/utils.ts` - Helper functions
+- `src/campaigns/{sequence}_{name}.py` - Main campaign script
+- `src/shared/mcp_tools/*.py` - MCP tool wrappers
+- `src/shared/config_loader.py` - Config loading
+- `src/shared/template_renderer.py` - Template rendering
+- `src/shared/data_saver.py` - Data persistence
 
 **Configurations**:
 - `config/{sequence}-{name}.yaml` - Campaign config
@@ -786,8 +812,8 @@ Sensitive data never enters LLM context.
 
 **Supporting Files**:
 - `src/README.md` - Execution documentation
-- `package.json` - Dependencies
-- `tsconfig.json` - TypeScript configuration
+- `pyproject.toml` - Dependencies
+- `requirements.txt` - Pip requirements
 
 ---
 
@@ -797,18 +823,17 @@ Sensitive data never enters LLM context.
 
 ```bash
 # Install dependencies
-npm install
+uv sync  # or: pip install -r requirements.txt
 
-# Run campaign (TypeScript)
-ts-node src/campaigns/001-q1-github-stars.ts
+# Run campaign (Python)
+python -m src.campaigns.001_q1_github_stars
 
-# Or compile and run (JavaScript)
-npm run build
-node dist/campaigns/001-q1-github-stars.js
+# Or with uv
+uv run python -m src.campaigns.001_q1_github_stars
 ```
 
 **Prerequisites**:
-- Node.js 18+ and npm installed
+- Python 3.11+ installed
 - MCP tools configured (github-api, twitter-api, etc.)
 - Environment variables set (API keys, tokens)
 
@@ -828,7 +853,7 @@ node dist/campaigns/001-q1-github-stars.js
 | Aspect | Previous (v0.3) | Current (v0.4) |
 |--------|-----------------|----------------|
 | **Output** | YAML configs only | Code + Configs |
-| **Execution** | External tools read YAML | Run TypeScript code directly |
+| **Execution** | External tools read YAML | Run Python code directly |
 | **MCP Integration** | Not specified | Built-in MCP tool wrappers |
 | **Token Efficiency** | N/A | 98% savings (progressive disclosure) |
 | **Alignment** | Custom pattern | MetaSpec + Anthropic pattern |
