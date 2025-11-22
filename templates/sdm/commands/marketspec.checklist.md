@@ -19,6 +19,43 @@ version: 0.3.0
 
 ---
 
+## 📖 Navigation Guide (Token Optimization)
+
+**File Size**: 984 lines (~3445 tokens)  
+**Recommended**: Read specific sections to save 70-90% tokens
+
+| Section | Lines | Size | Usage |
+|---------|-------|------|-------|
+| 1. Command Overview | 1-97 | 97 lines | `read_file(target, offset=1, limit=97)` |
+| 2. Execution Steps | 98-384 | 287 lines | `read_file(target, offset=98, limit=287)` |
+| 3. Summary & Issues | 385-423 | 39 lines | `read_file(target, offset=385, limit=39)` |
+| 4. Checklist Categories | 424-715 | 292 lines | `read_file(target, offset=424, limit=292)` |
+| 5. Validation & Assessment | 716-769 | 54 lines | `read_file(target, offset=716, limit=54)` |
+| 6. Action Items & Sign-off | 770-813 | 44 lines | `read_file(target, offset=770, limit=44)` |
+| 7. Success Criteria & Examples | 814-984 | 171 lines | `read_file(target, offset=814, limit=171)` |
+
+**💡 Typical Usage**:
+```python
+# Quick reference: Read overview only (97 lines)
+read_file(target, offset=1, limit=97)
+
+# Core logic: Read execution steps (287 lines)
+read_file(target, offset=98, limit=287)
+
+# Checklist items: Read all categories (292 lines)
+read_file(target, offset=424, limit=292)
+
+# Output format: Read validation and assessment (54 lines)
+read_file(target, offset=716, limit=54)
+```
+
+**Token Savings**:
+- Full file: 984 lines (~3445 tokens)
+- Single section: 39-292 lines (~135-1020 tokens) → **70-90% savings** 🏆
+- Core logic only: 287 lines (~1005 tokens) → **71% savings**
+
+---
+
 ## Purpose
 
 Ensure marketing specification quality through:

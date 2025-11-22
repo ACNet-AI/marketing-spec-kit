@@ -19,6 +19,43 @@ version: 0.3.0
 
 ---
 
+## 📖 Navigation Guide (Token Optimization)
+
+**File Size**: 1134 lines (~3970 tokens)  
+**Recommended**: Read specific sections to save 70-90% tokens
+
+| Section | Lines | Size | Usage |
+|---------|-------|------|-------|
+| 1. Command Overview | 1-97 | 97 lines | `read_file(target, offset=1, limit=97)` |
+| 2. Execution Steps | 98-569 | 472 lines | `read_file(target, offset=98, limit=472)` |
+| 3. Executive Summary | 570-584 | 15 lines | `read_file(target, offset=570, limit=15)` |
+| 4. Priority Recommendations | 585-822 | 238 lines | `read_file(target, offset=585, limit=238)` |
+| 5. Budget & Content Strategy | 823-937 | 115 lines | `read_file(target, offset=823, limit=115)` |
+| 6. Implementation & Timeline | 938-1081 | 144 lines | `read_file(target, offset=938, limit=144)` |
+| 7. Expected Outcomes & Checklist | 1082-1134 | 53 lines | `read_file(target, offset=1082, limit=53)` |
+
+**💡 Typical Usage**:
+```python
+# Quick reference: Read overview only (97 lines)
+read_file(target, offset=1, limit=97)
+
+# Core logic: Read execution steps (472 lines)
+read_file(target, offset=98, limit=472)
+
+# Output format: Read priority recommendations (238 lines)
+read_file(target, offset=585, limit=238)
+
+# Implementation guide: Read timeline and measurement (144 lines)
+read_file(target, offset=938, limit=144)
+```
+
+**Token Savings**:
+- Full file: 1134 lines (~3970 tokens)
+- Single section: 15-472 lines (~55-1650 tokens) → **70-90% savings** 🏆
+- Core logic only: 472 lines (~1650 tokens) → **58% savings**
+
+---
+
 ## Purpose
 
 This command **generates optimization guidance**:

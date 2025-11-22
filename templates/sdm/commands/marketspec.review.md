@@ -19,6 +19,43 @@ version: 0.3.0
 
 ---
 
+## 📖 Navigation Guide (Token Optimization)
+
+**File Size**: 878 lines (~3075 tokens)  
+**Recommended**: Read specific sections to save 70-90% tokens
+
+| Section | Lines | Size | Usage |
+|---------|-------|------|-------|
+| 1. Command Overview | 1-98 | 98 lines | `read_file(target, offset=1, limit=98)` |
+| 2. Execution Steps | 99-513 | 415 lines | `read_file(target, offset=99, limit=415)` |
+| 3. Executive Summary & KPIs | 514-564 | 51 lines | `read_file(target, offset=514, limit=51)` |
+| 4. Budget & Channel Performance | 565-647 | 83 lines | `read_file(target, offset=565, limit=83)` |
+| 5. Content & Success Factors | 648-730 | 83 lines | `read_file(target, offset=648, limit=83)` |
+| 6. Lessons & Timeline Analysis | 731-796 | 66 lines | `read_file(target, offset=731, limit=66)` |
+| 7. Team, Recommendations & Appendices | 797-878 | 82 lines | `read_file(target, offset=797, limit=82)` |
+
+**💡 Typical Usage**:
+```python
+# Quick reference: Read overview only (98 lines)
+read_file(target, offset=1, limit=98)
+
+# Core logic: Read execution steps (415 lines)
+read_file(target, offset=99, limit=415)
+
+# Output format: Read summary and KPIs (51 lines)
+read_file(target, offset=514, limit=51)
+
+# Performance analysis: Read budget and channel performance (83 lines)
+read_file(target, offset=565, limit=83)
+```
+
+**Token Savings**:
+- Full file: 878 lines (~3075 tokens)
+- Single section: 51-415 lines (~180-1455 tokens) → **70-90% savings** 🏆
+- Core logic only: 415 lines (~1455 tokens) → **53% savings**
+
+---
+
 ## Purpose
 
 This command **executes campaign performance analysis**:

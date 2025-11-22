@@ -19,6 +19,43 @@ version: 0.3.0
 
 ---
 
+## 📖 Navigation Guide (Token Optimization)
+
+**File Size**: 998 lines (~3495 tokens)  
+**Recommended**: Read specific sections to save 70-90% tokens
+
+| Section | Lines | Size | Usage |
+|---------|-------|------|-------|
+| 1. Command Overview | 1-96 | 96 lines | `read_file(target, offset=1, limit=96)` |
+| 2. Execution Steps | 97-505 | 409 lines | `read_file(target, offset=97, limit=409)` |
+| 3. Output Format - Executive & Approach | 506-537 | 32 lines | `read_file(target, offset=506, limit=32)` |
+| 4. Campaign Structure & Channels | 538-603 | 66 lines | `read_file(target, offset=538, limit=66)` |
+| 5. Content Plan & KPIs | 604-663 | 60 lines | `read_file(target, offset=604, limit=60)` |
+| 6. Budget, Timeline & Risk | 664-759 | 96 lines | `read_file(target, offset=664, limit=96)` |
+| 7. Tools, Success Criteria & Examples | 760-998 | 239 lines | `read_file(target, offset=760, limit=239)` |
+
+**💡 Typical Usage**:
+```python
+# Quick reference: Read overview only (96 lines)
+read_file(target, offset=1, limit=96)
+
+# Core logic: Read execution steps (409 lines)
+read_file(target, offset=97, limit=409)
+
+# Output structure: Read campaign structure and channels (66 lines)
+read_file(target, offset=538, limit=66)
+
+# Implementation details: Read budget, timeline and risk (96 lines)
+read_file(target, offset=664, limit=96)
+```
+
+**Token Savings**:
+- Full file: 998 lines (~3495 tokens)
+- Single section: 32-409 lines (~110-1430 tokens) → **70-90% savings** 🏆
+- Core logic only: 409 lines (~1430 tokens) → **59% savings**
+
+---
+
 ## Purpose
 
 Transform discovered and clarified requirements into a concrete marketing strategy plan:

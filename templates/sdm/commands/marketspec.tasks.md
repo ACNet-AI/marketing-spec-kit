@@ -18,6 +18,43 @@ version: 0.3.0
 
 ---
 
+## 📖 Navigation Guide (Token Optimization)
+
+**File Size**: 818 lines (~2865 tokens)  
+**Recommended**: Read specific sections to save 70-90% tokens
+
+| Section | Lines | Size | Usage |
+|---------|-------|------|-------|
+| 1. Command Overview | 1-94 | 94 lines | `read_file(target, offset=1, limit=94)` |
+| 2. Execution Steps | 95-565 | 471 lines | `read_file(target, offset=95, limit=471)` |
+| 3. Summary & Task Categories | 566-597 | 32 lines | `read_file(target, offset=566, limit=32)` |
+| 4. Weekly Breakdown & Dependencies | 598-616 | 19 lines | `read_file(target, offset=598, limit=19)` |
+| 5. Resources, Risk & Templates | 617-634 | 18 lines | `read_file(target, offset=617, limit=18)` |
+| 6. Next Steps & Success Criteria | 635-662 | 28 lines | `read_file(target, offset=635, limit=28)` |
+| 7. Output, Examples & Integration | 663-818 | 156 lines | `read_file(target, offset=663, limit=156)` |
+
+**💡 Typical Usage**:
+```python
+# Quick reference: Read overview only (94 lines)
+read_file(target, offset=1, limit=94)
+
+# Core logic: Read execution steps (471 lines)
+read_file(target, offset=95, limit=471)
+
+# Output structure: Read summary and categories (32 lines)
+read_file(target, offset=566, limit=32)
+
+# Examples: Read examples and integration (156 lines)
+read_file(target, offset=663, limit=156)
+```
+
+**Token Savings**:
+- Full file: 818 lines (~2865 tokens)
+- Single section: 18-471 lines (~65-1650 tokens) → **70-90% savings** 🏆
+- Core logic only: 471 lines (~1650 tokens) → **42% savings**
+
+---
+
 ## Purpose
 
 Transform the high-level marketing strategy into a detailed task breakdown:

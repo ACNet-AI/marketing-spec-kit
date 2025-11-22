@@ -22,6 +22,42 @@ version: 0.4.0
 
 ---
 
+## 📖 Navigation Guide (Token Optimization)
+
+**File Size**: 912 lines (~3195 tokens)  
+**Recommended**: Read specific sections to save 70-90% tokens
+
+| Section | Lines | Size | Usage |
+|---------|-------|------|-------|
+| 1. Command Overview | 1-135 | 135 lines | `read_file(target, offset=1, limit=135)` |
+| 2. Execution Steps | 136-273 | 138 lines | `read_file(target, offset=136, limit=138)` |
+| 3. Output Templates | 274-629 | 356 lines | `read_file(target, offset=274, limit=356)` |
+| 4. Generated Files Structure | 630-765 | 136 lines | `read_file(target, offset=630, limit=136)` |
+| 5. Benefits & Philosophy | 766-832 | 67 lines | `read_file(target, offset=766, limit=67)` |
+| 6. Execution & Examples | 833-912 | 80 lines | `read_file(target, offset=833, limit=80)` |
+
+**💡 Typical Usage**:
+```python
+# Quick reference: Read overview (135 lines)
+read_file(target, offset=1, limit=135)
+
+# Core logic: Read execution steps (138 lines)
+read_file(target, offset=136, limit=138)
+
+# Code templates: Read output templates (356 lines)
+read_file(target, offset=274, limit=356)
+
+# File structure: Read generated files (136 lines)
+read_file(target, offset=630, limit=136)
+```
+
+**Token Savings**:
+- Full file: 912 lines (~3195 tokens)
+- Single section: 67-356 lines (~235-1245 tokens) → **70-90% savings** 🏆
+- Core logic only: 138 lines (~485 tokens) → **85% savings**
+
+---
+
 ## Purpose
 
 This is the **implementation command** that generates:
@@ -315,7 +351,7 @@ async def execute_001_q1_campaign():
         config['channels']['twitter']['template'],
         {'theme': 'Getting Started', 'hashtags': '#OpenSource #DevTools'}
     )
-    
+  
     for time in config['channels']['twitter']['times']:
         await twitter.schedule_tweet(
             text=twitter_template,
@@ -327,12 +363,12 @@ async def execute_001_q1_campaign():
     print('\n📝 Publishing Dev.to articles...')
     blog_template = await render_template(
         config['channels']['devto']['template'],
-        {
+    { 
             'title': 'Getting Started with marketing-spec-kit',
             'tags': ['opensource', 'marketing', 'automation']
-        }
+    }
     )
-    
+  
     await devto.publish_article(
         title='Getting Started with marketing-spec-kit',
         body=blog_template,
@@ -367,7 +403,7 @@ async def execute_001_q1_campaign():
         'target': target_stars,
         'progress': stars_progress
     })
-    
+  
     await save_data('data/001-q1/website-traffic.json', {
         'timestamp': datetime.now().isoformat(),
         'value': traffic,
